@@ -1,0 +1,132 @@
+/* ===============================
+   Testimonial Horizontal Scroll
+   =============================== */
+
+.testimonial-scroll {
+    display: flex;
+    gap: 3rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px 0;
+
+    /* Snap */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+.testimonial-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+/* ===============================
+   Testimonial Card
+   =============================== */
+
+.testimonial-card {
+    flex: 0 0 48%;
+    padding: 0 30px;
+    scroll-snap-align: start;
+}
+
+.testimonial-card .card {
+    border: none;
+}
+
+/* ===============================
+   Tablet & Small Desktop (≤991px)
+   =============================== */
+
+@media (max-width: 991px) {
+    .testimonial-card {
+        flex: 0 0 70%;
+    }
+}
+
+/* ===============================
+   Tablet Portrait (≤768px)
+   One focused card per scroll
+   =============================== */
+
+@media (max-width: 768px) {
+    .testimonial-scroll {
+        gap: 1.5rem;
+        justify-content: flex-start;
+    }
+
+    .testimonial-card {
+        flex: 0 0 85%;
+        max-width: 85%;
+    }
+}
+
+/* ===============================
+   Mobile (≤575px)
+   =============================== */
+
+@media (max-width: 575px) {
+    .testimonial-card {
+        flex: 0 0 90%;
+        max-width: 90%;
+    }
+}
+
+/* ===============================
+   Small Mobile (≤400px)
+   EXACTLY ONE CARD PER SCROLL
+   =============================== */
+
+@media (max-width: 400px) {
+    .testimonial-scroll {
+        gap: 0;
+        padding-left: 0;
+    }
+
+    .testimonial-card {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .scroll-btn {
+        width: 35px !important;
+        height: 35px !important;
+    }
+
+    /* Optional: hide arrows */
+    /* .scroll-btn {
+        display: none;
+    } */
+}
+
+/* ===============================
+   Arrow Buttons
+   =============================== */
+
+.scroll-btn {
+    position: absolute;
+    top: 55%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0.8;
+    border-radius: 50%;
+    background: #ccc;
+    border: none;
+    color: #fff;
+}
+
+.scroll-btn.left {
+    left: 0;
+}
+
+.scroll-btn.right {
+    right: 0;
+}
+
+.scroll-btn:hover {
+    opacity: 1;
+}

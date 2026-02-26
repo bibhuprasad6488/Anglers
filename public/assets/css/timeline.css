@@ -1,0 +1,202 @@
+
+.timeline {
+    position: relative;
+    margin: 50px auto;
+    padding: 40px 0;
+    max-width: 1000px;
+    box-sizing: border-box;
+}
+
+/* Base vertical line */
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e0e0e0;
+    z-index: 0;
+}
+
+/* Animated progress line */
+.timeline-progress {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 5px;
+    height: 0;
+    background: #1b1618;
+    transition: height 0.25s ease-out;
+}
+
+/* Reset list */
+.timeline ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+}
+
+/* Timeline item */
+.timeline ul li:nth-child(odd) {
+    position: relative;
+    width: 50%;
+    padding: 20px 104px 40px 10px;
+    box-sizing: border-box;
+    opacity: 0.35;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    margin-bottom: 100px;
+}
+
+.timeline ul li:nth-child(even) {
+    position: relative;
+    width: 50%;
+    padding: 20px 10px 40px 100px;
+    box-sizing: border-box;
+    opacity: 0.35;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    margin-bottom: 100px;
+}
+
+.timeline ul li:last-child {
+    margin-bottom: 0px;
+}
+
+/* Alternating layout */
+.timeline ul li:nth-child(odd) {
+    float: left;
+    text-align: right;
+    clear: both;
+}
+
+.timeline ul li:nth-child(even) {
+    float: right;
+    text-align: left;
+    clear: both;
+}
+
+.timeline ul li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    top: 24px;
+    width: 50px;
+    height: 50px;
+    background: #1b1618;
+    color: #fff;
+    font-size: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    box-shadow: 0 0 0 3px rgba(29, 18, 21, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Circle positioning */
+.timeline ul li:nth-child(odd)::before {
+    right: -26px;
+}
+
+.timeline ul li:nth-child(even)::before {
+    left: -23px;
+}
+
+/* Active step */
+.timeline ul li.active {
+    opacity: 1;
+}
+
+.timeline ul li.active::before {
+    background: #000;
+    transform: scale(1.15);
+    box-shadow: -4px 6px 13px 5px rgba(0, 0, 0, 0.3);
+}
+
+
+.content {
+    display: block;
+}
+
+.timeline ul li h3 {
+    margin: 0;
+    font-size: 22px;
+    color: #000;
+}
+
+.timeline ul li p {
+    margin: 10px 0 0;
+    line-height: 1.6;
+    color: #444;
+}
+
+.step-img {
+    max-width: 350px;
+}
+
+.timeline ul li .time {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    box-shadow: 0 0 0 3px rgba(24, 20, 21, 0.25);
+}
+
+/* Image positioning */
+.timeline ul li:nth-child(odd) .time {
+    right: -482px;
+}
+
+.timeline ul li:nth-child(even) .time {
+    left: -482px;
+}
+
+/* Clear floats */
+.timeline ul li::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+@media (max-width: 1000px) {
+    .timeline {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+
+    .timeline::before,
+    .timeline-progress {
+        left: 20px;
+    }
+
+    .timeline ul li {
+        width: 100%;
+        padding: 20px 20px 20px 60px;
+        text-align: left;
+    }
+
+    .timeline ul li::before {
+        top: 20px;
+        left: 16px;
+        right: auto;
+    }
+
+    .timeline ul li .time {
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        transform: none;
+        margin-top: 15px;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .step-img {
+        max-width: 120px;
+    }
+}

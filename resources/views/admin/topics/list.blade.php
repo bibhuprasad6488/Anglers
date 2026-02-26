@@ -1,0 +1,68 @@
+@extends('admin.layouts.app')
+@section('title', 'Categories')
+@section('content')
+    <div class="container-fluid px-4">
+        <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+            <div class="py-2">
+                <h1 class="mt-4">Categories</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item">Dashboard</li>
+                    <li class="breadcrumb-item active">Categories</li>
+                </ol>
+            </div>
+            <div class="ms-auto">
+                <div class="btn-group">
+                    <a href="{{ route('admin.topics.create') }}" class="btn btn-primary">Add New</a>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-4">
+            @if (session('success'))
+                <div class="alert alert-success mx-4 mt-3 rounded-3 shadow-sm" id="success-alert">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger mx-4 mt-3 rounded-3 shadow-sm" id="success-alert">
+                    {{ session('error') }}
+                </div>
+            @endif
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+            </div>
+            <div class="card-body">
+
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>SL No</th>
+                            <th>Name</th>
+                            <th>Created</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($topics as $t)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td><b>{{ $t->name }}</b></td>
+                                <td>{{ $t->created_at }}{{ \Carbon\Carbon::parse($t->created_at)->format('d-m-Y') }}</td>
+                                <td>
+                                    <a href="{{ route('admin.topics.edit', $t->id) }}"
+                                        class="btn btn-sm btn-primary">Edit</a>
+                                    <form action="{{ route('admin.topics.destroy', $t->id) }}" method="POST"
+                                        style="display: inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger"
+                                            onclick="return confirm('Are you sure you want to delete this?');">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+@endsection

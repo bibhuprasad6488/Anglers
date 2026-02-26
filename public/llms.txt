@@ -1,0 +1,17 @@
+# llms.txt for thesterlingwills.co.uk
+
+User-Agent: *
+Allow: /
+
+# Restricted Paths
+Disallow: /admin/
+Disallow: /login/
+Disallow: /dashboard/
+
+# AI Usage Policy
+Policy: Public content may be indexed and summarized.
+Policy: Content may not be used for model training without written permission.
+
+Contact: sterlingwills77@gmail.com
+Website: https://thesterlingwills.co.uk
+Last-Updated: 2026-02-17
