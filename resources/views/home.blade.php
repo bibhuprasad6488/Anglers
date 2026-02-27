@@ -1,11 +1,8 @@
 @extends('layouts.app')
-@section('title', 'Home')
-@section('meta_title', $home_page_data->meta_title ?? 'Sterling Wills | Clear, Fixed-Fee Wills & Estate Planning')
-@section('meta_description',
-    $home_page_data->meta_desc ??
-    'Protect what matters most with Sterling Wills. Clear advice,
-    fixed fees, and expert guidance to help you create a legally sound will with confidence.')
-@section('meta_keyword', $home_page_data->meta_keyword ?? '')
+@section('title', $home_page_data->meta_title ?? '')
+@section('meta_title', $home_page_data->meta_title ?? '')
+@section('meta_description', $home_page_data->meta_desc ?? '')
+@section('meta_keyword', $home_page_data->meta_key ?? '')
 @section('content')
     <!-- HERO -->
     <div id="intro-example" class="text-center">
@@ -66,7 +63,7 @@
             </div>
         </div>
     </section>
-
+    {{--
 
     <section>
         <div class="container">
@@ -97,7 +94,7 @@
                         all</a></div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     @include('cta_common')
 
@@ -127,95 +124,4 @@
             <div class="start_will"><a class="btn btn-dark mt-3 rounded-0 fs-4 px-4 py-2">Make your will today</a></div>
         </div>
     </section> --}}
-
-    <section class="section client_testimonials pb-5">
-        <div class="container position-relative">
-            <h2 class="text-center mb-5 maastrix">Client Testimonials</h2>
-
-            <!-- Left Arrow -->
-            <button class="scroll-btn left" onclick="scrollTestimonials(-1)">&#10094;</button>
-
-            <!-- Scroll Area -->
-            <div class="testimonial-scroll" id="testimonialScroll">
-                @foreach ($testimonials as $t)
-                    @php
-                        $rating = $t->client_rating ?? 0;
-                        $fullStars = floor($rating);
-                        $halfStar = $rating - $fullStars >= 0.5 ? true : false;
-                        $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
-                    @endphp
-                    <div class="testimonial-card">
-                        <div class="card p-3 text-center rounded-0">
-
-                            <p class="fs-4"> <i>{{ $t->client_name }} ,{{ $t->client_position }}</i>
-                            </p>
-                            <p>{{ $t->testimonial_text }}</p>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            <!-- Right Arrow -->
-            <button class="scroll-btn right" onclick="scrollTestimonials(1)">&#10095;</button>
-        </div>
-    </section>
-    @if (isset($siteSetting->partner_show))
-        <div class="container partner">
-            <h2 class="text-center mb-5 maastrix">Partners list</h2>
-
-            <div class="partner-marquee">
-                <div class="partner-track">
-                    @foreach ($partners as $p)
-                        <span class="partner-card {{ $loop->iteration }}"><img src="{{ $p->logo_path }}"
-                                alt="{{ $p->name }}"></span>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    @endif
 @endsection
-@push('scripts')
-    <script>
-        const container = document.getElementById('testimonialScroll');
-        let autoScrollInterval;
-
-        function scrollTestimonials(direction) {
-            container.scrollBy({
-                left: direction * container.clientWidth * 0.9,
-                behavior: 'smooth'
-            });
-        }
-
-        function autoScroll() {
-            const maxScrollLeft = container.scrollWidth - container.clientWidth;
-
-            if (container.scrollLeft >= maxScrollLeft - 10) {
-                container.scrollTo({
-                    left: 0,
-                    behavior: 'smooth'
-                });
-            } else {
-                container.scrollBy({
-                    left: container.clientWidth * 0.9,
-                    behavior: 'smooth'
-                });
-            }
-        }
-
-        function startAutoScroll() {
-            autoScrollInterval = setInterval(autoScroll, 3500);
-        }
-
-        function stopAutoScroll() {
-            clearInterval(autoScrollInterval);
-        }
-
-        /* Pause on interaction */
-        container.addEventListener('mouseenter', stopAutoScroll);
-        container.addEventListener('mouseleave', startAutoScroll);
-        container.addEventListener('touchstart', stopAutoScroll);
-        container.addEventListener('touchend', startAutoScroll);
-
-        startAutoScroll();
-    </script>
-@endpush

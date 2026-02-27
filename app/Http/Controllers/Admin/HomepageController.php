@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CmsHomePage;
 use Illuminate\Http\Request;
 
-class CommonController extends Controller
+class HomepageController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $homePage = CmsHomePage::find(1);
+        return view('admin.cmspages.homepage', compact('homePage'));
     }
 
     /**
@@ -28,7 +30,7 @@ class CommonController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //  preg_replace('/[^\x20-\x7E]/u', '', $request->w_desc_one);
     }
 
     /**

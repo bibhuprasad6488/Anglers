@@ -2,7 +2,6 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @php
     $siteSetting = \App\Models\SiteSetting::find(1);
-    $services = \App\Models\Service::where('status', 1)->get();
 @endphp
 
 <head>

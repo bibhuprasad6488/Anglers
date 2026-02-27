@@ -11,7 +11,7 @@
                 <div class="admin-login-logo">
                     @if ($siteSetting && $siteSetting->site_logo)
                         <img src="{{ asset('storage/images/settings/' . $siteSetting->site_logo) }}"
-                            alt="{{ $siteSetting->site_title }}" width="280px" class="bg-secondary px-3">
+                            alt="{{ $siteSetting->site_title }}" width="280px" class=" px-3">
                     @else
                         <img src="{{ asset('assets/images/logo.png') }}" alt="Sterling Wills & Estate Planning" width="280px"
                             class=" px-3">

@@ -65,9 +65,10 @@ h6 {
     margin-right: 0;
 }
 
+/*
 img {
     filter: grayscale(100%);
-}
+} */
 
 .portman img {
     filter: none;
@@ -75,9 +76,10 @@ img {
     height: auto;
 }
 
+/*
 iframe {
     filter: grayscale(100%);
-}
+} */
 
 .py-6 {
     padding-top: 6rem;
@@ -194,11 +196,11 @@ iframe {
 }
 
 .container {
-    max-width: 1140px !important;
+    max-width: 1920px !important;
 }
 
 .fixed-top {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgb(255, 255, 255);
 }
 
 .dropdown-item:hover,
@@ -308,7 +310,7 @@ iframe {
 }
 
 .scrolled {
-    background: #000 !important;
+    /* background: #000 !important; */
     z-index: 1050 !important;
     position: fixed !important;
 }
@@ -700,9 +702,10 @@ marquee .partner-card img {
     width: 100%;
 }
 
+/*
 .icon {
     filter: grayscale(100%);
-}
+} */
 
 .service-card {
     border-radius: 8px;

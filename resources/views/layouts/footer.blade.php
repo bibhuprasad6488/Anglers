@@ -49,13 +49,13 @@
             <div class="col-md-3 col-xs-12 mb-4 mb-md-0">
                 <h6 class="footer-title">Services</h6>
                 <ul class="footer-links">
-                    @foreach ($services as $s)
+                    {{-- @foreach ($services as $s)
                         <li>
                             <a href="{{ route('service.details', $s->slug) }}">
                                 {{ strtolower($s->name) }}
                             </a>
                         </li>
-                    @endforeach
+                    @endforeach --}}
                 </ul>
             </div>
 
@@ -63,7 +63,7 @@
 
                 <h6 class="footer-title">Accreditations</h6>
                 <!-- Row 1: Compliance logos -->
-                <div class="footer-logos mb-4">
+                {{-- <div class="footer-logos mb-4">
                     <div class="logo-box">
                         @if ($siteSetting && $siteSetting->footer_logo_one)
                             <img src="{{ asset('storage/images/settings/' . $siteSetting->footer_logo_one) }}"
@@ -80,23 +80,7 @@
                             <img src="{{ asset('assets/images/f2.jpg') }}" alt="Sterling Wills & Estate Planning">
                         @endif
                     </div>
-                </div>
-
-                <!-- Row 2: Social icons -->
-                <div class="footer-socials mb-3">
-                    <div class="social-box">
-                        <img src="{{ asset('assets/images/fb.png') }}" alt="Facebook">
-                    </div>
-                    <div class="social-box">
-                        <img src="{{ asset('assets/images/gplus.png') }}" alt="Google Plus">
-                    </div>
-                    <div class="social-box">
-                        <img src="{{ asset('assets/images/twitter.png') }}" alt="Twitter">
-                    </div>
-                    <div class="social-box">
-                        <img src="{{ asset('assets/images/whatsapp.png') }}" alt="WhatsApp">
-                    </div>
-                </div>
+                </div> --}}
 
                 <div class="d-flex flex-column gap-3 mt-3">
 
@@ -137,6 +121,21 @@
 
                 </div>
 
+                <!-- Row 2: Social icons -->
+                <div class="footer-socials my-3">
+                    <div class="social-box">
+                        <img src="{{ asset('assets/images/fb.png') }}" alt="Facebook">
+                    </div>
+                    <div class="social-box">
+                        <img src="{{ asset('assets/images/gplus.png') }}" alt="Google Plus">
+                    </div>
+                    <div class="social-box">
+                        <img src="{{ asset('assets/images/twitter.png') }}" alt="Twitter">
+                    </div>
+                    <div class="social-box">
+                        <img src="{{ asset('assets/images/whatsapp.png') }}" alt="WhatsApp">
+                    </div>
+                </div>
             </div>
             <div class="col-md-12 col-xs-12 mb-4 mb-md-0 mt-4 text-center">
                 {!! $siteSetting->footer_text_two??'' !!}

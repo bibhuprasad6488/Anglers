@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CaseStudyController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\HomepageController;
 use App\Http\Controllers\Admin\InsightController;
 use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\PartnerController;
@@ -64,22 +65,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             return view('admin.dashboard');
         })->name('dashboard');
 
-        // Partners
-        Route::resource('partners', PartnerController::class)->names('partners');
-        // Topics
-        Route::resource('topics', TopicController::class)->names('topics');
-        // Price Categories
-        Route::resource('price-categories', CategoryController::class)->names('price-categories');
-        // Pricing
-        Route::resource('pricings', PricingController::class)->names('pricings');
-        // Packages
-        Route::resource('packages', PackageController::class)->names('packages');
-        // Case Studies
-        Route::resource('case-studies', CaseStudyController::class)->names('case-studies');
-        // Testimonials
-        Route::resource('testimonials', TestimonialController::class)->names('testimonials');
-        // Services
-        Route::resource('services', ServiceController::class)->names('services');
+        // Home Page
+        Route::resource('home-page-setting', HomepageController::class)->names('home-page-setting');
+
         // Setting
         Route::resource('profile-setting', SettingController::class)->names('profile-setting');
         Route::post('chnage-password/{id}', [SettingController::class, 'chnagePassword'])->name('chnage-password');
