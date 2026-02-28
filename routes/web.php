@@ -1,16 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\CaseStudyController;
-use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CmsContactpageController;
 use App\Http\Controllers\Admin\HomepageController;
-use App\Http\Controllers\Admin\InsightController;
-use App\Http\Controllers\Admin\PackageController;
-use App\Http\Controllers\Admin\PartnerController;
-use App\Http\Controllers\Admin\PricingController;
-use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingController;
-use App\Http\Controllers\Admin\TestimonialController;
-use App\Http\Controllers\Admin\TopicController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -65,8 +57,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
             return view('admin.dashboard');
         })->name('dashboard');
 
+        Route::get('all-pages', [SettingController::class, 'viewAllPages'])->name('all-page');
+
         // Home Page
         Route::resource('home-page-setting', HomepageController::class)->names('home-page-setting');
+        Route::resource('contact-page-setting', CmsContactpageController::class)->names('contact-page-setting');
 
         // Setting
         Route::resource('profile-setting', SettingController::class)->names('profile-setting');

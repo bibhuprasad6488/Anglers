@@ -1,14 +1,24 @@
 @extends('admin.layouts.app')
-@section('title', 'CMS Home Page')
+@section('title', 'Home Page')
 @section('content')
     <div class="container-fluid px-4">
-        {{-- <h1 class="mt-4">CMS Home Page</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Dashboard</li>
-            <li class="breadcrumb-item ">CMS Home Page</li>
-        </ol> --}}
         <div class="row">
             <div class="col-lg-8 mx-auto">
+                <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                    <div class="py-2 d-none">
+                        <h1 class="mt-4">Contact Forms</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item">Dashboard</li>
+                            <li class="breadcrumb-item active">Contact Forms</li>
+                        </ol>
+                    </div>
+
+                    <div class="ms-auto">
+                        <div class="btn-group">
+                            <a href="{{ route('admin.all-page') }}" class="btn primary-color">Back</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="card border-0">
                     @if (session('success'))
                         <div class="alert alert-success mx-4 mt-3 rounded-3 shadow-sm" id="success-alert">
@@ -24,7 +34,9 @@
                         method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="card">
-                            <div class="card-header primary-color"><h4>Page Details (Home Page)</h4></div>
+                            <div class="card-header primary-color">
+                                <h4>Page Details (Home Page)</h4>
+                            </div>
                             <div class="card-body">
                                 <br />
 
@@ -52,7 +64,7 @@
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <input type="text" name="banner_title" id="banner_title" class="form-control"
-                                            value="{{ optional($homePage)->banner_title }}" required>
+                                            value="{{ optional($homePage)->banner_title }}">
                                     </div>
                                 </div>
                                 <div class="form-group row  mb-2">
@@ -73,7 +85,7 @@
                                             @if (!isset($homePage) && !isset($homePage->banner_img)) required @endif>
                                         <img @if ($homePage && $homePage->banner_img) src="{{ $homePage->banner_img }}"
                                     @else style="display: none;" @endif
-                                            alt="Site Logo" width="150" id="siteLogoPreview">
+                                            alt="Banner Image" width="150" id="siteLogoPreview">
                                     </div>
                                 </div>
 
@@ -128,7 +140,7 @@
                                             class="form-control" onchange="previewFSectionImage(event)">
                                         <img @if ($homePage && $homePage->setion_one_img) src="{{ $homePage->setion_one_img }}"
                                     @else style="display: none;" @endif
-                                            alt="Site Logo" width="32" height="32" id="faviconPreview">
+                                            alt="Section Image" width="150" id="faviconPreview">
                                     </div>
                                 </div>
 
@@ -161,14 +173,16 @@
                                             class="form-control" onchange="previewSSectionImage(event)">
                                         <img @if ($homePage && $homePage->setion_two_img) src="{{ $homePage->setion_two_img }}"
                                     @else style="display: none;" @endif
-                                            alt="Site Logo" width="32" height="32" id="sfaviconPreview">
+                                            alt="Section Image" width="150" id="sfaviconPreview">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <br>
                         <div class="card">
-                            <div class="card-header primary-color"><h4>SEO Setting</h4></div>
+                            <div class="card-header primary-color">
+                                <h4>SEO Setting</h4>
+                            </div>
                             <div class="card-body">
                                 <div class="form-group row  mb-2">
                                     <label for=""

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', $home_page_data->meta_title ?? '')
+@section('title', trim($home_page_data->meta_title) ?? '')
 @section('meta_title', $home_page_data->meta_title ?? '')
 @section('meta_description', $home_page_data->meta_desc ?? '')
 @section('meta_keyword', $home_page_data->meta_key ?? '')

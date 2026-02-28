@@ -40,9 +40,15 @@ class SettingController extends Controller
         //
     }
 
+    public function viewAllPages()
+    {
+        return view('admin.common.all_pages');
+    }
+
     /**
      * Display the specified resource.
      */
+    
     public function show(string $id)
     {
         $admin = Auth::guard('admin')->user();

@@ -10,7 +10,7 @@
                 </a>
 
                 <!-- Cms Management -->
-                <a class="nav-link {{ request()->routeIs(['admin.partners.*', 'admin.testimonials.*', 'admin.privacy.policy', 'admin.term.business']) ? '' : 'collapsed' }}"
+                {{-- <a class="nav-link {{ request()->routeIs(['admin.partners.*', 'admin.testimonials.*', 'admin.privacy.policy', 'admin.term.business']) ? '' : 'collapsed' }}"
                     href="javascript:;" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
                     aria-expanded="false" aria-controls="collapseLayouts">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -23,7 +23,14 @@
                         <a class="nav-link {{ request()->routeIs(['admin.home-page-setting.*']) ? 'active' : '' }}"
                             href="{{ route('admin.home-page-setting.index') }}">Home Page</a>
                     </nav>
-                </div>
+                </div> --}}
+
+                <!-- Setting -->
+                <a class="nav-link {{ request()->routeIs(['admin.all-page']) ? 'active' : '' }} "
+                    href="{{ route('admin.all-page') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    All Pages
+                </a>
 
                 <!-- Setting -->
                 <a class="nav-link {{ request()->routeIs(['admin.site.setting']) ? 'active' : '' }} "

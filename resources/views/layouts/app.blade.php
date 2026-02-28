@@ -19,6 +19,31 @@
     <meta name="keywords" content="@yield('meta_keyword', '')">
     <meta name="description" content="@yield('meta_description', '')">
     <link rel="canonical" href="{{ url()->current() }}" />
+    <meta property="og:title"
+        content="@yield('meta_title', '') @if ($siteSetting) | {{ $siteSetting->site_title }} @endif" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="@yield('meta_description', '')" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:site_name" content="@if ($siteSetting) {{ $siteSetting->site_title }} @endif" />
+    <meta property="og:image"
+        content="@if ($siteSetting) {{ asset('storage/images/settings/' . $siteSetting->favicon) }} @else '' @endif" />
+
+
+    <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "{{ $siteSetting->site_title }}",
+        "url": "{{ url('/') }}",
+        "image": "{{ asset('storage/images/settings/' . $siteSetting->site_logo) }}",
+        "telephone": "{{ $siteSetting->contact_phone }}",
+        "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "USA"
+        }
+        }
+</script>
+
     <!-- Favicons -->
     <link
         href="@if ($siteSetting) {{ asset('storage/images/settings/' . $siteSetting->favicon) }} @else '' @endif"
@@ -36,11 +61,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/testimonial.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/timeline.css') }}">
-
-    <meta property="og:title" content="@yield('meta_title', '')" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="{{ url()->current() }}" />
-    <meta property="og:image" content="@if ($siteSetting) {{ asset('storage/images/settings/' . $siteSetting->favicon) }} @else '' @endif" />
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
