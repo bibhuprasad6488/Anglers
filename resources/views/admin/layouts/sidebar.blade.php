@@ -26,10 +26,16 @@
                 </div> --}}
 
                 <!-- Setting -->
-                <a class="nav-link {{ request()->routeIs(['admin.all-page']) ? 'active' : '' }} "
+                <a class="nav-link {{ request()->routeIs(['admin.all-page', 'admin.home-page-setting.index', 'admin.contact-page-setting.index']) ? 'active' : '' }} "
                     href="{{ route('admin.all-page') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                     All Pages
+                </a>
+
+                <a class="nav-link {{ request()->routeIs(['admin.posts.*']) ? 'active' : '' }} "
+                    href="{{ route('admin.posts.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    Posts
                 </a>
 
                 <!-- Setting -->

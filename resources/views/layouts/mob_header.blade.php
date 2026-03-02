@@ -9,7 +9,7 @@
                 <img src="{{ asset('storage/images/settings/' . $siteSetting->site_logo) }}"
                     alt="{{ $siteSetting->site_title }}">
             @else
-                <img src="{{ asset('assets/images/logo.png') }}" alt="Sterling Wills & Estate Planning">
+                <img src="{{ asset('assets/images/logo.png') }}" alt="{{ $siteSetting->site_title }}">
             @endif
         </a>
 
@@ -22,7 +22,7 @@
         <ul class="navbar-nav text-center fs-4 my_menu">
             <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
             {{-- <li class="nav-item"><a class="nav-link" href="#">About Us</a></li> --}}
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs(['journey', 'protection']) ? 'active' : '' }}"
                     data-bs-toggle="collapse" href="#aboutSubMenu" role="button" aria-expanded="false"
                     aria-controls="aboutSubMenu">
@@ -41,7 +41,7 @@
                         <a class="nav-link fs-6" href="{{ route('protection') }}">Protection</a>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
             <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
         </ul>
 

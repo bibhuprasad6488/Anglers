@@ -2,6 +2,9 @@
 @section('title', 'Thank You')
 
 @section('content')
+    @php
+        $siteSetting = \App\Models\SiteSetting::find(1);
+    @endphp
 
     <div class="services" class="text-center">
         <!-- HERO -->
@@ -9,7 +12,7 @@
             {{-- <video class="bg-video" autoplay muted loop playsinline>
             <source src="{{ asset('assets/videos/intro.mp4') }}" type="video/mp4">
         </video> --}}
-            <img src="{{ asset('assets/images/banner_bg.jpg') }}" class="bg-video" alt="Sterling Wills & Estate Planning">
+            <img src="{{ asset('assets/images/banner_bg.jpg') }}" class="bg-video" alt="{{ $siteSetting->site_title }}">
 
             <!-- Overlay (optional dark mask) -->
             <div class="mask">

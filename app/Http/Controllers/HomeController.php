@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CmsContactPage;
 use App\Models\CmsHomePage;
 use App\Models\GetInTouch;
 use App\Models\PrivacyPolicy;
@@ -33,6 +34,11 @@ class HomeController extends Controller
     public function index()
     {
         $home_page_data = CmsHomePage::find(1);
+        if ($home_page_data) {
+            $home_page_data->banner_img = $home_page_data->banner_img ? asset('storage/images/cmspage/' . $home_page_data->banner_img) : '';
+            $home_page_data->setion_one_img = $home_page_data->setion_one_img ? asset('storage/images/cmspage/' . $home_page_data->setion_one_img) : '';
+            $home_page_data->setion_two_img = $home_page_data->setion_two_img ? asset('storage/images/cmspage/' . $home_page_data->setion_two_img) : '';
+        }
         // dd($services);
         $siteSetting = SiteSetting::find(1);
         return view('home', compact('siteSetting', 'home_page_data'));
@@ -41,20 +47,21 @@ class HomeController extends Controller
     public function contactUs()
     {
         $siteSetting = SiteSetting::find(1);
-        return view('contact', compact('siteSetting'));
+        $contactPage = CmsContactPage::find(1);
+        return view('contact', compact('siteSetting', 'contactPage'));
     }
 
     public function contactUsStore(Request $request)
     {
-        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => config('app.recaptcha_secret'),
-            'response' => $request->input('g-recaptcha-response'),
-            'remoteip' => $request->ip(),
-        ]);
+        // $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+        //     'secret' => config('app.recaptcha_secret'),
+        //     'response' => $request->input('g-recaptcha-response'),
+        //     'remoteip' => $request->ip(),
+        // ]);
 
-        if (!$response->json('success')) {
-            return back()->with('error', 'CAPTCHA verification failed. Please try again.');
-        }
+        // if (!$response->json('success')) {
+        //     return back()->with('error', 'CAPTCHA verification failed. Please try again.');
+        // }
 
         $siteSetting = SiteSetting::find(1);
 
@@ -64,6 +71,7 @@ class HomeController extends Controller
             $c->ct_name = $request->ct_name;
             $c->ct_email = $request->ct_email;
             $c->ct_phone = $request->ct_phone;
+            $c->ct_subject = $request->ct_subject;
             $c->ct_message = $request->ct_message;
             $c->ip_address = request()->ip();
             $c->save();
@@ -79,6 +87,7 @@ class HomeController extends Controller
                 "Name: {$c->ct_name}\n" .
                 "Email: {$c->ct_email}\n" .
                 "Phone: {$c->ct_phone}\n" .
+                "Subject: {$c->ct_subject}\n" .
                 "Message: {$c->ct_message}\n";
 
             Mail::raw($internalMessage, function ($message) use ($internalSubject, $internalRecipients, $c) {

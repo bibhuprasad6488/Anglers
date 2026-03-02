@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BlogPostController;
 use App\Http\Controllers\Admin\CmsContactpageController;
 use App\Http\Controllers\Admin\HomepageController;
 use App\Http\Controllers\Admin\SettingController;
@@ -61,7 +62,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Home Page
         Route::resource('home-page-setting', HomepageController::class)->names('home-page-setting');
+        // Contact Page
         Route::resource('contact-page-setting', CmsContactpageController::class)->names('contact-page-setting');
+        // Posts
+        Route::resource('posts', BlogPostController::class)->names('posts');
 
         // Setting
         Route::resource('profile-setting', SettingController::class)->names('profile-setting');

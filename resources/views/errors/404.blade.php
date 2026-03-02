@@ -2,12 +2,13 @@
 @section('title', '404 Not Found')
 
 @section('content')
-
+    @php
+        $siteSetting = \App\Models\SiteSetting::find(1);
+    @endphp
     <div class="services text-center">
         <!-- HERO -->
         <div class="services text-center">
-            <img src="{{ asset('assets/images/404.jpg') }}" class="bg-video"
-                alt="Sterling Wills & Estate Planning">
+            <img src="{{ asset('assets/images/404.jpg') }}" class="bg-video" alt="{{ $siteSetting->site_title }}">
 
             <div class="mask">
                 <div class="text-white">

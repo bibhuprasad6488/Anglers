@@ -1,145 +1,56 @@
 <footer class="site-footer">
     <div class="container">
-        <div class="row align-items-start text-center text-md-start">
+        <div class="row text-center text-md-center">
 
-            <!-- Column 1: Company -->
-            <div class="col-md-3 col-xs-12 mb-4 mb-md-0">
-                <div class="footer_1st">
-                    <p><a href="{{ route('home') }}">
-                            @if ($siteSetting && $siteSetting->footer_logo)
-                                <img src="{{ asset('storage/images/settings/' . $siteSetting->footer_logo) }}"
-                                    alt="{{ $siteSetting->site_title }}">
-                            @else
-                                <img src="{{ asset('assets/images/logo.png') }}" alt="Sterling Wills & Estate Planning">
-                            @endif
-                        </a>
-                    </p>
-                    <p>{{ $siteSetting->footer_text_one ??''}}</p>
+            <div class="col-md-6 text-center  col-12 mt-4 mx-auto">
+
+                <!-- Logo -->
+                <div class="mb-3 text-center text-md-start">
+                    <a href="{{ route('home') }}">
+                        @if ($siteSetting && $siteSetting->footer_logo)
+                            <img src="{{ asset('storage/images/settings/' . $siteSetting->footer_logo) }}"
+                                alt="{{ $siteSetting->site_title }}" width="250">
+                        @else
+                            <img src="{{ asset('assets/images/logo.png') }}" alt="{{ $siteSetting->site_title }}"
+                                width="250">
+                        @endif
+                    </a>
                 </div>
-            </div>
 
-            <!-- Column 2: Services -->
-            <div class="col-md-3 col-xs-12 mb-4 mb-md-0 ">
-                <div class="footer_2nd">
-                    <h6 class="footer-title">Quick Links</h6>
-                    <ul class="footer-links">
-                        <li>
-                            <a href="{{ route('home') }}">Home</a>
+                <!-- Footer Content -->
+                <div class="mb-3">
+                    <p>{{ $siteSetting->footer_text_one ?? '' }}</p>
+                </div>
+
+                <!-- Contact Details -->
+                <div>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            @php
+                                $address = $siteSetting->address;
+                                $mapLink = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($address);
+                            @endphp
+                            <a href="{{ $mapLink }}" target="_blank">
+                                {{ $siteSetting->address }}
+                            </a>
                         </li>
-                        <li>
-                            <a href="{{ route('story') }}">Our Story</a>
+
+                        <li class="mb-2">
+                            <a href="tel:{{ $siteSetting->contact_phone }}">
+                                {{ $siteSetting->contact_phone }}
+                            </a>
                         </li>
+
                         <li>
-                            <a href="{{ route('journey') }}">Guided Journey</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('blogs') }}">Case Studies</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('witness') }}">Witnesses</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('price-lists') }}">Pricing</a>
+                            <a href="mailto:{{ $siteSetting->contact_email }}">
+                                {{ $siteSetting->contact_email }}
+                            </a>
                         </li>
                     </ul>
                 </div>
+
             </div>
 
-            <!-- Column 2: Services -->
-            <div class="col-md-3 col-xs-12 mb-4 mb-md-0">
-                <h6 class="footer-title">Services</h6>
-                <ul class="footer-links">
-                    {{-- @foreach ($services as $s)
-                        <li>
-                            <a href="{{ route('service.details', $s->slug) }}">
-                                {{ strtolower($s->name) }}
-                            </a>
-                        </li>
-                    @endforeach --}}
-                </ul>
-            </div>
-
-            <div class="col-md-3 col-xs-12 mb-4 mb-md-0">
-
-                <h6 class="footer-title">Accreditations</h6>
-                <!-- Row 1: Compliance logos -->
-                {{-- <div class="footer-logos mb-4">
-                    <div class="logo-box">
-                        @if ($siteSetting && $siteSetting->footer_logo_one)
-                            <img src="{{ asset('storage/images/settings/' . $siteSetting->footer_logo_one) }}"
-                                alt="{{ $siteSetting->site_title }}">
-                        @else
-                            <img src="{{ asset('assets/images/sww.png') }}" alt="Sterling Wills & Estate Planning">
-                        @endif
-                    </div>
-                    <div class="logo-box">
-                        @if ($siteSetting && $siteSetting->footer_logo_two)
-                            <img src="{{ asset('storage/images/settings/' . $siteSetting->footer_logo_two) }}"
-                                alt="{{ $siteSetting->site_title }}">
-                        @else
-                            <img src="{{ asset('assets/images/f2.jpg') }}" alt="Sterling Wills & Estate Planning">
-                        @endif
-                    </div>
-                </div> --}}
-
-                <div class="d-flex flex-column gap-3 mt-3">
-
-                    <!-- Phone -->
-                    <div class="d-flex align-items-center">
-                        <i class="fa fa-phone-alt me-2 text-secondary"></i>
-                        <span>
-                            @if ($siteSetting && $siteSetting->contact_phone)
-                                {{ $siteSetting->contact_phone }}
-                            @elseif ($siteSetting && $siteSetting->alt_phone)
-                                {{ $siteSetting->alt_phone }}
-                            @else
-                                +44 (0) 203 957 7000
-                            @endif
-                        </span>
-                    </div>
-
-                    <!-- Email -->
-                    <div class="d-flex align-items-center">
-                        <i class="fa fa-envelope me-2 text-secondary"></i>
-                        <span>
-                            Email:
-                            <a href="mailto:{{ $siteSetting->contact_email ??'' }}"
-                                class="text-decoration-none">
-                                Click here
-                            </a>
-                        </span>
-                    </div>
-
-                    <!-- Address -->
-                    <div class="d-flex align-items-start">
-                        <i class="fa fa-map-marker me-2 text-secondary mt-1"></i>
-                        <span>
-                            Address:
-                            {{ $siteSetting->address ??'' }}
-                        </span>
-                    </div>
-
-                </div>
-
-                <!-- Row 2: Social icons -->
-                <div class="footer-socials my-3">
-                    <div class="social-box">
-                        <img src="{{ asset('assets/images/fb.png') }}" alt="Facebook">
-                    </div>
-                    <div class="social-box">
-                        <img src="{{ asset('assets/images/gplus.png') }}" alt="Google Plus">
-                    </div>
-                    <div class="social-box">
-                        <img src="{{ asset('assets/images/twitter.png') }}" alt="Twitter">
-                    </div>
-                    <div class="social-box">
-                        <img src="{{ asset('assets/images/whatsapp.png') }}" alt="WhatsApp">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 col-xs-12 mb-4 mb-md-0 mt-4 text-center">
-                {!! $siteSetting->footer_text_two??'' !!}
-            </div>
         </div>
 
         {{-- <hr class="footer-divider"> --}}

@@ -13,7 +13,7 @@
                         <img src="{{ asset('storage/images/settings/' . $siteSetting->site_logo) }}"
                             alt="{{ $siteSetting->site_title }}" width="280px" class=" px-3">
                     @else
-                        <img src="{{ asset('assets/images/logo.png') }}" alt="Sterling Wills & Estate Planning" width="280px"
+                        <img src="{{ asset('assets/images/logo.png') }}" alt="{{ $siteSetting->site_title }}" width="280px"
                             class=" px-3">
                     @endif
                     {{-- <img src="{{ asset('assets/images/Logo_d.png') }}" alt="Wills"> --}}
