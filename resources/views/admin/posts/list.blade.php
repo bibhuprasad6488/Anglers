@@ -27,39 +27,62 @@
 
                 <div class="card border-0">
                     @if (session('success'))
-                        <div class="alert alert-success mx-4 mt-3 rounded-3 shadow-sm" id="success-alert">
+                        <div class="alert alert-success mx-1 mt-3 rounded-3 shadow-sm" id="success-alert">
                             {{ session('success') }}
                         </div>
                     @endif
                     @if (session('error'))
-                        <div class="alert alert-danger mx-4 mt-3 rounded-3 shadow-sm" id="success-alert">
+                        <div class="alert alert-danger mx-1 mt-3 rounded-3 shadow-sm" id="success-alert">
                             {{ session('error') }}
                         </div>
                     @endif
-                    <div class="card p-0">
-                        <div class="card-header primary-color">
-                            <h4>All Posts</h4>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-bordered">
-                                <thead>
+                    <div class="card-header primary-color">
+                        <h4>All Posts</h4>
+                    </div>
+                    <div class="card-body">
+
+                        <table id="datatablesSimple">
+                            <thead>
+                                <tr>
+                                    <th>SL No</th>
+                                    <th>Title</th>
+                                    <th>Image</th>
+                                    <th>Created</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($blogs as $blog)
                                     <tr>
-                                        <th>Title</th>
-                                        <th>Action</th>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td><b>{{ $blog->title }}</b></td>
+                                        <td>
+                                            <img src="{{ $blog->blog_img }}" alt="{{ $blog->title }}" width="80"
+                                                class="rounded">
+                                        </td>
+                                        <td>{{ \Carbon\Carbon::parse($blog->created_at)->format('d-m-Y') }}</td>
+                                        <td>
+                                            <a href="{{ route('admin.posts.edit', $blog->id) }}"
+                                                class="btn btn-sm btn-primary">Edit</a>
+                                            <form action="{{ route('admin.posts.destroy', $blog->id) }}" method="POST"
+                                                style="display: inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger"
+                                                    onclick="return confirm('Are you sure you want to delete this?');">Delete</button>
+                                            </form>
+
+                                            <label class="switch my-1" title="Show on Page">
+                                                <input type="checkbox" id="accessToggle_{{ $loop->iteration }}"
+                                                    onchange="accessUpdate('{{ route('admin.posts.show', $blog->id) }}','{{ $loop->iteration }}')"
+                                                    {{ $blog->status == 1 ? 'checked' : '' }}>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($blogs as $blog)
-                                        <tr>
-                                            <td>{{ $blog->title }}</td>
-                                            <td><a href="{{ route('admin.posts.edit', $blog->id) }}"
-                                                    class="btn primary-color">Edit</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

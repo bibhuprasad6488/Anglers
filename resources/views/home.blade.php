@@ -48,7 +48,8 @@
                 <!-- RIGHT TEXT BOXES -->
                 <div class="col-md-5 ">
                     <div class="feature-box h-100 text-lg-right">
-                        <img src="{{ $home_page_data->setion_one_img }}" alt="{{ $home_page_data->setion_one_title }}" class="img-fluid feature-image">
+                        <img src="{{ $home_page_data->setion_one_img }}" alt="{{ $home_page_data->setion_one_title }}"
+                            class="img-fluid feature-image">
                     </div>
                 </div>
 

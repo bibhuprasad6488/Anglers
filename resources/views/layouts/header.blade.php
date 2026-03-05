@@ -25,6 +25,10 @@
                 {{-- <li class="nav-item"><a class="nav-link {{ request()->routeIs(['service.lists']) ? 'active' : '' }}"
                         href="{{ route('service.lists') }}">Services</a></li> --}}
                 {{-- <li class="nav-item"><a class="nav-link" href="#">Protection</a></li> --}}
+                <li class="nav-item"><a class="nav-link {{ request()->routeIs(['resources']) ? 'active' : '' }}"
+                        href="{{ route('resources') }}">Resources</a></li>
+                <li class="nav-item"><a class="nav-link {{ request()->routeIs(['gallery']) ? 'active' : '' }}"
+                        href="{{ route('gallery') }}">Gallery</a></li>
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs(['contact']) ? 'active' : '' }}"
                         href="{{ route('contact') }}">Contact Us</a></li>
                 {{-- <li class="nav-item ms-lg-3">

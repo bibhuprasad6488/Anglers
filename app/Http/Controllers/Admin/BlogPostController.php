@@ -44,6 +44,9 @@ class BlogPostController extends Controller
             $b->short_desc = $request->short_desc;
             $b->added_by = Auth::user()->id;
             $b->long_desc = $request->long_desc ? preg_replace('/[^\x20-\x7E]/u', '', $request->long_desc) : '';
+            $b->meta_title = $request->meta_title;
+            $b->meta_desc = $request->meta_desc;
+            $b->meta_key = $request->meta_key;
 
             // /** Upload Path */
             $destinationPath = public_path('storage/images/blog_images/');
@@ -74,7 +77,18 @@ class BlogPostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $blog = Blog::find($id);
+            if ($blog->status == 1) {
+                $blog->status = '0';
+            } else {
+                $blog->status = '1';
+            }
+            $blog->save();
+            return response()->json(['status' => true, 'message' => 'Status chnaged successfully', 'blog' => $blog]);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => true, 'message' => 'Status chnaged failed Error: ' . $th->getMessage()]);
+        }
     }
 
     /**
@@ -83,6 +97,7 @@ class BlogPostController extends Controller
     public function edit(string $id)
     {
         $blog = Blog::find($id);
+        $blog->blog_img = $blog->blog_img ? asset('storage/images/blog_images/' . $blog->blog_img) : '';
         return view('admin.posts.edit', compact('blog'));
     }
 
@@ -99,6 +114,9 @@ class BlogPostController extends Controller
             $b->short_desc = $request->short_desc;
             $b->added_by = Auth::user()->id;
             $b->long_desc = $request->long_desc ? preg_replace('/[^\x20-\x7E]/u', '', $request->long_desc) : '';
+            $b->meta_title = $request->meta_title;
+            $b->meta_desc = $request->meta_desc;
+            $b->meta_key = $request->meta_key;
 
             // /** Upload Path */
             $destinationPath = public_path('storage/images/blog_images/');
@@ -139,6 +157,21 @@ class BlogPostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $blog = Blog::find($id);
+
+            $destinationPath = public_path('storage/images/blog_images/');
+            if (!empty($blog->blog_img)) {
+                $oldFilePath = $destinationPath . $blog->blog_img;
+                if (file_exists($oldFilePath)) {
+                    unlink($oldFilePath);
+                }
+            }
+            $blog->delete();
+
+            return redirect()->back()->with('success', 'Post deleted successfully');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Post delete failed Error: ' . $th->getMessage());
+        }
     }
 }

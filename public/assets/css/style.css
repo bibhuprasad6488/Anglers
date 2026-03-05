@@ -91,6 +91,35 @@ ul.cont-info-wrap li a {
     font-size: 18px !important;
 }
 
+.btn-box-wrap .feature-box {
+    margin: 30px 30px 0;
+}
+
+.btn-box-wrap .btn-outline {
+    min-width: 340px;
+    margin: 40px 30px 0;
+}
+
+.btn-outline {
+    font-size: 18px;
+    line-height: 25px;
+    color: #6d7743;
+    font-family: "Freight Sans Pro Semibold";
+    min-width: 237px;
+    box-shadow: 4.092px 4.388px 0px rgb(0 0 0 / 35%);
+    border: 2px solid #6d7743;
+    border-radius: 0;
+    padding: 6px 51px;
+    text-decoration: none;
+}
+
+.btn-primary:hover,
+.btn-outline:hover {
+    color: #fff;
+    background-color: #6d7743;
+    border-color: #6d7743;
+}
+
 .book-cabin-btn {
     font-size: 18px;
     line-height: 30px;
@@ -113,6 +142,7 @@ ul.cont-info-wrap li a {
     box-shadow: 4.092px 4.388px 0px rgb(0 0 0 / 35%);
     border: 2px solid #6d7743;
     border-radius: 0;
+    text-decoration: none;
     padding: 6px 10px;
 }
 

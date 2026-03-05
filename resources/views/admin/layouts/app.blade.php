@@ -220,29 +220,29 @@
         });
     </script>
     <script>
-        function accessUpdate(act, type_for) {
-            const toggleSwitch = document.getElementById(`accessToggle`);
+        function accessUpdate(act, k) {
+            const toggleSwitch = document.getElementById(`accessToggle_${k}`);
             const status = toggleSwitch.checked ? 1 : 0; // Determine status (1 for active, 0 for inactive)
             // console.log(status);
             // return false;
             $.ajax({
                 url: act,
-                method: "POST",
+                method: "GET",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
                         'content') // CSRF token for security
                 },
-                data: {
-                    status: status, // Send the Status to the server
-                    change_for: type_for, // Send the Status to the server
-                },
+                // data: {
+                //     status: status, // Send the Status to the server
+                // },
                 success: function(resp) {
-                    // console.log(resp);
+                    console.log(resp);
+                    // return false;
                     if (resp.status) {
                         alert(resp.message);
                         window.location.reload();
                     } else {
-                        session.error(resp.message, '');
+                        alert(resp.message);
                     }
 
                 },

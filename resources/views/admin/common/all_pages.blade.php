@@ -39,6 +39,16 @@
                                                 class="btn primary-color">Edit</a></td>
                                     </tr>
                                     <tr>
+                                        <td>Resources</td>
+                                        <td><a href="{{ route('admin.resources-page-setting.index') }}"
+                                                class="btn primary-color">Edit</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Gallery</td>
+                                        <td><a href="{{ route('admin.gallery-page-setting.index') }}"
+                                                class="btn primary-color">Edit</a></td>
+                                    </tr>
+                                    <tr>
                                         <td>Contact Page</td>
                                         <td><a href="{{ route('admin.contact-page-setting.index') }}"
                                                 class="btn primary-color">Edit</a></td>

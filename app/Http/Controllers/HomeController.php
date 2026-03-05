@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\CmsContactPage;
+use App\Models\CmsGallery;
 use App\Models\CmsHomePage;
+use App\Models\CmsResource;
 use App\Models\GetInTouch;
 use App\Models\PrivacyPolicy;
 use App\Models\SiteSetting;
@@ -43,7 +45,24 @@ class HomeController extends Controller
         $siteSetting = SiteSetting::find(1);
         return view('home', compact('siteSetting', 'home_page_data'));
     }
+    public function resourcesPageDetails()
+    {
+        $resourcePage = CmsResource::find(1);
 
+        if ($resourcePage) {
+            $resourcePage->setion_one_img = $resourcePage->setion_one_img ? asset('storage/images/cmspage/' . $resourcePage->setion_one_img) : '';
+            $resourcePage->setion_two_img = $resourcePage->setion_two_img ? asset('storage/images/cmspage/' . $resourcePage->setion_two_img) : '';
+        }
+        return view('resources_page', compact('resourcePage'));
+    }
+    public function galleryPageDetails()
+    {
+        $galleries = CmsGallery::orderBy('id')->get()->map(function ($g) {
+            $g->img_path = $g->img_path ? asset('storage/images/cmspage/' . $g->img_path) : '';
+            return $g;
+        });
+        return view('gallery_page', compact('galleries'));
+    }
     public function contactUs()
     {
         $siteSetting = SiteSetting::find(1);

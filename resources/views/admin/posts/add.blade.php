@@ -69,7 +69,7 @@
                                         class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Blog
                                         Image</label>
                                     <div class="col-md-9 col-sm-6 col-xs-12">
-                                        <input type="file" name="banner_img" id="banner_img" class="form-control"
+                                        <input type="file" name="blog_img" id="blog_img" class="form-control"
                                             accept=".jpg,.jpeg,.png,.webp" onchange="previewSiteBannerImage(event)"
                                             required>
                                         <img style="display: none;" alt="Banner Image" width="150" id="siteLogoPreview">
