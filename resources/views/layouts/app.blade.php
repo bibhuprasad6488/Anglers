@@ -132,20 +132,20 @@
         </main>
     </div>
 
-    <div class="sticky-icons d-flex flex-column gap-1">
+    {{-- <div class="sticky-icons d-flex flex-column gap-1">
         <div>
-            <a href="tel:{{ $siteSetting->call_wp_number ?? '+447555170449' }}" title="Call Us">
+            <a href="tel:{{ $siteSetting->call_wp_number ?? '' }}" title="Call Us">
                 <img src="{{ asset('assets/images/call.png') }}" width="70" alt="Call" class="mb-0">
             </a>
         </div>
         <div>
-            <a href="https://api.whatsapp.com/send?phone={{ $siteSetting->call_wp_number ?? '+447555170449' }}&text={{ $siteSetting->wp_message ?? 'Hi' }}"
+            <a href="https://api.whatsapp.com/send?phone={{ $siteSetting->call_wp_number ?? '' }}&text={{ $siteSetting->wp_message ?? 'Hi' }}"
                 target="_blank" title="WhatsApp Us">
                 <img src="{{ asset('assets/images/wp.png') }}" width="70" alt="WP">
             </a>
 
         </div>
-    </div>
+    </div> --}}
     @include('layouts.footer')
 
     <!-- jQuery FIRST -->

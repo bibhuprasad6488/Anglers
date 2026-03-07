@@ -35,7 +35,13 @@
                 <a class="nav-link {{ request()->routeIs(['admin.posts.*']) ? 'active' : '' }} "
                     href="{{ route('admin.posts.index') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                    Posts
+                    Blog
+                </a>
+
+                <a class="nav-link {{ request()->routeIs(['admin.property-categories.*']) ? 'active' : '' }} "
+                    href="{{ route('admin.property-categories.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    Properties
                 </a>
 
                 <!-- Setting -->

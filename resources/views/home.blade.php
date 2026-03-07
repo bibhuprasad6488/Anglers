@@ -4,6 +4,14 @@
 @section('meta_description', $home_page_data->meta_desc ?? '')
 @section('meta_keyword', $home_page_data->meta_key ?? '')
 @section('content')
+    <style>
+        .slide2 .mini {
+            height: 200px;
+            width: 400px !important;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+    </style>
     <!-- HERO -->
     <div id="intro-example" class="text-center">
         {{-- <video class="bg-video" autoplay muted loop playsinline>
@@ -73,5 +81,89 @@
         </div>
     </section>
 
+    <section class="section ">
+        <div class="container">
+            <div class="row g-4 py-2">
+
+                <!-- LEFT IMAGE BOX -->
+                <div class="col-md-10 mx-auto text-center">
+                    <div class="d-flex flex-column h-100 gap-4">
+                        <div class="feature-box flex-fill">
+                            <h2>BROWSE OUR GALLERY</h2>
+                            <h4>“Find the best place to stay!”</h4>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container-fluid">
+            <div class="row g-4 py-4">
+                <div class="col-md-12 mx-auto mb-4">
+                    <div class="swiper gallerySwiper1">
+                        <div class="swiper-wrapper">
+
+                            @foreach ($galleries as $gallery)
+                                <div class="swiper-slide slide2">
+                                    <img src="{{ $gallery->img_path }}" class="img-fluid w-100 mini">
+                                </div>
+                            @endforeach
+
+                        </div>
+
+                        <!-- Navigation -->
+                        {{-- <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div> --}}
+
+                        <!-- Pagination -->
+                        {{-- <div class="swiper-pagination"></div> --}}
+                    </div>
+                </div>
+                <div class="col-md-12 text-center py-4">
+                    <a href="{{ route('gallery') }}" class=" btn-outline">View All Photos</a>
+                </div>
+            </div>
+        </div>
+    </section>
     @include('cta_common')
 @endsection
+@push('scripts')
+    <script>
+        var swiper = new Swiper(".gallerySwiper1", {
+            loop: true,
+            spaceBetween: 1,
+            slidesPerView: 1,
+            centeredSlides: true,
+
+            autoplay: {
+                delay: 2000,
+                disableOnInteraction: false,
+            },
+
+            // navigation: {
+            //     nextEl: ".swiper-button-next",
+            //     prevEl: ".swiper-button-prev",
+            // },
+
+            // pagination: {
+            //     el: ".swiper-pagination",
+            //     clickable: true,
+            // },
+
+            breakpoints: {
+                320: {
+                    slidesPerView: 1
+                },
+                768: {
+                    slidesPerView: 3
+                },
+                1024: {
+                    slidesPerView: 5
+                }
+            }
+        });
+    </script>
+@endpush

@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\BlogPostController;
 use App\Http\Controllers\Admin\CmsContactpageController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\HomepageController;
+use App\Http\Controllers\Admin\PropertyCategoryController;
+use App\Http\Controllers\Admin\PropertyController;
 use App\Http\Controllers\Admin\ResourcesController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\HomeController;
@@ -72,6 +74,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('gallery-page-setting', GalleryController::class)->names('gallery-page-setting');
         // Posts
         Route::resource('posts', BlogPostController::class)->names('posts');
+        // Property Category
+        Route::resource('property-categories', PropertyCategoryController::class)->names('property-categories');
+        // Properties
+        Route::resource('properties', PropertyController::class)->names('properties');
 
         // Setting
         Route::resource('profile-setting', SettingController::class)->names('profile-setting');

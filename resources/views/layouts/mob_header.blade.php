@@ -1,4 +1,4 @@
-<div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+<div class="offcanvas offcanvas-end text-bg-white" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel" style="z-index: 9999">
 
     @php
         $siteSetting = \App\Models\SiteSetting::find(1);
@@ -13,7 +13,7 @@
             @endif
         </a>
 
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+        <button type="button" class="btn-close btn-close-success" data-bs-dismiss="offcanvas"
             aria-label="Close"></button>
     </div>
 
@@ -21,6 +21,8 @@
 
         <ul class="navbar-nav text-center fs-4 my_menu">
             <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('resources') }}">Resources</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('gallery') }}">Gallery</a></li>
             {{-- <li class="nav-item"><a class="nav-link" href="#">About Us</a></li> --}}
             {{-- <li class="nav-item">
                 <a class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs(['journey', 'protection']) ? 'active' : '' }}"
