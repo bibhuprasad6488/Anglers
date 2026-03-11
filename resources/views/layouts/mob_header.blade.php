@@ -1,4 +1,5 @@
-<div class="offcanvas offcanvas-end text-bg-white" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel" style="z-index: 9999">
+<div class="offcanvas offcanvas-end text-bg-white" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel"
+    style="z-index: 9999">
 
     @php
         $siteSetting = \App\Models\SiteSetting::find(1);
@@ -45,6 +46,7 @@
                 </ul>
             </li> --}}
             <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('blogs') }}">Blog</a></li>
         </ul>
 
         {{-- <div class="text-center mt-4">

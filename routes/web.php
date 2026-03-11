@@ -76,8 +76,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('posts', BlogPostController::class)->names('posts');
         // Property Category
         Route::resource('property-categories', PropertyCategoryController::class)->names('property-categories');
+        Route::get('add-property/{id}', [PropertyCategoryController::class, 'addProperty'])->name('add-property');
+        Route::get('edit-property/{id}', [PropertyCategoryController::class, 'editProperty'])->name('edit-property');
+        Route::get('view-properties/{id}', [PropertyCategoryController::class, 'viewProperties'])->name('view-properties');
         // Properties
         Route::resource('properties', PropertyController::class)->names('properties');
+        Route::get('del-property-img/{id}', [PropertyController::class, 'deletePropertyImage'])->name('del-property-img');
 
         // Setting
         Route::resource('profile-setting', SettingController::class)->names('profile-setting');
@@ -104,8 +108,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/resources', [HomeController::class, 'resourcesPageDetails'])->name('resources');
 Route::get('/gallery', [HomeController::class, 'galleryPageDetails'])->name('gallery');
-Route::get('/insights', [HomeController::class, 'blogLists'])->name('blogs');
-Route::get('/insights/{slug}', [HomeController::class, 'blogDetails'])->name('blog.details');
+Route::get('/blog', [HomeController::class, 'blogLists'])->name('blogs');
+Route::get('/blog-details/{slug}', [HomeController::class, 'blogDetails'])->name('blog.details');
+Route::get('/category/{slug}', [HomeController::class, 'catProperties'])->name('category.properties');
 Route::get('/contact-us', [HomeController::class, 'contactUs'])->name('contact');
 Route::post('/contact-us-submit', [HomeController::class, 'contactUsStore'])->name('contact.submit');
 Route::get('/thank-you', [HomeController::class, 'thankYou'])->name('thank-you');

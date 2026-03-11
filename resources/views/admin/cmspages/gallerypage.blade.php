@@ -7,26 +7,6 @@
             <li class="breadcrumb-item active">Dashboard</li>
             <li class="breadcrumb-item ">CMS Home Page</li>
         </ol> --}}
-        <style>
-            .drop-area {
-                border: 2px dashed #007bff;
-                border-radius: 10px;
-                padding: 40px;
-                text-align: center;
-                cursor: pointer;
-                transition: 0.3s;
-            }
-
-            .drop-area.dragover {
-                background-color: #f0f8ff;
-            }
-
-            .preview img {
-                width: 120px;
-                margin: 10px;
-                border-radius: 6px;
-            }
-        </style>
         <div class="row">
             <div class="col-lg-8 mx-auto">
                 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -74,7 +54,8 @@
 
                                         <div class="drop-area" id="dropArea">
                                             <p>Drag & Drop Images Here or Click to Select</p>
-                                            <input type="file" id="fileInput" name="img_path[]" multiple hidden>
+                                            <input type="file" id="fileInput" name="img_path[]" multiple hidden
+                                                accept=".jpg,.jpeg,.png,.webp">
                                         </div>
 
 
@@ -176,6 +157,9 @@
 
         let files = [];
 
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+
+
         dropArea.addEventListener('click', () => fileInput.click());
 
         fileInput.addEventListener('change', function() {
@@ -200,8 +184,12 @@
         function handleFiles(selectedFiles) {
             for (let file of selectedFiles) {
 
-                // only images
-                if (!file.type.startsWith('image/')) continue;
+                // allow only jpg, jpeg, png, webp
+                if (!allowedTypes.includes(file.type)) {
+                    alert("Only JPG, JPEG, PNG and WEBP files are allowed.");
+                    continue;
+                }
+
 
                 files.push(file);
 

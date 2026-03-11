@@ -41,15 +41,6 @@
                         <a href="{{ route('home') }}" class="btn btn-dark px-4 py-2 rounded-0">
                             Home
                         </a>
-
-                        <a href="{{ route('service.lists') }}" class="btn btn-outline-dark px-4 py-2 rounded-0">
-                            Services
-                        </a>
-
-                        <a href="{{ route('price-lists') }}" class="btn btn-outline-dark px-4 py-2 rounded-0">
-                            Pricing
-                        </a>
-
                         <a href="{{ route('contact') }}" class="btn btn-outline-dark px-4 py-2 rounded-0">
                             Contact Us
                         </a>

@@ -2,10 +2,10 @@
     <div class="container">
         <div class="row text-center text-md-center">
 
-            <div class="col-md-6 text-center  col-12 mt-4 mx-auto">
+            <div class="col-md-6 text-center  mt-4 mx-auto">
 
                 <!-- Logo -->
-                <div class="mb-3 text-center text-md-start">
+                <div class="mb-3 text-center d-flex justify-content-center">
                     <a href="{{ route('home') }}">
                         @if ($siteSetting && $siteSetting->footer_logo)
                             <img src="{{ asset('storage/images/settings/' . $siteSetting->footer_logo) }}"
@@ -24,7 +24,7 @@
 
                 <!-- Contact Details -->
                 <div>
-                    <ul class="list-unstyled">
+                    <ul class="list-unstyled footer-links">
                         <li class="mb-2">
                             @php
                                 $address = $siteSetting->address;
@@ -40,10 +40,38 @@
                                 {{ $siteSetting->contact_phone }}
                             </a>
                         </li>
-
-                        <li>
-                            <a href="mailto:{{ $siteSetting->contact_email }}">
-                                {{ $siteSetting->contact_email }}
+                    </ul>
+                </div>
+                <div>
+                    <ul
+                        class="d-flex flex-column flex-md-row justify-content-center space-between list-unstyled footer-links text-center gx-4">
+                        <li class="mx-2">
+                            <a href="{{ route('home') }}" class="{{ request()->routeIs(['home']) ? 'active' : '' }}">
+                                Home
+                            </a>
+                        </li>
+                        <li class="mx-2">
+                            <a href="{{ route('resources') }}"
+                                class="{{ request()->routeIs(['resources']) ? 'active' : '' }}">
+                                Resources
+                            </a>
+                        </li>
+                        <li class="mx-2">
+                            <a href="{{ route('gallery') }}"
+                                class="{{ request()->routeIs(['gallery']) ? 'active' : '' }}">
+                                Gallery
+                            </a>
+                        </li>
+                        <li class="mx-2">
+                            <a href="{{ route('contact') }}"
+                                class="{{ request()->routeIs(['contact']) ? 'active' : '' }}">
+                                Contact
+                            </a>
+                        </li>
+                        <li class="mx-2">
+                            <a href="{{ route('blogs') }}"
+                                class="{{ request()->routeIs(['blogs']) ? 'active' : '' }}">
+                                Blog
                             </a>
                         </li>
                     </ul>
@@ -59,6 +87,10 @@
     </div>
 </footer>
 
+<div>
+    <button id="backToTop" title="Go to top">↑</button>
+</div>
+
 <div class="footer-bottom">
     <div class="container">
         <div class="col-12">
@@ -69,7 +101,7 @@
                     @if ($siteSetting && $siteSetting->copyright)
                         {{ $siteSetting->copyright }}
                     @else
-                        © {{ date('Y') }} Sterling Wills &amp; Estate Planning
+                        © {{ date('Y') }} Angler's Hideaway, LLC. All Rights Reserved.
                     @endif
                 </div>
 

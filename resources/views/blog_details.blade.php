@@ -5,121 +5,72 @@
 
 @section('content')
 
-    <!-- HERO -->
-    <section class="section page my-6">
-        <div class="container">
-            <div class="row g-4"></div>
+    <div class="contact_page" class="text-center">
+        <!-- HERO -->
+        <div class="contact_page" class="text-center">
+            {{-- <video class="bg-video" autoplay muted loop playsinline>
+            <source src="{{ asset('assets/videos/intro.mp4') }}" type="video/mp4">
+        </video> --}}
+            {{-- <img src="{{ asset('assets/images/banner_bg.jpg') }}" class="bg-video" alt="Sterling Wills & Estate Planning"> --}}
+
+            <!-- Overlay (optional dark mask) -->
+            <div class="mask">
+                <div class="text-white">
+                    <h1 class="mb-3 inner-page-title text-white">{{ $blog->title }}</h1>
+                </div>
+            </div>
         </div>
 
-    </section>
+        <!-- MOB HEADER -->
+        @include('layouts.mob_header')
 
-    <!-- MOB HEADER -->
-    @include('layouts.mob_header')
+    </div>
 
     <section class="section page mt-4 mb-4 cm10">
         <div class="container mt-4">
-            <div class="row g-4">
-                <!-- LEFT TEXT BOXES -->
-                <div class="col-sm-6 col-xs-12">
-                    <div class="d-flex flex-column h-100 gap-4 mt-4 mb-4 py-4 px-0">
-                        <h1>{{ $blog->title }}</h1>
-                        <div class="d-flex flex-row h-100 gap-4">
-                            <div class=""><i class="fa fa-user" aria-hidden="true"></i> {{ $blog->user?->name }}
-                            </div>
-                            <div><i class="fa fa-calendar mx-1"></i>
-                                {{ \Carbon\Carbon::parse($blog->created_at)->format('M Y') }}</div>
-                            <div class="feature-box flex-fill">
-                                {!! $blog->description !!}
-                            </div>
+            <div class="row ">
+                <div class="col-md-8 mx-auto b-details">
 
-                        </div>
-
-                        <div class="feature-box flex-fill">
-
-                        </div>
-
-                    </div>
-                </div>
-                <!-- RIGHT TEXT BOXES -->
-                <div class="col-sm-6 col-xs-12">
-                    <img src="{{ $blog->image }}" alt="{{ $blog->title }}" class="img-fluid rounded" width="100%"
+                    <h2>{{ $blog->title }}</h2>
+                    <h4 class="mb-3 text-center text-muted fs-2">
+                        {{ \Carbon\Carbon::parse($blog->created_at)->format('M d, Y') }}</h4>
+                    <img src="{{ $blog->blog_img }}" alt="{{ $blog->title }}" class="img-fluid rounded" width="100%"
                         height="500">
-                    <div class="d-flex flex-column h-100 gap-4">
-
-                        <div class="feature-box flex-fill">
-                            {!! $blog->description !!}
-                        </div>
-
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="py-2 px-1">
+                    <p class="mt-3 text-muted">
+                        {{ $blog->short_desc }}
+                    </p>
+                    <h2><span class="text-dark ltc">Lake Texoma Cabin Rentals - </span>{{ $siteSetting->site_title }}</h2>
+                    <div>
                         {!! $blog->long_desc !!}
                     </div>
                 </div>
-                <div class="col-md-4">
-
-                    {{-- <div class="my-2">
-                        <a href="{{ route('blogs') }}" class="text-dark">< Back to List</a>
-                    </div> --}}
-                    {{-- ( d-none d-md-block ) For hide on mobile --}}
-                    <div class="mb-5 d-none">
-                        <p class="fs-4">Category</p>
-                        <hr>
-                        @foreach ($topics as $t)
-                            <a class="btn btn-outline-secondary rounded-0 px-4 border-0"
-                                href="{{ route('blogs', array_merge(request()->query(), ['topic' => $t->slug])) }}">
-                                {{ $t->name }}
-                            </a>
-                        @endforeach
-                    </div>
-                    <div class="mb-4">
-                        <p class="fs-4 fw-thin">Featured Posts</p>
-                        <hr>
-                        @foreach ($relatedBlogs as $b)
-                            <div class="d-flex align-items-start gap-3 mb-3 mt-4">
-
-                                <!-- Image -->
-                                <a href="{{ route('blog.details', $b->slug) }}" class="text-decoration-none">
-                                    <!-- Image -->
-                                    <div class="flex-shrink-0 featured-img">
-                                        <img src="{{ $b->image }}" alt="{{ $b->title }}" class="img-fluid rounded">
-                                    </div>
+                <div class="col-md-8 mx-auto">
+                    <div class="d-flex  space-between align-items-center mt-4 mb-4">
+                        @if ($previous)
+                            <div class="flex-fill">
+                                <a href="{{ route('blog.details', $previous->slug) }}" class="text-decoration-none">
+                                    <h2 class="fs-6 m-0 p-0">
+                                        Previous Post </h2>
+                                    <h2 class="fs-5 p-0 m-0">
+                                        {{ $previous->title }}
+                                    </h2>
                                 </a>
-                                <!-- Content -->
-                                <div class="flex-grow-1">
-                                    <div class="text-muted small mb-1">
-                                        <i class="fa fa-calendar me-1"></i>
-                                        {{ \Carbon\Carbon::parse($b->created_at)->format('d M Y') }}
-                                    </div>
-
-                                    <a href="{{ route('blog.details', $b->slug) }}" class="text-decoration-none">
-                                        <div class="fw-bold fs-6 text-dark">
-                                            {{ $b->title }}
-                                        </div>
-                                    </a>
-                                </div>
-
                             </div>
-                        @endforeach
+                        @endif
+                        @if ($next)
+                            <div class="flex-fill justify-content-end ">
+                                <a href="{{ route('blog.details', $next->slug) }}" class="text-decoration-none">
+                                    <h2 class="fs-6 m-0 p-0">
+                                        Next Post </h2>
+                                    <h2 class="fs-5 p-0 m-0">
+                                        {{ $next->title }}
+                                    </h2>
+                                </a>
+                            </div>
+                        @endif
                     </div>
-                    <style>
-                        .featured-img {
-                            width: 120px;
-                            height: 90px;
-                            overflow: hidden;
-                        }
-
-                        .featured-img img {
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                        }
-                    </style>
                 </div>
             </div>
         </div>
     </section>
-
-
 @endsection

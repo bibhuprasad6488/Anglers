@@ -90,6 +90,24 @@
         input:checked+.slider:before {
             transform: translateX(25px);
         }
+        .drop-area {
+            border: 2px dashed #007bff;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .drop-area.dragover {
+            background-color: #f0f8ff;
+        }
+
+        .preview img {
+            width: 120px;
+            margin: 10px;
+            border-radius: 6px;
+        }
     </style>
 </head>
 

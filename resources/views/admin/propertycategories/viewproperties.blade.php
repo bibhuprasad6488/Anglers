@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('title', 'Property Categories')
+@section('title', 'Properties')
 @section('content')
     <div class="container-fluid px-4">
         <div class="row">
@@ -70,7 +70,7 @@
                     </form>
 
                     <div class="card-header primary-color">
-                        <h4>Property Categories</h4>
+                        <h4>Properties</h4>
                     </div>
                     <div class="card-body">
 
@@ -84,27 +84,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($categories as $g)
+                                @foreach ($properties as $g)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td><b>{{ $g->title }}</b></td>
                                         <td>{{ \Carbon\Carbon::parse($g->created_at)->format('d-m-Y') }}</td>
                                         <td>
-                                            <a href="{{ route('admin.add-property', $g->id) }}"
-                                                class="btn btn-sm btn-primary">Add</a>
-                                            <a href="{{ route('admin.view-properties', $g->id) }}"
-                                                class="btn btn-sm btn-outline-success">View</a>
-                                            {{-- <form action="{{ route('admin.property-categories.destroy', $g->id) }}"
-                                                method="POST" style="display: inline-block;">
+                                            <a href="{{ route('admin.edit-property', $g->id) }}"
+                                                class="btn btn-sm btn-primary">Edit</a>
+                                            <form action="{{ route('admin.properties.destroy', $g->id) }}" method="POST"
+                                                style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger"
                                                     onclick="return confirm('Are you sure you want to delete this?');">Delete</button>
-                                            </form> --}}
+                                            </form>
 
                                             {{-- <label class="switch my-1" title="Show on Page">
                                                 <input type="checkbox" id="accessToggle_{{ $loop->iteration }}"
-                                                    onchange="accessUpdate('{{ route('admin.property-categories.show', $g->id) }}','{{ $loop->iteration }}')"
+                                                    onchange="accessUpdate('{{ route('admin.properties.show', $g->id) }}','{{ $loop->iteration }}')"
                                                     {{ $g->status == 1 ? 'checked' : '' }}>
                                                 <span class="slider"></span>
                                             </label> --}}

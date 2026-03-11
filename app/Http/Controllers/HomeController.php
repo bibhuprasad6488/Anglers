@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog;
 use App\Models\CmsContactPage;
 use App\Models\CmsGallery;
 use App\Models\CmsHomePage;
 use App\Models\CmsResource;
 use App\Models\GetInTouch;
 use App\Models\PrivacyPolicy;
+use App\Models\Property;
+use App\Models\PropertyCategory;
 use App\Models\SiteSetting;
 use App\Models\TermsOfBusiness;
 use Illuminate\Http\Request;
@@ -128,6 +131,49 @@ class HomeController extends Controller
             DB::rollBack();
             return redirect()->back()->with('error', 'Error during submission: ' . $th->getMessage());
         }
+    }
+    public function blogLists()
+    {
+        $blogs = Blog::where('status', 1)->orderBy('id')->paginate(5);
+        return view('blogs', compact('blogs'));
+    }
+
+    public function blogDetails($id)
+    {
+        $blog = Blog::where('slug', $id)->first();
+
+        if ($blog) {
+            $blog->blog_img = $blog->blog_img
+                ? asset('storage/images/blog_images/' . $blog->blog_img)
+                : '';
+
+            // Previous post
+            $previous = Blog::where('id', '<', $blog->id)
+                ->orderBy('id', 'desc')
+                ->first();
+
+            // Next post
+            $next = Blog::where('id', '>', $blog->id)
+                ->orderBy('id', 'asc')
+                ->first();
+        }
+
+        $siteSetting = SiteSetting::find(1);
+
+        return view('blog_details', compact('blog', 'siteSetting', 'previous', 'next'));
+    }
+
+    public function catProperties($id)
+    {
+        $cat = PropertyCategory::where('slug', $id)->first();
+        $properties = Property::where('category_id', $cat->id)->with('images')->where('status', 1)->get()->map(function ($p) {
+            $p->images = $p->images->map(function ($img) {
+                $img->img_path = $img->img_path ? asset('storage/images/property/' . $img->img_path) : '';
+                return $img;
+            });
+            return $p;
+        });
+        return view('properties', compact('cat', 'properties'));
     }
 
     public function thankYou()
