@@ -13,9 +13,9 @@
                         </ol>
                     </div>
 
-                    <div class="ms-auto d-none">
+                    <div class="ms-auto ">
                         <div class="btn-group">
-                            <a href="{{ route('admin.posts.create') }}" class="btn primary-color">Create</a>
+                            <button onclick="window.history.back()" class="btn primary-color">Go Back</button>
                         </div>
                     </div>
                 </div>
@@ -70,8 +70,28 @@
                                         Price Per Night
                                     </label>
                                     <div class="col-md-9 col-sm-6 col-xs-12">
-                                        <input type="text" name="price" id="price"
-                                            class="form-control numeric-only" value="{{ $property->price }}"
+                                        <input type="text" name="price_per_night" id="price_per_night"
+                                            class="form-control numeric-only" value="{{ $property->price_per_night }}"
+                                            placeholder="Price">
+                                    </div>
+                                </div>
+                                <div class="form-group row  mb-2">
+                                    <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
+                                        Price Per Week
+                                    </label>
+                                    <div class="col-md-9 col-sm-6 col-xs-12">
+                                        <input type="text" name="price_per_week" id="price_per_week"
+                                            class="form-control numeric-only" value="{{ $property->price_per_week }}"
+                                            placeholder="Price">
+                                    </div>
+                                </div>
+                                <div class="form-group row  mb-2">
+                                    <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
+                                        Price Per Month
+                                    </label>
+                                    <div class="col-md-9 col-sm-6 col-xs-12">
+                                        <input type="text" name="price_per_month" id="price_per_month"
+                                            class="form-control numeric-only" value="{{ $property->price_per_month }}"
                                             placeholder="Price">
                                     </div>
                                 </div>
@@ -259,7 +279,9 @@
             formData.append('_method', "PUT"); // ADD THIS LINE
             formData.append('title', titleInput.value.trim());
             formData.append('category_id', document.getElementById('category_id').value);
-            formData.append('price', document.getElementById('price').value);
+            formData.append('price_per_night', document.getElementById('price_per_night').value);
+            formData.append('price_per_week', document.getElementById('price_per_week').value);
+            formData.append('price_per_month', document.getElementById('price_per_month').value);
             formData.append('sub_title', subTitleInput.value.trim());
             formData.append('short_desc', shortDescInput.value.trim());
             formData.append('long_desc', longDescInput.value.trim());

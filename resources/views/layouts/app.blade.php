@@ -59,6 +59,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="{{ asset('assets/css/slider.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/testimonial.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/timeline.css') }}">
@@ -159,6 +160,50 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const checkIn = document.getElementById("check_in_date");
+            const checkOut = document.getElementById("check_out_date");
+
+            /* today date */
+            let today = new Date().toISOString().split("T")[0];
+
+            /* disable past dates */
+            checkIn.setAttribute("min", today);
+            checkOut.setAttribute("min", today);
+
+            /* when checkin changes */
+            checkIn.addEventListener("change", function() {
+
+                let checkInDate = new Date(this.value);
+
+                /* next day */
+                let nextDay = new Date(checkInDate);
+                nextDay.setDate(nextDay.getDate() + 1);
+
+                let nextDayFormatted = nextDay.toISOString().split("T")[0];
+
+                /* set checkout min */
+                checkOut.min = nextDayFormatted;
+
+                /* auto set checkout */
+                checkOut.value = nextDayFormatted;
+
+            });
+
+            /* prevent invalid checkout */
+            checkOut.addEventListener("change", function() {
+
+                if (checkOut.value <= checkIn.value) {
+                    alert("Checkout date must be after check-in date");
+                    checkOut.value = "";
+                }
+
+            });
+
+        });
+    </script>
     <script>
         window.onload = function() {
             let alert = document.getElementById('success-alert');

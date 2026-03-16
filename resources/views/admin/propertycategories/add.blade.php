@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('title', 'Property Categories')
+@section('title', 'Add Property Type')
 @section('content')
     <div class="container-fluid px-4">
         <div class="row">
@@ -13,7 +13,7 @@
                         </ol>
                     </div>
 
-                    <div class="ms-auto ">
+                    <div class="ms-auto d-none">
                         <div class="btn-group">
                             <a href="{{ route('admin.property-categories.create') }}" class="btn primary-color">Add New</a>
                         </div>
@@ -33,7 +33,7 @@
                     @endif
 
                     <form action="{{ route('admin.property-categories.store') }}"
-                        class="form-horizontal form-label-left d-none" method="POST" enctype="multipart/form-data">
+                        class="form-horizontal form-label-left" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="card mb-5">
                             <div class="card-header primary-color">
@@ -68,54 +68,6 @@
                             </div>
                         </div>
                     </form>
-
-                    <div class="card-header primary-color">
-                        <h4>Property Types</h4>
-                    </div>
-                    <div class="card-body">
-
-                        <table id="datatablesSimple">
-                            <thead>
-                                <tr>
-                                    <th>SL No</th>
-                                    <th>Title</th>
-                                    <th>Created</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($categories as $g)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td><b>{{ $g->title }}</b></td>
-                                        <td>{{ \Carbon\Carbon::parse($g->created_at)->format('d-m-Y') }}</td>
-                                        <td>
-                                            <a href="{{ route('admin.property-categories.edit', $g->id) }}"
-                                                class="btn btn-sm btn-info d-none">Edit Property Type</a>
-                                            <a href="{{ route('admin.add-property', $g->id) }}"
-                                                class="btn btn-sm btn-primary">Add Property</a>
-                                            <a href="{{ route('admin.view-properties', $g->id) }}"
-                                                class="btn btn-sm btn-outline-success">View Properties</a>
-                                            {{-- <form action="{{ route('admin.property-categories.destroy', $g->id) }}"
-                                                method="POST" style="display: inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                    onclick="return confirm('Are you sure you want to delete this?');">Delete</button>
-                                            </form> --}}
-
-                                            {{-- <label class="switch my-1" title="Show on Page">
-                                                <input type="checkbox" id="accessToggle_{{ $loop->iteration }}"
-                                                    onchange="accessUpdate('{{ route('admin.property-categories.show', $g->id) }}','{{ $loop->iteration }}')"
-                                                    {{ $g->status == 1 ? 'checked' : '' }}>
-                                                <span class="slider"></span>
-                                            </label> --}}
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
         </div>

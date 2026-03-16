@@ -111,6 +111,8 @@ Route::get('/gallery', [HomeController::class, 'galleryPageDetails'])->name('gal
 Route::get('/blog', [HomeController::class, 'blogLists'])->name('blogs');
 Route::get('/blog-details/{slug}', [HomeController::class, 'blogDetails'])->name('blog.details');
 Route::get('/category/{slug}', [HomeController::class, 'catProperties'])->name('category.properties');
+Route::get('/accommodation/{slug}', [HomeController::class, 'propertyDetails'])->name('property.details');
+Route::get('/search-result', [HomeController::class, 'searchFormResult'])->name('search.result');
 Route::get('/contact-us', [HomeController::class, 'contactUs'])->name('contact');
 Route::post('/contact-us-submit', [HomeController::class, 'contactUsStore'])->name('contact.submit');
 Route::get('/thank-you', [HomeController::class, 'thankYou'])->name('thank-you');

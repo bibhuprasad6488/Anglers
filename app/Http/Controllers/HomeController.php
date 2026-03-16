@@ -50,8 +50,15 @@ class HomeController extends Controller
             return $g;
         });
 
+        $properties = Property::with('images')->where('status', 1)->orderBy('title')->get()->map(function ($p) {
+            $p->images = $p->images->map(function ($img) {
+                $img->img_path = $img->img_path ? asset('storage/images/property/' . $img->img_path) : '';
+                return $img;
+            });
+            return $p;
+        });
         $siteSetting = SiteSetting::find(1);
-        return view('home', compact('siteSetting', 'home_page_data', 'galleries'));
+        return view('home', compact('siteSetting', 'home_page_data', 'galleries', 'properties'));
     }
 
     public function resourcesPageDetails()
@@ -174,6 +181,34 @@ class HomeController extends Controller
             return $p;
         });
         return view('properties', compact('cat', 'properties'));
+    }
+
+    public function propertyDetails($id)
+    {
+        $property = Property::where('slug', $id)->with('images', 'category')->first();
+        if ($property) {
+            $property->images = $property->images->map(function ($img) {
+                $img->img_path = $img->img_path ? asset('storage/images/property/' . $img->img_path) : '';
+                return $img;
+            });
+        }
+
+        $home_page_data = CmsHomePage::find(1);
+        if ($home_page_data) {
+            $home_page_data->banner_img = $home_page_data->banner_img ? asset('storage/images/cmspage/' . $home_page_data->banner_img) : '';
+            $home_page_data->setion_one_img = $home_page_data->setion_one_img ? asset('storage/images/cmspage/' . $home_page_data->setion_one_img) : '';
+            $home_page_data->setion_two_img = $home_page_data->setion_two_img ? asset('storage/images/cmspage/' . $home_page_data->setion_two_img) : '';
+        }
+        $siteSetting = SiteSetting::find(1);
+        return view('property_details', compact('property', 'home_page_data', 'siteSetting'));
+    }
+
+    public function searchFormResult(Request $request)
+    {
+        $formDate = $request->input('check_in_date');
+        $toDate = $request->input('check_out_date');
+
+        return view('search_result', compact('formDate', 'toDate'));
     }
 
     public function thankYou()

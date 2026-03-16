@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Property;
 use App\Models\PropertyCategory;
+use App\Models\PropertyImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -25,7 +26,7 @@ class PropertyCategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.propertycategories.add');
     }
 
     /**
@@ -42,7 +43,7 @@ class PropertyCategoryController extends Controller
             $pCat->save();
 
             DB::commit();
-            return back()->with('success', 'Category created successfully');
+            return redirect()->route('admin.property-categories.index')->with('success', 'Category created successfully');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', 'Category creation failed Error: ' . $th->getMessage());
@@ -83,7 +84,8 @@ class PropertyCategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $cat = PropertyCategory::find($id);
+        return view('admin.propertycategories.edit', compact('cat'));
     }
 
     /**
@@ -91,7 +93,20 @@ class PropertyCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $pCat = PropertyCategory::find($id);
+            $pCat->title = $request->title;
+            $pCat->slug = Str::slug(trim($request->title));
+            $pCat->description = $request->description;
+            $pCat->save();
+
+            DB::commit();
+            return redirect()->route('admin.property-categories.index')->with('success', 'Category updated successfully');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->with('error', 'Category update failed Error: ' . $th->getMessage());
+        }
     }
 
     /**
@@ -99,6 +114,29 @@ class PropertyCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+
+            $destinationPath = public_path('storage/images/property/');
+            $cat = PropertyCategory::find($id);
+            $properties = Property::where('category_id', $cat->id)->get();
+            foreach ($properties as $key => $property) {
+                $pImg = PropertyImage::where('property_id', $id)->get();
+                foreach ($pImg as $img) {
+                    if (!empty($img->img_path)) {
+                        $oldFilePath = $destinationPath . $img->img_path;
+                        if (file_exists($oldFilePath)) {
+                            unlink($oldFilePath);
+                        }
+                    }
+                    $img->delete();
+                }
+                $property->delete();
+            }
+            $cat->delete();
+
+            return back()->with('success', 'Category Deleted successfully');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Failed to delete category Error: ' . $th->getMessage());
+        }
     }
 }

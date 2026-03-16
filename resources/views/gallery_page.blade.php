@@ -23,15 +23,11 @@
         }
     </style>
     <div class="contact_page" class="text-center">
-        <!-- HERO -->
-        <div class="contact_page" class="text-center">
-            <div class="mask">
-                <div class="text-white">
-                    <h2 class="mb-3 inner-page-title text-white">Gallery</h2>
-                </div>
+        <div class="mask">
+            <div class="text-white">
+                <h2 class="mb-3 inner-page-title text-white">Gallery</h2>
             </div>
         </div>
-
         <!-- MOB HEADER -->
         @include('layouts.mob_header')
 

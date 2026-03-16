@@ -6,18 +6,9 @@
 @section('content')
 
     <div class="contact_page" class="text-center">
-        <!-- HERO -->
-        <div class="contact_page" class="text-center">
-            {{-- <video class="bg-video" autoplay muted loop playsinline>
-            <source src="{{ asset('assets/videos/intro.mp4') }}" type="video/mp4">
-        </video> --}}
-            {{-- <img src="{{ asset('assets/images/banner_bg.jpg') }}" class="bg-video" alt="Sterling Wills & Estate Planning"> --}}
-
-            <!-- Overlay (optional dark mask) -->
-            <div class="mask">
-                <div class="text-white">
-                    <h2 class="mb-3 inner-page-title text-white">{{ $resourcePage->title }}</h2>
-                </div>
+        <div class="mask">
+            <div class="text-white">
+                <h2 class="mb-3 inner-page-title text-white">{{ $resourcePage->title }}</h2>
             </div>
         </div>
 

@@ -37,7 +37,9 @@ class PropertyController extends Controller
             $property = new Property();
             $property->title = $request->title;
             $property->category_id = $request->category_id;
-            $property->price = $request->price;
+            $property->price_per_night = $request->price_per_night;
+            $property->price_per_week = $request->price_per_week;
+            $property->price_per_month = $request->price_per_month;
             $property->slug = Str::slug(trim($request->title));
             $property->sub_title = $request->sub_title;
             $property->short_desc = $request->short_desc;
@@ -129,7 +131,9 @@ class PropertyController extends Controller
             $property->title = $request->title;
             $property->slug = Str::slug(trim($request->title));
             $property->category_id = $request->category_id;
-            $property->price = $request->price;
+            $property->price_per_night = $request->price_per_night;
+            $property->price_per_week = $request->price_per_week;
+            $property->price_per_month = $request->price_per_month;
             $property->sub_title = $request->sub_title;
             $property->short_desc = $request->short_desc;
             $property->long_desc = $request->long_desc ? preg_replace('/[^\x20-\x7E]/u', '', $request->long_desc) : '';

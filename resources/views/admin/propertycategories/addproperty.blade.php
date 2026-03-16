@@ -34,6 +34,22 @@
                     <form action="{{ route('admin.properties.store') }}" class="form-horizontal form-label-left"
                         method="POST" enctype="multipart/form-data" id="pUploadForm">
                         @csrf
+                        <div class="card mb-3">
+                            <div class="card-header primary-color">
+                                <h4> Property Type</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group row  mb-2">
+                                    <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
+                                        Property Type:
+                                    </label>
+                                    <div class="col-md-9 col-sm-6 col-xs-12">
+                                        <input type="text" name="pt_name" id="pt_name" class="form-control"
+                                            value="{{ $pCat->title }}" placeholder="Title" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="card">
                             <div class="card-header primary-color">
                                 <h4>Add Property Details</h4>
@@ -68,8 +84,28 @@
                                         Price Per Night
                                     </label>
                                     <div class="col-md-9 col-sm-6 col-xs-12">
-                                        <input type="text" name="price" id="price"
-                                            class="form-control numeric-only" value="{{ old('price') }}"
+                                        <input type="text" name="price_per_night" id="price_per_night"
+                                            class="form-control numeric-only" value="{{ old('price_per_night') }}"
+                                            placeholder="Price">
+                                    </div>
+                                </div>
+                                <div class="form-group row  mb-2">
+                                    <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
+                                        Price Per Week
+                                    </label>
+                                    <div class="col-md-9 col-sm-6 col-xs-12">
+                                        <input type="text" name="price_per_week" id="price_per_week"
+                                            class="form-control numeric-only" value="{{ old('price_per_week') }}"
+                                            placeholder="Price">
+                                    </div>
+                                </div>
+                                <div class="form-group row  mb-2">
+                                    <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
+                                        Price Per Month
+                                    </label>
+                                    <div class="col-md-9 col-sm-6 col-xs-12">
+                                        <input type="text" name="price_per_month" id="price_per_month"
+                                            class="form-control numeric-only" value="{{ old('price_per_month') }}"
                                             placeholder="Price">
                                     </div>
                                 </div>
@@ -244,7 +280,9 @@
             formData.append('_token', "{{ csrf_token() }}");
             formData.append('title', titleInput.value.trim());
             formData.append('category_id', document.getElementById('category_id').value);
-            formData.append('price', document.getElementById('price').value);
+            formData.append('price_per_night', document.getElementById('price_per_night').value);
+            formData.append('price_per_week', document.getElementById('price_per_week').value);
+            formData.append('price_per_month', document.getElementById('price_per_month').value);
             formData.append('sub_title', subTitleInput.value.trim());
             formData.append('short_desc', shortDescInput.value.trim());
             formData.append('long_desc', longDescInput.value.trim());

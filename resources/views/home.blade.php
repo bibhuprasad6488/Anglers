@@ -12,23 +12,41 @@
             border-radius: 5px;
         }
     </style>
+
     <!-- HERO -->
-    <div id="intro-example" class="text-center">
-        {{-- <video class="bg-video" autoplay muted loop playsinline>
-            <source src="{{ asset('assets/videos/intro.mp4') }}" type="video/mp4">
-        </video> --}}
-        <img src="{{ $home_page_data->banner_img }}" class="bg-video" alt="{{ $home_page_data->meta_title }}">
+    <div id="intro-example" class="text-center"
+        style="background-image: url('{{ $home_page_data->banner_img }}'); background-repeat:no-repeat;
+    padding: 16px 0;
+    background-size: cover;
+    background-position: center center;">
 
-        <div class="mask">
-            <div class="text-white">
-                <h1 class="mt-5 banner-title">{{ $home_page_data->banner_title }}</h1>
-                <h4 class="my-4 banner-subtitle">{{ $home_page_data->banner_sub_title }}</h4>
+        <div class=" mask ">
+            <h1 class="mt-5 banner-title">{{ $home_page_data->banner_title }}</h1>
+            <h4 class="my-2 banner-subtitle">{{ $home_page_data->banner_sub_title }}</h4>
 
-                {{-- <a class="btn btn-light btn-lg m-2 rounded-0" href="{{ route('journey') }}" role="button">View
-                    Details..</a>
-                <a class="btn btn-light btn-lg m-2 rounded-0" href="{{ route('contact') }}" role="button">Contact
-                    us today !</a> --}}
-            </div>
+            <form action="{{ route('search.result') }}" method="GET"
+                class="form-inline d-flex justify-content-center align-items-center gap-4 flex-wrap p-5 rounded-3 shadow-sm search-form-one">
+                @csrf
+                <div class="form-group">
+                    <h4>
+                        ▷ Browse Our <br><span> Cabin Selection </span> <span title="required">*</span>
+                    </h4>
+                </div>
+                <div class="form-group">
+                    <label for="">Check In</label>
+                    <input id="check_in_date" value="" placeholder="Check-in Date" required="required" type="date"
+                        name="check_in_date" class="form-control" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="">Check Out</label>
+                    <input id="check_out_date" value="" placeholder="Check-out Date" required="required"
+                        type="date" name="check_out_date" class="form-control" autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" class="btn book-cabin-btn" value="Search">
+                </div>
+            </form>
         </div>
     </div>
 
@@ -89,8 +107,54 @@
                 <div class="col-md-10 mx-auto text-center">
                     <div class="d-flex flex-column h-100 gap-4">
                         <div class="feature-box flex-fill">
+                            <h2>VIEW ALL OUR CABINS</h2>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section class="section ">
+        <div class="container">
+            <div class="row g-4 py-2">
+                @foreach ($properties as $p)
+                    <div class="col-md-4">
+                        <div class="d-flex flex-column h-100 gap-2">
+                            <div class="flex-fill">
+                                <img src="{{ $p->images->first()->img_path }}" class="img-fluid w-100">
+                            </div>
+                            <div class="c-list-info">
+                                <h3><a href="{{ route('property.details', $p->slug) }}">{{ $p->title }}</a></h3>
+                                <p class="tag-list">{{ $p->sub_title }}</p>
+                                <p class="truncate-overflow">{{ Str::limit($p->short_desc, 205, '...') }}</p>
+                                <h6>
+                                    <b>Price start at:</b>
+                                    <span class="mphb-price">
+                                        <span class="mphb-currency">$</span>{{ $p->price_per_night }}</span>
+                                    <span class="mphb-price-period" title="Choose dates to see relevant prices">per
+                                        night</span>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section cmt10">
+        <div class="container">
+            <div class="row g-4 py-2">
+
+                <!-- LEFT IMAGE BOX -->
+                <div class="col-md-10 mx-auto text-center">
+                    <div class="d-flex flex-column h-100 gap-4">
+                        <div class="feature-box flex-fill">
                             <h2>BROWSE OUR GALLERY</h2>
-                            <h4>“Find the best place to stay!”</h4>
+                            <h4 class="text-muted">“Find the best place to stay!”</h4>
                         </div>
                     </div>
                 </div>

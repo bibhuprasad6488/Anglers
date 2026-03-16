@@ -16,7 +16,9 @@ return new class extends Migration
             $table->integer('category_id');
             $table->string('title');
             $table->string('slug');
-            $table->string('price')->nullable()->default(0);
+            $table->string('price_per_night')->nullable()->default(0);
+            $table->string('price_per_week')->nullable()->default(0);
+            $table->string('price_per_month')->nullable()->default(0);
             $table->string('sub_title')->nullable();
             $table->text('short_desc')->nullable();
             $table->longText('long_desc')->nullable();
