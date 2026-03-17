@@ -50,7 +50,7 @@ class HomeController extends Controller
             return $g;
         });
 
-        $properties = Property::with('images')->where('status', 1)->orderBy('title')->get()->map(function ($p) {
+        $properties = Property::with('images')->where('status', 1)->orderBy('title')->limit(6)->get()->map(function ($p) {
             $p->images = $p->images->map(function ($img) {
                 $img->img_path = $img->img_path ? asset('storage/images/property/' . $img->img_path) : '';
                 return $img;

@@ -38,7 +38,7 @@
                     Blog
                 </a>
 
-                <a class="nav-link {{ request()->routeIs(['admin.property-categories.*', 'admin.add-property']) ? 'active' : '' }} "
+                <a class="nav-link {{ request()->routeIs(['admin.property-categories.*', 'admin.add-property', 'admin.view-properties']) ? 'active' : '' }} "
                     href="{{ route('admin.property-categories.index') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                     Properties

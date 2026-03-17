@@ -4,12 +4,10 @@
 @section('meta_description', '')
 
 @section('content')
-    <style>
-        .swiper-slide img {
-            /* width: 800px !important; */
-            object-fit: cover !important;
-        }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" />
 
+    <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
+    <style>
         .swiper-button-next,
         .swiper-button-prev {
             color: #fff !important;
@@ -32,7 +30,7 @@
                     <label class="text-white">Check In</label>
                     <input id="check_in_date" value="" placeholder="Check-in Date" required="required" type="date"
                         name="check_in_date" class="form-control" autocomplete="off">
-                        <input type="hidden" name="category" value="{{ $cat->slug }}">
+                    <input type="hidden" name="category" value="{{ $cat->slug }}">
                 </div>
                 <div class="form-group">
                     <label class="text-white">Check Out</label>
@@ -75,24 +73,18 @@
                     </div>
                     <div class="col-md-4">
 
-                        <div class="swiper gallerySwiper">
-                            <div class="swiper-wrapper">
-
-                                @foreach ($p->images as $img)
-                                    <div class="swiper-slide">
-                                        <img src="{{ $img->img_path }}" class="img-fluid w-100">
-                                    </div>
+                        <div class="slider">
+                            <div class="slides">
+                                @foreach ($p->images as $image)
+                                    <img src="{{ $image->img_path }}" class="slide {{ $loop->first ? 'active' : '' }}"
+                                        alt="Property Image">
                                 @endforeach
-
                             </div>
 
-                            <!-- Navigation -->
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-
-                            <!-- Pagination -->
-                            {{-- <div class="swiper-pagination"></div> --}}
+                            <button class="prev">❮</button>
+                            <button class="next">❯</button>
                         </div>
+
                     </div>
                 </div>
             @endforeach
@@ -101,38 +93,40 @@
 @endsection
 @push('scripts')
     <script>
-        var swiper = new Swiper(".gallerySwiper", {
-            loop: true,
-            spaceBetween: 20,
-            slidesPerView: 1,
-            centeredSlides: true,
+        document.addEventListener("DOMContentLoaded", function() {
 
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
+            document.querySelectorAll(".slider").forEach(function(slider) {
 
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
+                let currentSlide = 0;
+                const slides = slider.querySelectorAll(".slide");
 
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
+                function showSlide(index) {
+                    if (index >= slides.length) {
+                        currentSlide = 0;
+                    } else if (index < 0) {
+                        currentSlide = slides.length - 1;
+                    } else {
+                        currentSlide = index;
+                    }
 
-            breakpoints: {
-                320: {
-                    slidesPerView: 1
-                },
-                768: {
-                    slidesPerView: 1
-                },
-                1024: {
-                    slidesPerView: 1
+                    slides.forEach(slide => slide.classList.remove("active"));
+                    slides[currentSlide].classList.add("active");
                 }
-            }
+
+                slider.querySelector(".next").addEventListener("click", function() {
+                    showSlide(currentSlide + 1);
+                });
+
+                slider.querySelector(".prev").addEventListener("click", function() {
+                    showSlide(currentSlide - 1);
+                });
+
+                setInterval(function() {
+                    showSlide(currentSlide + 1);
+                }, 3000);
+
+            });
+
         });
     </script>
 @endpush

@@ -44,7 +44,7 @@
                 </div>
                 <div>
                     <ul
-                        class="d-flex flex-column flex-md-row justify-content-center space-between list-unstyled footer-links text-center gx-4">
+                        class="d-flex flex-column flex-md-row justify-content-center space-between list-unstyled footer-links text-center gap-4">
                         <li class="mx-2">
                             <a href="{{ route('home') }}" class="{{ request()->routeIs(['home']) ? 'active' : '' }}">
                                 Home

@@ -69,16 +69,35 @@ body {
     right: 20px;
 }
 
+.cont-info-wrap img {
+    max-width: 35px;
+    /* position: absolute; */
+    left: 0;
+    top: 0;
+    width: 35px;
+    height: 35px;
+    background: #6d7743;
+    border-radius: 30px;
+    fill: #fff;
+    padding: 6px;
+    margin: 0 15px 0 0;
+}
+
+.cont-info-wrap a {
+    text-decoration: none;
+    color: #000;
+}
+
 ul.cont-info-wrap li {
-    position: relative;
-    padding-left: 50px;
+    /* position: relative;
+    padding-left: 50px; */
     padding-bottom: 20px;
     list-style: none;
 }
 
 ul.cont-info-wrap li img {
     max-width: 35px;
-    position: absolute;
+    /* position: absolute; */
     left: 0;
     top: 0;
     width: 35px;
@@ -88,6 +107,7 @@ ul.cont-info-wrap li img {
     fill: #fff;
     padding: 6px;
 }
+
 
 ul.cont-info-wrap li a {
     text-decoration: none;
@@ -869,7 +889,7 @@ marquee .partner-card img {
 }
 
 .footer-links {
-    list-style: square;
+    /*list-style: square;*/
     padding: 0;
     margin: 0;
     margin-left: 16px;
@@ -902,7 +922,7 @@ marquee .partner-card img {
 .footer-links a {
     color: #fff;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 18px;
     opacity: 0.85;
     text-transform: capitalize;
 }

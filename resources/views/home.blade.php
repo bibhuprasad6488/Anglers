@@ -65,7 +65,7 @@
                             {!! $home_page_data->setion_one_desc !!}
                         </div>
                         <div class="feature-box flex-fill">
-                            <a href="{{ $home_page_data->setion_one_btn_link }}"
+                            <a href=" {{ url('/category/cabins') }}"
                                 class="btn book-cabin-btn">{{ $home_page_data->setion_one_btn_text }}</a>
                         </div>
                     </div>

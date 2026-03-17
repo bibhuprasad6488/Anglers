@@ -13,9 +13,9 @@
                         </ol>
                     </div>
 
-                    <div class="ms-auto d-none">
+                    <div class="ms-auto">
                         <div class="btn-group">
-                            <a href="{{ route('admin.property-categories.create') }}" class="btn primary-color">Add New</a>
+                            <button onclick="window.history.back()" class="btn primary-color">Go Back</button>
                         </div>
                     </div>
                 </div>

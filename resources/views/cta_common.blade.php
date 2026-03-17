@@ -2,39 +2,32 @@
     <div class="container">
         <h2>CONTACT INFORMATION</h2>
         <div class="row g-4">
-            <div class="col-lg-6 ">
+            <div class="col-lg-6">
                 <div class="card rounded-0 border-0">
                     <h6>{{ $siteSetting->site_title }}</h6>
                     <p>{!! $siteSetting->site_desc !!}</p>
-                    <ul class="cont-info-wrap">
-                        <li>
-                            <p>
-                                @php
-                                    $address = $siteSetting->address;
-                                    $mapLink = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($address);
-                                @endphp
-                                <a href="{{ $mapLink }}" target="_blank">
-                                    <img src="{{ asset('assets/images/location-icon.svg') }}"
-                                        alt="Image">{{ $siteSetting->address }} </a>
-                            </p>
-                        </li>
-                        <li>
-                            <p>
-                                <a href="tel:{{ $siteSetting->contact_phone }}">
-                                    <img src="{{ asset('assets/images/call-icon.svg') }}"
-                                        alt="Image">{{ $siteSetting->contact_phone }} </a>
-                            </p>
-                        </li>
-
-                        <li>
-                            <p>
-                                <a href="mailto:{{ $siteSetting->contact_email }}">
-                                    <img src="{{ asset('assets/images/mail-icon.svg') }}"
-                                        alt="Image">{{ $siteSetting->contact_email }} </a>
-                            </p>
-                        </li>
-
-                    </ul>
+                    <div class="d-flex flex-column cont-info-wrap gap-4">
+                        <div class="me-4">
+                            @php
+                                $address = $siteSetting->address;
+                                $mapLink = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($address);
+                            @endphp
+                            <a href="{{ $mapLink }}" target="_blank">
+                                <img src="{{ asset('assets/images/location-icon.svg') }}"
+                                    alt="Image">{{ $siteSetting->address }}
+                            </a>
+                        </div>
+                        <div class="me-4">
+                            <a href="tel:{{ $siteSetting->contact_phone }}">
+                                <img src="{{ asset('assets/images/call-icon.svg') }}"
+                                    alt="Image">{{ $siteSetting->contact_phone }} </a>
+                        </div>
+                        <div class="me-4">
+                            <a href="mailto:{{ $siteSetting->contact_email }}">
+                                <img src="{{ asset('assets/images/mail-icon.svg') }}"
+                                    alt="Image">{{ $siteSetting->contact_email }} </a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-6">
