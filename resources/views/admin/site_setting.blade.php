@@ -81,7 +81,7 @@
                                         alt="Site Logo" width="150" id="siteLogoPreview">
                                 </div>
                             </div>
-                            {{-- <div class="form-group d-none row  mb-2">
+                            <div class="form-group  row  mb-2">
                                 <label for=""
                                     class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Footer
                                     Logo</label>
@@ -93,7 +93,7 @@
                                     @else style="display: none;" @endif
                                         alt="Site Logo" class="bg-gray" width="150" id="footerLogoPreview">
                                 </div>
-                            </div> --}}
+                            </div>
 
                             <div class="form-group row  mb-2">
                                 <label for=""
@@ -324,19 +324,19 @@
             }
         }
 
-        // function previewFooterLogoImage(event) {
-        //     const input = event.target;
-        //     const preview = document.getElementById('footerLogoPreview');
+        function previewFooterLogoImage(event) {
+            const input = event.target;
+            const preview = document.getElementById('footerLogoPreview');
 
-        //     if (input.files && input.files[0]) {
-        //         const reader = new FileReader();
-        //         reader.onload = e => {
-        //             preview.src = e.target.result;
-        //             preview.style.display = 'block';
-        //         };
-        //         reader.readAsDataURL(input.files[0]);
-        //     }
-        // }
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
         function previewFaviconImage(event) {
             const input = event.target;

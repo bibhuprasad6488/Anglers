@@ -51,6 +51,12 @@
                             </a>
                         </li>
                         <li class="mx-2">
+                            <a href="{{ route('category.properties', $cat->slug) }}"
+                                class="{{ request()->routeIs(['category.properties']) ? 'active' : '' }}">
+                                Cabins
+                            </a>
+                        </li>
+                        <li class="mx-2">
                             <a href="{{ route('resources') }}"
                                 class="{{ request()->routeIs(['resources']) ? 'active' : '' }}">
                                 Resources
@@ -88,7 +94,7 @@
 </footer>
 
 <div>
-    <button id="backToTop" title="Go to top">↑</button>
+    <button id="backToTop" title="Go to top"><i class="fas fa-angle-up"></i></button>
 </div>
 
 <div class="footer-bottom">

@@ -5,7 +5,6 @@
 
 @section('content')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" />
-
     <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
     <style>
         .swiper-button-next,
@@ -36,8 +35,10 @@
         #booking-calendar {
             width: 100%;
             max-width: max-content;
+            height: 325px;
             border: 1px solid #dddd;
             margin: 10px auto;
+            overflow-x: scroll;
         }
 
         .litepicker {
@@ -81,67 +82,85 @@
         <div class="container py-5">
             {{-- <h2 class="text-center mb-5 maastrix">Our Services</h2> --}}
             <div class="row ">
-                <div class="col-md-12">
-                    <div class="cabin-list-wrapper-box">
-                        <div class="cabin-list-slider-box">
-                            <div class="slider">
-                                <div class="slides">
-                                    @foreach ($property->images as $image)
-                                        <img src="{{ $image->img_path }}" class="slide {{ $loop->first ? 'active' : '' }}">
-                                    @endforeach
-                                </div>
-
-                                <button class="prev" onclick="prevSlide()">❮</button>
-                                <button class="next" onclick="nextSlide()">❯</button>
-
-                                <!-- Thumbnail Images -->
-                                <div class="thumbnails">
-                                    @foreach ($property->images as $image)
-                                        <img src="{{ $image->img_path }}" class="thumb {{ $loop->first ? 'active' : '' }}"
-                                            onclick="goToSlide({{ $loop->index }})">
-                                    @endforeach
-                                </div>
-
-                            </div>
-
-                            <h2 class="text-center mt-4">YOU'LL NEVER WANT TO LEAVE</h2>
-                            <h5>{{ $property->short_desc }}</h5>
+                <div class="col-md-7 px-0 px-lg-5 mb-5 ">
+                    <div class="slider">
+                        <div class="slides">
+                            @foreach ($property->images as $image)
+                                <img src="{{ $image->img_path }}" class="slide {{ $loop->first ? 'active' : '' }}">
+                            @endforeach
                         </div>
-                        <div class="cabin-list-info-box">
-                            <h2>{{ $property->title }}</h2>
-                            <p class="tag-list">{{ $property->sub_title }}</p>
-                            <p>{!! $property->long_desc !!}</p>
-                            <p>Categories: <span class="text-dark">{{ $property->category->title }}</span></p>
-                            <h2 class="mphb-calendar-title">Availability</h2>
-                            <div id="booking-calendar"></div>
 
-                            <input id="check_date_in" type="hidden" name="check_date_in" class="form-control">
+                        <button class="prev" onclick="prevSlide()">❮</button>
+                        <button class="next" onclick="nextSlide()">❯</button>
 
-                            <input id="check_date_out" type="hidden" name="check_date_out" class="form-control">
-
-                            <form action="{{ route('search.result') }}" method="GET"
-                                id="booking-form-{{ $property->id }}" class="rounded-3 shadow-sm ">
-                                @csrf
-                                <div class="form-group mb-3">
-                                    <label for="check-in">Check in </label>
-                                    <input type="text" readonly name="check_in" id="check_in" class="form-control"
-                                        placeholder="Check in Date">
-                                </div>
-                                <br>
-                                <div class="form-group mb-3">
-                                    <label for="check-out">Check out </label>
-                                    <input type="text" readonly name="check_out" id="check_out" class="form-control"
-                                        placeholder="Check out Date">
-                                </div>
-                                <br>
-                                <div class="form-group">
-                                    <input type="submit" class="btn book-cabin-btn" value="Search">
-                                </div>
-                            </form>
+                        <!-- Thumbnail Images -->
+                        <div class="thumbnails">
+                            @foreach ($property->images as $image)
+                                <img src="{{ $image->img_path }}" class="thumb {{ $loop->first ? 'active' : '' }}"
+                                    onclick="goToSlide({{ $loop->index }})">
+                            @endforeach
                         </div>
 
                     </div>
 
+                    <h2 class="text-center mt-4 d-none d-sm-block">YOU'LL NEVER WANT TO LEAVE</h2>
+                    <h5 class="d-none d-sm-block">{{ $property->short_desc }}</h5>
+                </div>
+                <div class="col-md-5">
+                    <h2>{{ $property->title }}</h2>
+                    <p class="tag-list">{{ $property->sub_title }}</p>
+                    <p>{!! $property->long_desc !!}</p>
+                    <p>Categories: <span class="text-dark">{{ $property->category->title }}</span></p>
+                    <h2 class="mphb-calendar-title">Availability</h2>
+                    <div id="booking-calendar"></div>
+
+                    @if (session('success'))
+                        <div class="alert alert-success mx-1 mt-3 rounded-3 shadow-sm" id="success-alert">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger mx-1 mt-3 rounded-3 shadow-sm" id="success-alert">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                    <form action="{{ route('search.result') }}" method="GET" id="booking-form-{{ $property->id }}"
+                        class="rounded-3 shadow-sm ">
+                        @csrf
+                        <div class="form-group mb-3">
+                            <label for="check-in">Check in </label>
+                            <input type="hidden" name="property_id" value="{{ $property->id }}">
+                            <input type="hidden" name="category_id" value="{{ $property->category_id }}">
+                            <input type="text" readonly name="check_in" id="check_in" class="form-control"
+                                placeholder="Check in Date" value="{{ request()->input('check_in') }}">
+                        </div>
+                        <br>
+                        <div class="form-group mb-3">
+                            <label for="check-out">Check out </label>
+                            <input type="text" readonly name="check_out" id="check_out" class="form-control"
+                                placeholder="Check out Date" value="{{ request()->input('check_out') }}">
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <input type="submit" class="btn book-cabin-btn" value="Search">
+                        </div>
+                    </form>
+                    @if (isset($pricing) && !empty($pricing))
+                        <div class="card mt-4 ">
+                            <div class="card-header">
+                                <h4>Booking Information</h4>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Total Days:</strong> {{ $pricing['total_days'] }}@if ($pricing['total_days'] > 1)
+                                        days
+                                    @else
+                                        day
+                                    @endif
+                                </p>
+                                <p><strong>Final Price:</strong> $ {{ $pricing['final_price'] }}</p>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -256,24 +275,44 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+
+            const checkInInput = document.getElementById("check_in");
+            const checkOutInput = document.getElementById("check_out");
+
             const today = new Date();
             const tomorrow = new Date();
             tomorrow.setDate(today.getDate() + 1);
+
+            const todayFormatted = today.toISOString().split('T')[0];
+            const tomorrowFormatted = tomorrow.toISOString().split('T')[0];
+
+            // /* ----------------------------------
+            //    Set default values if empty
+            // ---------------------------------- */
+
+            if (!checkInInput.value) {
+                checkInInput.value = todayFormatted;
+            }
+
+            if (!checkOutInput.value) {
+                checkOutInput.value = tomorrowFormatted;
+            }
+
+            // /* ----------------------------------
+            //    Initialize Litepicker
+            // ---------------------------------- */
 
             const picker = new Litepicker({
 
                 element: document.getElementById('booking-calendar'),
 
-                elementEnd: null,
-
-                inlineMode: true, // this keeps calendar always visible
-
-                singleMode: false,
+                inlineMode: true, // always visible calendar
+                singleMode: false, // date range
 
                 numberOfMonths: 2,
                 numberOfColumns: 2,
 
-                minDate: new Date(),
+                minDate: today,
 
                 format: 'YYYY-MM-DD',
 
@@ -281,12 +320,12 @@
 
                     picker.on('selected', (date1, date2) => {
 
-                        document.getElementById("check_in").value = date1.format(
-                            'YYYY-MM-DD');
+                        if (date1) {
+                            checkInInput.value = date1.format('YYYY-MM-DD');
+                        }
 
                         if (date2) {
-                            document.getElementById("check_out").value = date2.format(
-                                'YYYY-MM-DD');
+                            checkOutInput.value = date2.format('YYYY-MM-DD');
                         }
 
                     });
@@ -295,13 +334,13 @@
 
             });
 
-            /* also set default values in inputs */
+            /* ----------------------------------
+               Sync calendar with input values
+            ---------------------------------- */
 
-            document.getElementById("check_in").value =
-                today.toISOString().split('T')[0];
-
-            document.getElementById("check_out").value =
-                tomorrow.toISOString().split('T')[0];
+            if (checkInInput.value && checkOutInput.value) {
+                picker.setDateRange(checkInInput.value, checkOutInput.value);
+            }
 
         });
     </script>

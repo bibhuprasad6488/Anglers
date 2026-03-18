@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 @php
     $siteSetting = \App\Models\SiteSetting::find(1);
+    $cat = \App\Models\PropertyCategory::orderBy('title')->first();
 @endphp
 
 <head>
@@ -55,7 +56,8 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
-    {{-- <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet"> --}}
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;600&display=swap%22 rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -212,7 +214,7 @@
                     alert.style.transition = 'opacity 0.5s ease';
                     alert.style.opacity = '0';
                     setTimeout(() => alert.remove(), 500);
-                }, 3000);
+                }, 5000);
             }
         };
 

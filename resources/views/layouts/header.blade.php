@@ -55,13 +55,12 @@
         <!-- Desktop menu -->
         <div class="collapse navbar-collapse d-none d-lg-flex">
             <ul class="navbar-nav ms-auto align-items-lg-center my_menu">
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs(['home']) ? 'active' : '' }}"
-                        href="tel:{{ $siteSetting->contact_phone }}"><img
-                            src="{{ asset('assets/images/call-icon.svg') }}" alt="Image"
-                            style="background: #6d7743; padding:5px; border-radius:50%; margin:0 5px"
-                            width="35px"><span class="text-muted">{{ $siteSetting->contact_phone }}</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="tel:{{ $siteSetting->contact_phone }}">
+                        <img src="{{ asset('assets/images/call-icon.svg') }}" alt="Image"
+                            style="background: #6d7743; padding:5px; border-radius:50%; margin:0 5px" width="35px">
+                        <span class="text-muted">{{ $siteSetting->contact_phone }}</span>
+                    </a></li>
             </ul>
         </div>
-
     </div>
 </nav>

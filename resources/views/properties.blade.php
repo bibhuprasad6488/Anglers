@@ -28,14 +28,16 @@
                 </div>
                 <div class="form-group">
                     <label class="text-white">Check In</label>
-                    <input id="check_in_date" value="" placeholder="Check-in Date" required="required" type="date"
-                        name="check_in_date" class="form-control" autocomplete="off">
-                    <input type="hidden" name="category" value="{{ $cat->slug }}">
+                    <input id="check_in_date" type="date" name="check_in_date" class="form-control" autocomplete="off"
+                        required value="{{ request('check_in_date') }}">
+
+                    <input type="hidden" name="category_id" value="{{ $cat->id }}">
                 </div>
+
                 <div class="form-group">
                     <label class="text-white">Check Out</label>
-                    <input id="check_out_date" value="" placeholder="Check-out Date" required="required"
-                        type="date" name="check_out_date" class="form-control" autocomplete="off">
+                    <input id="check_out_date" type="date" name="check_out_date" class="form-control" autocomplete="off"
+                        required value="{{ request('check_out_date') }}">
                 </div>
 
                 <div class="form-group">
@@ -64,9 +66,20 @@
                                     <div class="text-muted">
                                         <p>{{ Str::limit($p->short_desc, 350, '...') }}</p>
                                     </div>
-                                    <div><a href="{{ route('property.details', $p->slug) }}#booking-form-{{ $p->id }}"
-                                            class="btn book-cabin-btn">Check
-                                            Availability</a></div>
+                                    <div class="text-muted">
+                                        <h5 class="fw-bold">Price $ {{ $p->final_price ?? 0 }}</h5>
+                                    </div>
+                                    <div>
+                                        @if ($p->final_price)
+                                            <a href="{{ route('property.details', $p->slug) }}#booking-form-{{ $p->id }}"
+                                                class="btn book-cabin-btn">Book
+                                                Now</a>
+                                        @else
+                                            <a href="{{ route('property.details', $p->slug) }}#booking-form-{{ $p->id }}"
+                                                class="btn book-cabin-btn">Check
+                                                Availability</a>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </a>
@@ -92,6 +105,66 @@
     </section>
 @endsection
 @push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const checkIn = document.getElementById("check_in_date");
+            const checkOut = document.getElementById("check_out_date");
+
+            const today = new Date();
+            const todayFormatted = today.toISOString().split("T")[0];
+
+            const tomorrow = new Date();
+            tomorrow.setDate(today.getDate() + 1);
+            const tomorrowFormatted = tomorrow.toISOString().split("T")[0];
+
+            /* disable past dates */
+            checkIn.min = todayFormatted;
+
+            /* if no request value then set default */
+            if (!checkIn.value) {
+                checkIn.value = todayFormatted;
+            }
+
+            /* set checkout min based on checkin */
+            let checkInDate = new Date(checkIn.value);
+            let nextDay = new Date(checkInDate);
+            nextDay.setDate(nextDay.getDate() + 1);
+            let nextDayFormatted = nextDay.toISOString().split("T")[0];
+
+            checkOut.min = nextDayFormatted;
+
+            if (!checkOut.value) {
+                checkOut.value = nextDayFormatted;
+            }
+
+            /* when checkin changes */
+            checkIn.addEventListener("change", function() {
+
+                let checkInDate = new Date(this.value);
+
+                let nextDay = new Date(checkInDate);
+                nextDay.setDate(nextDay.getDate() + 1);
+
+                let nextDayFormatted = nextDay.toISOString().split("T")[0];
+
+                checkOut.min = nextDayFormatted;
+                checkOut.value = nextDayFormatted;
+
+            });
+
+            /* prevent invalid checkout */
+            checkOut.addEventListener("change", function() {
+
+                if (checkOut.value <= checkIn.value) {
+                    alert("Checkout date must be after check-in date");
+                    checkOut.value = "";
+                }
+
+            });
+
+        });
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
 

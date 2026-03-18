@@ -34,6 +34,10 @@ class PropertyController extends Controller
     {
         DB::beginTransaction();
         try {
+            $existingP = Property::where('title', $request->title)->first();
+            if ($existingP) {
+                return response()->json(['status' => false, 'message' => 'Property name already exists']);
+            }
             $property = new Property();
             $property->title = $request->title;
             $property->category_id = $request->category_id;
@@ -127,6 +131,10 @@ class PropertyController extends Controller
     {
         DB::beginTransaction();
         try {
+            $existingP = Property::where('title', $request->title)->where('id', '!=', $id)->first();
+            if ($existingP) {
+                return response()->json(['status' => false, 'message' => 'Property name already exists']);
+            }
             $property = Property::find($id);
             $property->title = $request->title;
             $property->slug = Str::slug(trim($request->title));

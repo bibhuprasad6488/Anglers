@@ -72,7 +72,7 @@
         <div class="container">
             <div class="row justify-content-center text-center">
                 <div class="col-lg-12">
-                    <h2 class=" mb-3">
+                    <h2 class=" mb-3 maatic">
                         {{ $resourcePage->resource_title }}
                     </h2>
 
