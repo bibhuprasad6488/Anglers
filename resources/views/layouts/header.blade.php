@@ -21,13 +21,14 @@
         <!-- Desktop menu -->
         <div class="collapse navbar-collapse d-none d-lg-flex">
             <ul class="navbar-nav ms-auto align-items-lg-center my_menu">
-
+                <li class="nav-item"><a class="nav-link {{ request()->routeIs(['home']) ? 'active' : '' }}"
+                        href="{{ route('home') }}">Home</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle " href="javascript:;" id="aboutDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Book Now </a>
                     <ul class="dropdown-menu shadow-sm rounded-0" aria-labelledby="aboutDropdown"
-                        style="background: rgb(252, 252, 252);">
+                        style="background: #9EAA6C;">
                         @foreach ($propertyCats as $pc)
                             <li>
                                 <a class="dropdown-item"
@@ -57,7 +58,7 @@
             <ul class="navbar-nav ms-auto align-items-lg-center my_menu">
                 <li class="nav-item"><a class="nav-link" href="tel:{{ $siteSetting->contact_phone }}">
                         <img src="{{ asset('assets/images/call-icon.svg') }}" alt="Image"
-                            style="background: #6d7743; padding:5px; border-radius:50%; margin:0 5px" width="35px">
+                            style="background: #6d7743; padding:5px; border-radius:50%; margin:0 5px" width="30px">
                         <span class="text-muted">{{ $siteSetting->contact_phone }}</span>
                     </a></li>
             </ul>
