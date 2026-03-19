@@ -24,8 +24,9 @@
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs(['home']) ? 'active' : '' }}"
                         href="{{ route('home') }}">Home</a></li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle " href="javascript:;" id="aboutDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle {{ request()->routeIs(['category.properties']) ? 'active' : '' }}"
+                        href="javascript:;" id="aboutDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
                         Book Now </a>
                     <ul class="dropdown-menu shadow-sm rounded-0" aria-labelledby="aboutDropdown"
                         style="background: #9EAA6C;">

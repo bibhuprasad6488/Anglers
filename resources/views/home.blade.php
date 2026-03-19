@@ -19,34 +19,34 @@
     padding: 16px 0;
     background-size: cover;
     background-position: center center;">
+        <div class="container">
+            <div class="mask">
+                <h1 class="mt-5 banner-title">{{ $home_page_data->banner_title }}</h1>
+                <h4 class="my-2 banner-subtitle">{{ $home_page_data->banner_sub_title }}</h4>
 
-        <div class=" mask ">
-            <h1 class="mt-5 banner-title">{{ $home_page_data->banner_title }}</h1>
-            <h4 class="my-2 banner-subtitle">{{ $home_page_data->banner_sub_title }}</h4>
+                <form action="{{ route('search.result') }}" method="GET" class="row  rounded-3 shadow-sm search-form-one">
+                    @csrf
+                    <div class="form-group col-12 col-md-3">
+                        <h4>
+                            ▷ Browse Our <br><span> Cabin Selection </span> <span title="required">*</span>
+                        </h4>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label for="">Check In</label>
+                        <input id="check_in_date" value="" placeholder="Check-in Date" required="required"
+                            type="date" name="check_in_date" class="form-control" autocomplete="off">
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label for="">Check Out</label>
+                        <input id="check_out_date" value="" placeholder="Check-out Date" required="required"
+                            type="date" name="check_out_date" class="form-control" autocomplete="off">
+                    </div>
 
-            <form action="{{ route('search.result') }}" method="GET"
-                class="form-inline d-flex justify-content-center align-items-center gap-4 flex-wrap p-5 rounded-3 shadow-sm search-form-one">
-                @csrf
-                <div class="form-group">
-                    <h4>
-                        ▷ Browse Our <br><span> Cabin Selection </span> <span title="required">*</span>
-                    </h4>
-                </div>
-                <div class="form-group">
-                    <label for="">Check In</label>
-                    <input id="check_in_date" value="" placeholder="Check-in Date" required="required" type="date"
-                        name="check_in_date" class="form-control" autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label for="">Check Out</label>
-                    <input id="check_out_date" value="" placeholder="Check-out Date" required="required"
-                        type="date" name="check_out_date" class="form-control" autocomplete="off">
-                </div>
-
-                <div class="form-group">
-                    <input type="submit" class="btn book-cabin-btn" value="Search">
-                </div>
-            </form>
+                    <div class="form-group col-12 col-md-3">
+                        <button type="submit" class="btn book-cabin-btn">Search</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 

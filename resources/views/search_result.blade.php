@@ -17,7 +17,7 @@
     </div>
 
     <section class="section ">
-        <div class="container py-5">
+        <div class="container">
             @if (!empty($properties))
                 @foreach ($properties as $k => $p)
                     <div class="row g-4 py-5">

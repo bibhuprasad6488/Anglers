@@ -19,7 +19,7 @@
         <div class="mask">
 
             <form action="{{ route('search.result') }}" method="GET"
-                class="form-inline d-flex justify-content-center align-items-center gap-4 flex-wrap p-5 rounded-3 shadow-sm search-form-one">
+                class="d-flex flex-column flex-lg-row justify-content-center align-items-center gap-4 p-5 rounded-3 shadow-sm search-form-one">
                 @csrf
                 <div class="form-group">
                     <h4>
@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" class="btn book-cabin-btn" value="Search">
+                    <button type="submit" class="btn book-cabin-btn">Search</button>
                 </div>
             </form>
         </div>
@@ -52,7 +52,7 @@
     </div>
 
     <section class="section ">
-        <div class="container py-5">
+        <div class="container">
             {{-- <h2 class="text-center mb-5 maastrix">Our Services</h2> --}}
             @foreach ($properties as $k => $p)
                 <div class="row g-4 py-5">
@@ -67,7 +67,7 @@
                                         <p>{{ Str::limit($p->short_desc, 350, '...') }}</p>
                                     </div>
                                     <div class="text-muted">
-                                        <h5 class="fw-bold">Price $ {{ $p->final_price ?? 0 }}</h5>
+                                        <h5 class="fw-bold">Price $ {{ $p->price_per_night }} per night</h5>
                                     </div>
                                     <div>
                                         @if ($p->final_price)

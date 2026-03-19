@@ -35,7 +35,7 @@
         #booking-calendar {
             width: 100%;
             max-width: max-content;
-            height: 325px;
+            height: max-content;
             border: 1px solid #dddd;
             margin: 10px auto;
             overflow-x: scroll;
@@ -50,7 +50,7 @@
         <div class="mask">
 
             <form action="{{ route('search.result') }}" method="GET"
-                class="form-inline d-flex justify-content-center align-items-center gap-4 flex-wrap p-5 rounded-3 shadow-sm search-form-one">
+                class="d-flex flex-column flex-lg-row justify-content-center align-items-center gap-4 p-5 rounded-3 shadow-sm search-form-one">
                 @csrf
                 <div class="form-group">
                     <h4>
@@ -59,13 +59,15 @@
                 </div>
                 <div class="form-group">
                     <label class="text-white">Check In</label>
-                    <input id="check_in_date" value="" placeholder="Check-in Date" required="required" type="date"
-                        name="check_in_date" class="form-control" autocomplete="off">
+                    <input id="check_in_date" type="date" name="check_in_date" class="form-control" required
+                        value="{{ request('check_in_date') ?? request('check_in') }}">
+                    <input type="hidden" name="property_id" value="{{ $property->id }}">
+                    <input type="hidden" name="category_id" value="{{ $property->category_id }}">
                 </div>
                 <div class="form-group">
                     <label class="text-white">Check Out</label>
-                    <input id="check_out_date" value="" placeholder="Check-out Date" required="required"
-                        type="date" name="check_out_date" class="form-control" autocomplete="off">
+                    <input id="check_out_date" type="date" name="check_out_date" class="form-control" required
+                        value="{{ request('check_out_date') ?? request('check_out') }}">
                 </div>
 
                 <div class="form-group">
@@ -82,7 +84,7 @@
         <div class="container py-5">
             {{-- <h2 class="text-center mb-5 maastrix">Our Services</h2> --}}
             <div class="row ">
-                <div class="col-md-7 px-0 px-lg-5 mb-5 ">
+                <div class="col-12 col-md-12 col-lg-7 px-0 px-lg-5 mb-5">
                     <div class="slider">
                         <div class="slides">
                             @foreach ($property->images as $image)
@@ -103,14 +105,16 @@
 
                     </div>
 
-                    <h2 class="text-center mt-4 d-none d-sm-block">YOU'LL NEVER WANT TO LEAVE</h2>
-                    <h5 class="d-none d-sm-block">{{ $property->short_desc }}</h5>
+                    <h2 class="text-center mt-4 d-none d-lg-block">
+                        YOU'LL NEVER WANT TO LEAVE
+                    </h2>
+                    <h5 class="d-none d-lg-block">{{ $property->short_desc }}</h5>
                 </div>
-                <div class="col-md-5">
+                <div class="col-12 col-md-12 col-lg-5">
                     <h2>{{ $property->title }}</h2>
                     <p class="tag-list">{{ $property->sub_title }}</p>
                     <p>{!! $property->long_desc !!}</p>
-                    <p>Categories: <span class="text-dark">{{ $property->category->title }}</span></p>
+                    <p><strong>Categories:</strong> <span class="text-dark">{{ $property->category->title }}</span></p>
                     <h2 class="mphb-calendar-title">Availability</h2>
                     <div id="booking-calendar"></div>
 
@@ -132,13 +136,15 @@
                             <input type="hidden" name="property_id" value="{{ $property->id }}">
                             <input type="hidden" name="category_id" value="{{ $property->category_id }}">
                             <input type="text" readonly name="check_in" id="check_in" class="form-control"
-                                placeholder="Check in Date" value="{{ request()->input('check_in') }}">
+                                placeholder="Check in Date"
+                                value="{{ request()->input('check_in') ?? request()->input('check_in_date') }}">
                         </div>
                         <br>
                         <div class="form-group mb-3">
                             <label for="check-out">Check out </label>
                             <input type="text" readonly name="check_out" id="check_out" class="form-control"
-                                placeholder="Check out Date" value="{{ request()->input('check_out') }}">
+                                placeholder="Check out Date"
+                                value="{{ request()->input('check_out') ?? request()->input('check_out_date') }}">
                         </div>
                         <br>
                         <div class="form-group">
@@ -151,13 +157,23 @@
                                 <h4>Booking Information</h4>
                             </div>
                             <div class="card-body">
-                                <p><strong>Total Days:</strong> {{ $pricing['total_days'] }}@if ($pricing['total_days'] > 1)
-                                        days
-                                    @else
-                                        day
-                                    @endif
-                                </p>
-                                <p><strong>Final Price:</strong> $ {{ $pricing['final_price'] }}</p>
+                                <div class="d-flex flex-column flex-md-row justify-content-between  gap-3">
+                                    <div class="flex-box">
+                                        <p><small>Total Days:</small><br> {{ $pricing['total_days'] }}@if ($pricing['total_days'] > 1)
+                                                days
+                                            @else
+                                                day
+                                            @endif
+                                        </p>
+                                    </div>
+                                    <div class="flex-box">
+                                        <p><strong>Final Price:</strong><br> $ {{ $pricing['final_price'] }}</p>
+
+                                    </div>
+                                    <div class="flex-box">
+                                        <a href="#" class="btn book-cabin-btn">Book Now</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     @endif
@@ -341,6 +357,55 @@
             if (checkInInput.value && checkOutInput.value) {
                 picker.setDateRange(checkInInput.value, checkOutInput.value);
             }
+
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const checkIn = document.getElementById("check_in_date");
+            const checkOut = document.getElementById("check_out_date");
+
+            const today = new Date();
+            const todayFormatted = today.toISOString().split("T")[0];
+
+            const tomorrow = new Date();
+            tomorrow.setDate(today.getDate() + 1);
+            const tomorrowFormatted = tomorrow.toISOString().split("T")[0];
+
+            /* Disable past dates */
+            checkIn.min = todayFormatted;
+
+            /* If no request value → set default */
+            if (!checkIn.value) {
+                checkIn.value = todayFormatted;
+            }
+
+            /* Set checkout based on checkin */
+            function updateCheckoutMin() {
+                let checkInDate = new Date(checkIn.value);
+                let nextDay = new Date(checkInDate);
+                nextDay.setDate(nextDay.getDate() + 1);
+
+                let nextDayFormatted = nextDay.toISOString().split("T")[0];
+
+                checkOut.min = nextDayFormatted;
+
+                if (!checkOut.value || checkOut.value <= checkIn.value) {
+                    checkOut.value = nextDayFormatted;
+                }
+            }
+
+            updateCheckoutMin();
+
+            checkIn.addEventListener("change", updateCheckoutMin);
+
+            checkOut.addEventListener("change", function() {
+                if (checkOut.value <= checkIn.value) {
+                    alert("Checkout date must be after check-in date");
+                    checkOut.value = "";
+                }
+            });
 
         });
     </script>

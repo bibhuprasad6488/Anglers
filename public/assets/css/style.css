@@ -179,18 +179,19 @@ ul.cont-info-wrap li a {
 
 .book-cabin-btn{
     padding:15px 35px;
-    font-size:16px;
+    font-size:16px !important;
     font-weight:600;
-    border-radius:6px;
-    background:#c4511c;
+    border-radius:1px !important;
+    background:#c4511c !important;
     border:none;
-    color:white;
+    color:#fff !important;
     transition:all .25s ease;
+    box-shadow: 4.092px 4.388px 0px rgb(0 0 0 / 35%);
 }
 .book-cabin-btn:hover{
     background:#a43f12;
     transform:translateY(-2px);
-    box-shadow:0 6px 14px rgba(0,0,0,.25);
+    box-shadow: 4.092px 4.388px 0px rgb(0 0 0 / 35%);
 }
 
 .btn-book-outline {
@@ -236,13 +237,12 @@ h2 {
 h2.maatic::before {
     content: "";
     display: block;
-    border-bottom: 1px solid red;
+    border-bottom: 3px solid #6d7743;
     width: 100px;
     text-align: center;
     margin: auto;
     position:absolute;
-    top:20px;
-
+    top:45px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -250,10 +250,11 @@ h2.maatic::before {
 h2.maatic::after{
     content:"";
     display:block;
-    border-bottom:1px solid green;
+    border-bottom:3px solid #6d7743;
     width:50px;
     margin:auto;
     position:absolute;
+    top:52px;
 
     left: 50%;
     transform: translateX(-50%);
@@ -340,20 +341,25 @@ form.search-form-one{
 
 form.search-form-one .book-cabin-btn {
     margin-top: 20px;
+    background-color: #c4511c !important;
+    color: #fff !important;
+    box-shadow: 4.092px 4.388px 0px rgb(0 0 0 / 35%);
+    width: 100%;
 }
 
 
 form.search-form-one input{
     height:48px;
-    border-radius:6px;
+    border-radius:1px;
     border:none;
     padding:0 12px;
     font-size:15px;
-    min-width:220px;
+    /* min-width:220px; */
 }
 
 form.search-form-one .book-cabin-btn:hover {
     background-color: #999999 !important;
+    box-shadow: 4.092px 4.388px 0px rgb(0 0 0 / 35%);
 }
 
 form.search-form-one h4{
@@ -580,10 +586,6 @@ iframe {
     font-weight: 500;
 }
 
-.text-muted
-{
-    color:#fff !important;
-}
 
 .my_menu .nav-item a {
     padding:20px 25px !important;
@@ -591,6 +593,7 @@ iframe {
     font-weight: 500;
     line-height: 28px;
     border-right:1px solid #fff;
+    background:#9EAA6C;
 }
 
 .my_menu .nav-item a span {
@@ -674,9 +677,9 @@ iframe {
 
 #intro-example {
     position: relative;
-    min-height: 60vh;
+    /* min-height: 60vh; */
     overflow: hidden;
-    height: 60vh;
+    height: 600px;
     /* display: flex; */
     /* flex-direction: column; */
 }

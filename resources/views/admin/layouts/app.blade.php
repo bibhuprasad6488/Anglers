@@ -35,10 +35,6 @@
     <!-- Add Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
-    <!-- TinyMCE -->
-    <script src="https://cdn.tiny.cloud/1/8b15k9216emgvtcy3gcsicn7efwutzm0ddo31se6ji9anpwc/tinymce/6/tinymce.min.js"
-        referrerpolicy="origin"></script>
-
     <link href="{{ asset('admin/assets/summernote/summernote.min.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
