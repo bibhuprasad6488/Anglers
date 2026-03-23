@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PropertyCategoryController;
 use App\Http\Controllers\Admin\PropertyController;
 use App\Http\Controllers\Admin\ResourcesController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -111,6 +112,7 @@ Route::get('/gallery', [HomeController::class, 'galleryPageDetails'])->name('gal
 Route::get('/blog', [HomeController::class, 'blogLists'])->name('blogs');
 Route::get('/blog-details/{slug}', [HomeController::class, 'blogDetails'])->name('blog.details');
 Route::get('/category/{slug}', [HomeController::class, 'catProperties'])->name('category.properties');
+Route::get('/category-properties/{slug}', [HomeController::class, 'catPropertiesFilter'])->name('category.property');
 Route::get('/accommodation/{slug}', [HomeController::class, 'propertyDetails'])->name('property.details');
 Route::get('/search-result', [HomeController::class, 'searchFormResult'])->name('search.result');
 Route::get('/contact-us', [HomeController::class, 'contactUs'])->name('contact');
@@ -118,3 +120,5 @@ Route::post('/contact-us-submit', [HomeController::class, 'contactUsStore'])->na
 Route::get('/thank-you', [HomeController::class, 'thankYou'])->name('thank-you');
 Route::get('/privacy-policy', [HomeController::class, 'privacyPolicy'])->name('privacy');
 Route::get('/terms-of-business', [HomeController::class, 'termsOfBusiness'])->name('terms.business');
+Route::resource('booking', BookingController::class)->names('booking');
+Route::get('/booking-confirmation/{id}', [BookingController::class, 'edit'])->name('booking.confirm');

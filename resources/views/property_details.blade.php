@@ -47,31 +47,32 @@
     </style>
     <div class="contact_page" class="text-center">
         <!-- Overlay (optional dark mask) -->
-        <div class="mask">
+        <div class="container">
 
-            <form action="{{ route('search.result') }}" method="GET"
-                class="d-flex flex-column flex-lg-row justify-content-center align-items-center gap-4 p-5 rounded-3 shadow-sm search-form-one">
+            <form action="{{ route('search.result') }}" method="GET" class="row  rounded-3 shadow-sm search-form-one"
+                id="bookingForm">
                 @csrf
-                <div class="form-group">
+                <div class="form-group col-12 col-md-3">
                     <h4>
                         ▷ Browse Our <br><span> Cabin Selection </span> <span title="required">*</span>
                     </h4>
                 </div>
-                <div class="form-group">
+                <div class="form-group col-12 col-md-3">
                     <label class="text-white">Check In</label>
                     <input id="check_in_date" type="date" name="check_in_date" class="form-control" required
                         value="{{ request('check_in_date') ?? request('check_in') }}">
+                    <input type="hidden" name="type_val" value="book_now">
                     <input type="hidden" name="property_id" value="{{ $property->id }}">
                     <input type="hidden" name="category_id" value="{{ $property->category_id }}">
                 </div>
-                <div class="form-group">
+                <div class="form-group col-12 col-md-3">
                     <label class="text-white">Check Out</label>
                     <input id="check_out_date" type="date" name="check_out_date" class="form-control" required
                         value="{{ request('check_out_date') ?? request('check_out') }}">
                 </div>
 
-                <div class="form-group">
-                    <input type="submit" class="btn book-cabin-btn" value="Search">
+                <div class="form-group col-12 col-md-3">
+                    <input type="submit" class="btn book-cabin-btn" value="Search" id="bookBtn">
                 </div>
             </form>
         </div>
@@ -108,15 +109,14 @@
                     <h2 class="text-center mt-4 d-none d-lg-block">
                         YOU'LL NEVER WANT TO LEAVE
                     </h2>
-                    <h5 class="d-none d-lg-block">{{ $property->short_desc }}</h5>
+                    <p class="taj d-none d-lg-block">{{ $property->short_desc }}</p>
                 </div>
                 <div class="col-12 col-md-12 col-lg-5">
                     <h2>{{ $property->title }}</h2>
                     <p class="tag-list">{{ $property->sub_title }}</p>
                     <p>{!! $property->long_desc !!}</p>
                     <p><strong>Categories:</strong> <span class="text-dark">{{ $property->category->title }}</span></p>
-                    <h2 class="mphb-calendar-title">Availability</h2>
-                    <div id="booking-calendar"></div>
+                    {{-- <h2 class="mphb-calendar-title">Availability</h2> --}}
 
                     @if (session('success'))
                         <div class="alert alert-success mx-1 mt-3 rounded-3 shadow-sm" id="success-alert">
@@ -128,27 +128,44 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                    <form action="{{ route('search.result') }}" method="GET" id="booking-form-{{ $property->id }}"
-                        class="rounded-3 shadow-sm ">
+                    {{-- <form action="{{ route('search.result') }}" method="GET"
+                        class="row  rounded-3 shadow-sm search-form-one">
                         @csrf
-                        <div class="form-group mb-3">
-                            <label for="check-in">Check in </label>
+                        <div class="form-group col-12 ">
+                            <label class="text-white">Check In</label>
+                            <input id="check_in" type="date" name="check_in_date" class="form-control" required
+                                value="{{ request('check_in_date') ?? request('check_in') }}">
                             <input type="hidden" name="property_id" value="{{ $property->id }}">
                             <input type="hidden" name="category_id" value="{{ $property->category_id }}">
-                            <input type="text" readonly name="check_in" id="check_in" class="form-control"
-                                placeholder="Check in Date"
-                                value="{{ request()->input('check_in') ?? request()->input('check_in_date') }}">
                         </div>
-                        <br>
-                        <div class="form-group mb-3">
-                            <label for="check-out">Check out </label>
-                            <input type="text" readonly name="check_out" id="check_out" class="form-control"
-                                placeholder="Check out Date"
-                                value="{{ request()->input('check_out') ?? request()->input('check_out_date') }}">
+                        <div class="form-group col-12 ">
+                            <label class="text-white">Check Out</label>
+                            <input id="check_out" type="date" name="check_out_date" class="form-control" required
+                                value="{{ request('check_out_date') ?? request('check_out') }}">
                         </div>
-                        <br>
+
+                        <div class="form-group col-12 ">
+                            <input type="submit" class="btn book-cabin-btn" value="Check Availability">
+                        </div>
+                    </form> --}}
+
+
+                    <div id="booking-calendar" class="d-none"></div>
+                    <form action="{{ route('search.result') }}" method="GET" id="booking-form-{{ $property->id }}"
+                        class="rounded-3 ">
+                        @csrf
+                        <input type="hidden" name="type_val" value="book_now">
+                        <div class="form-group col-12 ">
+                            <label class="text-white">Check In</label>
+                            <input id="check_in" type="date" name="check_in_date" class="form-control" required
+                                value="{{ request('check_in_date') ?? request('check_in') }}" hidden>
+                            <input id="check_out" type="date" name="check_out_date" class="form-control" required
+                                value="{{ request('check_out_date') ?? request('check_out') }}" hidden>
+                            <input type="hidden" name="property_id" value="{{ $property->id }}">
+                            <input type="hidden" name="category_id" value="{{ $property->category_id }}">
+                        </div>
                         <div class="form-group">
-                            <input type="submit" class="btn book-cabin-btn" value="Search">
+                            <input type="button" class="btn book-cabin-btn" id="bookingBtn" value="Book Now">
                         </div>
                     </form>
                     @if (isset($pricing) && !empty($pricing))
@@ -246,6 +263,12 @@
     </script>
 
     <script>
+        
+        $("#bookingBtn").on('click', function() {
+            $('#bookBtn').click();
+        });
+
+
         document.addEventListener("DOMContentLoaded", function() {
 
             const checkIn = document.getElementById("check_in");
@@ -362,49 +385,48 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-
             const checkIn = document.getElementById("check_in_date");
             const checkOut = document.getElementById("check_out_date");
 
-            const today = new Date();
-            const todayFormatted = today.toISOString().split("T")[0];
 
-            const tomorrow = new Date();
+            /* get tomorrow date */
+            let today = new Date();
+            let tomorrow = new Date(today);
             tomorrow.setDate(today.getDate() + 1);
-            const tomorrowFormatted = tomorrow.toISOString().split("T")[0];
 
-            /* Disable past dates */
-            checkIn.min = todayFormatted;
+            let tomorrowFormatted = tomorrow.toISOString().split("T")[0];
 
-            /* If no request value → set default */
-            if (!checkIn.value) {
-                checkIn.value = todayFormatted;
-            }
+            /* disable today & past dates */
+            checkIn.setAttribute("min", tomorrowFormatted);
+            checkOut.setAttribute("min", tomorrowFormatted);
 
-            /* Set checkout based on checkin */
-            function updateCheckoutMin() {
-                let checkInDate = new Date(checkIn.value);
+            /* when checkin changes */
+            checkIn.addEventListener("change", function() {
+
+                let checkInDate = new Date(this.value);
+
+                /* next day */
                 let nextDay = new Date(checkInDate);
                 nextDay.setDate(nextDay.getDate() + 1);
 
                 let nextDayFormatted = nextDay.toISOString().split("T")[0];
 
+                /* set checkout min */
                 checkOut.min = nextDayFormatted;
 
-                if (!checkOut.value || checkOut.value <= checkIn.value) {
-                    checkOut.value = nextDayFormatted;
-                }
-            }
+                /* auto set checkout */
+                checkOut.value = nextDayFormatted;
 
-            updateCheckoutMin();
+            });
 
-            checkIn.addEventListener("change", updateCheckoutMin);
-
+            /* prevent invalid checkout */
             checkOut.addEventListener("change", function() {
+
                 if (checkOut.value <= checkIn.value) {
                     alert("Checkout date must be after check-in date");
                     checkOut.value = "";
                 }
+
             });
 
         });

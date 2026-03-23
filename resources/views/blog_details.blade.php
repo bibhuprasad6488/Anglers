@@ -5,22 +5,12 @@
 
 @section('content')
 
-    <div class="contact_page" class="text-center">
-        <!-- HERO -->
-        <div class="contact_page" class="text-center">
-            {{-- <video class="bg-video" autoplay muted loop playsinline>
-            <source src="{{ asset('assets/videos/intro.mp4') }}" type="video/mp4">
-        </video> --}}
-            {{-- <img src="{{ asset('assets/images/banner_bg.jpg') }}" class="bg-video" alt="Sterling Wills & Estate Planning"> --}}
-
-            <!-- Overlay (optional dark mask) -->
-            <div class="mask">
-                <div class="text-white">
+    <div class="contact_page" >
+            <div class="py-5">
+                <div class="text-white text-center">
                     <h1 class="mb-3 inner-page-title text-white">{{ $blog->title }}</h1>
                 </div>
             </div>
-        </div>
-
         <!-- MOB HEADER -->
         @include('layouts.mob_header')
 
@@ -29,9 +19,7 @@
     <section class="section page mt-4 mb-4 cm10">
         <div class="container mt-4">
             <div class="row ">
-                <div class="col-md-8 mx-auto b-details">
-
-                    <h2>{{ $blog->title }}</h2>
+                <div class="col-md-12 b-details">
                     <h4 class="mb-3 text-center text-muted fs-2">
                         {{ \Carbon\Carbon::parse($blog->created_at)->format('M d, Y') }}</h4>
                     <img src="{{ $blog->blog_img }}" alt="{{ $blog->title }}" class="img-fluid rounded" width="100%"
@@ -44,7 +32,7 @@
                         {!! $blog->long_desc !!}
                     </div>
                 </div>
-                <div class="col-md-8 mx-auto">
+                <div class="col-md-12">
                     <div class="d-flex  space-between align-items-center mt-4 mb-4">
                         @if ($previous)
                             <div class="flex-fill">

@@ -157,16 +157,21 @@ ul.cont-info-wrap li a {
     color: #6d7743 !important;
 }
 
+.taj
+{
+    text-align:justify;
+    color:rgba(33, 37, 41, 0.75);
+}
+
 .btn-outline {
     font-size: 18px;
-    line-height: 25px;
     color: #6d7743;
     font-family: "Freight Sans Pro Semibold";
     min-width: 237px;
     box-shadow: 4.092px 4.388px 0px rgb(0 0 0 / 35%);
     border: 2px solid #6d7743;
     border-radius: 0;
-    padding: 6px 51px;
+    padding: 6px 25px;
     text-decoration: none;
 }
 
@@ -186,7 +191,7 @@ ul.cont-info-wrap li a {
     border:none;
     color:#fff !important;
     transition:all .25s ease;
-    box-shadow: 4.092px 4.388px 0px rgb(0 0 0 / 35%);
+    min-width:180px;
 }
 .book-cabin-btn:hover{
     background:#a43f12;
@@ -229,9 +234,20 @@ h2 {
     font-size: 36px !important;
     line-height: 40px !important;
     color: #6d7743 !important;
-    padding-bottom: 30px;
+    padding-bottom: 10px;
     text-transform: uppercase;
-    position:relative;
+    position: relative;
+}
+
+h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(to right, #4D436D, #6d7743);
+    border-radius: 2px;
 }
 
 h2.maatic::before {
@@ -279,6 +295,7 @@ p.tag-list {
     font-size: 16px;
     line-height: 26px;
     color: #666666;
+    min-height:67px;
 }
 
 p.truncate-overflow {
@@ -336,15 +353,17 @@ form.search-form-one{
     padding:35px 40px !important;
     box-shadow:0 20px 40px rgba(0,0,0,0.25);
     align-items:end !important;
-    margin-top: 50px;
 }
 
 form.search-form-one .book-cabin-btn {
     margin-top: 20px;
     background-color: #c4511c !important;
     color: #fff !important;
-    box-shadow: 4.092px 4.388px 0px rgb(0 0 0 / 35%);
     width: 100%;
+}
+
+.form-control{
+padding:12px .75rem;
 }
 
 
@@ -582,7 +601,7 @@ iframe {
 }
 
 .my_menu .nav-item a:hover {
-
+    background:#6d7743;
     font-weight: 500;
 }
 
@@ -649,6 +668,7 @@ iframe {
     font-size: 60px;
     padding:0 25px;
     background:rgba(.5,.5,.5,.5);
+    display:inline-block;
 }
 
 .inner-page-title {
@@ -666,6 +686,7 @@ iframe {
     text-shadow: 3px 3px 3px #000;
     padding: 0 25px;
     background: rgba(.5, .5, .5, .5);
+    display:inline-block;
 }
 .about_us .feature-box p {
     text-align: justify;
@@ -712,8 +733,7 @@ iframe {
     position: relative;
     overflow: hidden;
     /* height: 25vh; */
-    display: flex;
-    flex-direction: column;
+    margin-top:131px;
     background-color: #6d7743;
 }
 
@@ -776,7 +796,6 @@ iframe {
 #intro-example .mask {
     flex: 1;
     /* 👈 THIS IS THE FIX */
-    display: flex;
     align-items: center;
     justify-content: center;
     position: relative;

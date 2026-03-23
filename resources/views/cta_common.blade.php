@@ -62,12 +62,12 @@
                             <input type="text" class="form-control border-secondary rounded-0" placeholder="Subject*"
                                 name="ct_subject" required>
                         </div>
-                        <div class="col-lg-12 mb-5">
+                        <div class="col-lg-12 mb-4">
                             <textarea name="ct_message" id="ct_message" rows="10" class="form-control border-secondary rounded-0"
                                 placeholder="Message*" required></textarea>
                         </div>
-                        <div class="col-lg-12 mb-4 text-center ">
-                            <button type="submit" class="btn book-cabin-btn my-4">Send</button>
+                        <div class="col-lg-12 mb-4">
+                            <button type="submit" class="btn book-cabin-btn">Send</button>
                         </div>
                     </div>
                 </form>

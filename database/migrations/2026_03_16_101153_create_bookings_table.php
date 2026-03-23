@@ -16,11 +16,17 @@ return new class extends Migration
             $table->string('booking_id')->unique();
             $table->bigInteger('property_id');
             $table->bigInteger('category_id');
-            $table->string('booking_type')->comment('per_night, per_week, per_month');
             $table->date('check_in');
             $table->date('check_out');
             $table->integer('total_nights');
             $table->decimal('booking_amount', 10, 2);
+            $table->string('user_name')->nullable();
+            $table->string('user_email')->nullable();
+            $table->string('user_phone')->nullable();
+            $table->text('user_address')->nullable();
+            $table->string('number_of_child')->default(0);
+            $table->string('number_of_adult')->default(0);
+            $table->string('status')->default('locked');
             $table->timestamps();
         });
     }

@@ -6,26 +6,73 @@
     Texoma.')
 @section('meta_keyword', '')
 @section('content')
+
     <style>
-        .swiper-slide img {
-            /* width: 600px; */
-            height: 600px;
-            object-fit: cover;
-            border-radius: 5px;
+        /* 1. Hide "Showing X to Y of Z results" text */
+        .pagination+div,
+        .pagination-info,
+        .small.text-muted {
+            display: none !important;
+        }
+
+        /* 2. Center align pagination */
+        .pagination {
+            justify-content: center;
+        }
+
+        /* 3. Space between pagination buttons */
+        .pagination .page-item {
+            margin: 0 6px;
+        }
+
+
+        /* 4. Base pagination button styling */
+        .pagination .page-link {
+            color: #666;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 16px;
+            /* try 16–18px */
+            font-weight: 500;
+        }
+
+        /* 5. Active page styling */
+        .pagination .page-item.active .page-link {
+            background-color: #6d7743;
+            /* grey */
+            border-color: #ccc;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        /* 6. Hover effect (optional but polished) */
+        .pagination .page-link:hover {
+            background-color: #f2f2f2;
+            color: #000;
+        }
+
+        /* 7. Disabled state cleanup */
+        .pagination .page-item.disabled .page-link {
+            color: #aaa;
+            background-color: #fafafa;
+            border-color: #eee;
+        }
+
+        /* Optional: arrows a bit bolder */
+        .pagination .page-link[aria-label="Next »"],
+        .pagination .page-link[aria-label="« Previous"],
+        .pagination .page-link[rel="next"] {
+            font-size: 18px;
         }
     </style>
-    <style>
-        .slide2 .mini {
-            height: 200px;
-            width: 400px !important;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
     <div class="contact_page" class="text-center">
-        <div class="mask">
-            <div class="text-white">
-                <h2 class="mb-3 inner-page-title text-white">Gallery</h2>
+        <div class="container py-5">
+            <div class=" text-center">
+                <h2 class="inner-page-title text-white">Gallery</h2>
             </div>
         </div>
         <!-- MOB HEADER -->
@@ -34,126 +81,23 @@
     </div>
     <section class="section about_us py-5">
         <div class="container">
-            <div class="row g-4 py-4">
-                <div class="col-lg-6 col-md-12 mx-auto">
-                    <div class="swiper gallerySwiper">
-                        <div class="swiper-wrapper">
-
-                            @foreach ($galleries as $gallery)
-                                <div class="swiper-slide">
-                                    <img src="{{ $gallery->img_path }}" class="img-fluid w-100">
-                                </div>
-                            @endforeach
-
-                        </div>
-
-                        <!-- Navigation -->
-                        {{-- <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div> --}}
-
-                        <!-- Pagination -->
-                        {{-- <div class="swiper-pagination"></div> --}}
+            <div class="row g-2 py-4">
+                @foreach ($galleries as $gallery)
+                    <div class="col-lg-2 col-md-4 col-sm-6 mx-auto">
+                        <a href="{{ asset('storage/images/cmspage/' . $gallery->img_path) }}" class="slide2"
+                            data-fancybox="gallery">
+                            <img src="{{ asset('storage/images/cmspage/' . $gallery->img_path) }}"
+                                class="img-fluid w-100 mini shadow-sm">
+                        </a>
                     </div>
-                </div>
+                @endforeach
             </div>
-        </div>
-    </section>
-    <section class="section">
-        <div class="container-fluid">
-            <div class="row g-4 py-4">
-                <div class="col-md-12 mx-auto">
-                    <div class="swiper gallerySwiper1">
-                        <div class="swiper-wrapper">
 
-                            @foreach ($galleries as $gallery)
-                                <div class="swiper-slide slide2">
-                                    <img src="{{ $gallery->img_path }}" class="img-fluid w-100 mini">
-                                </div>
-                            @endforeach
-
-                        </div>
-
-                        <!-- Navigation -->
-                        {{-- <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div> --}}
-
-                        <!-- Pagination -->
-                        {{-- <div class="swiper-pagination"></div> --}}
-                    </div>
+            <div class="row mt-4">
+                <div class="col-12 d-flex justify-content-center">
+                    {{ $galleries->links('pagination::bootstrap-5') }}
                 </div>
             </div>
         </div>
     </section>
 @endsection
-@push('scripts')
-    <script>
-        var swiper = new Swiper(".gallerySwiper", {
-            loop: true,
-            spaceBetween: 20,
-            slidesPerView: 1,
-            centeredSlides: true,
-
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-
-            breakpoints: {
-                320: {
-                    slidesPerView: 1
-                },
-                768: {
-                    slidesPerView: 1
-                },
-                1024: {
-                    slidesPerView: 1
-                }
-            }
-        });
-    </script>
-    <script>
-        var swiper = new Swiper(".gallerySwiper1", {
-            loop: true,
-            spaceBetween: 3,
-            slidesPerView: 3,
-            centeredSlides: true,
-
-            autoplay: {
-                delay: 2000,
-                disableOnInteraction: false,
-            },
-
-            // navigation: {
-            //     nextEl: ".swiper-button-next",
-            //     prevEl: ".swiper-button-prev",
-            // },
-
-            // pagination: {
-            //     el: ".swiper-pagination",
-            //     clickable: true,
-            // },
-
-            breakpoints: {
-                320: {
-                    slidesPerView: 1
-                },
-                768: {
-                    slidesPerView: 3
-                },
-                1024: {
-                    slidesPerView: 9
-                }
-            }
-        });
-    </script>
-@endpush

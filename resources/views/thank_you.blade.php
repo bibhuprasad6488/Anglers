@@ -6,30 +6,19 @@
         $siteSetting = \App\Models\SiteSetting::find(1);
     @endphp
 
-    <div class="services" class="text-center">
-        <!-- HERO -->
-        <div class="services" class="text-center">
-            {{-- <video class="bg-video" autoplay muted loop playsinline>
-            <source src="{{ asset('assets/videos/intro.mp4') }}" type="video/mp4">
-        </video> --}}
-            <img src="{{ asset('assets/images/banner_bg.jpg') }}" class="bg-video" alt="{{ $siteSetting->site_title }}">
-
-            <!-- Overlay (optional dark mask) -->
-            <div class="mask">
-                <div class="text-white">
-                    <h2 class="mb-3 inner-page-title">Thank You</h2>
-                    <p></p>
-                </div>
+    <div class="contact_page" class="text-center">
+        <div class="container">
+            <div class=" text-center my-5">
+                <h2 class="mb-3 inner-page-title text-white">Thank You</h2>
             </div>
         </div>
-
         <!-- MOB HEADER -->
         @include('layouts.mob_header')
 
     </div>
-    <section class="py-5 bg-light d-flex align-items-center">
-        <div class="container text-center">
 
+    <section class="py-5 bg-light d-flex align-items-center cm10">
+        <div class="container text-center">
             <!-- Success Icon -->
             <div class="mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#000"
@@ -40,17 +29,15 @@
             </div>
 
             <!-- Heading -->
-            <h2 class="fw-bold mb-3">Thank You!</h2>
+            <h3 class="fw-bold mb-3">Thank You!</h3>
 
             <!-- Message -->
             <p class="mb-4 fs-5 text-muted">
-                Your submission has been received successfully.<br>
-                One of our advisors will contact you shortly.
+                Your booking has been received successfully.<br>
             </p>
 
             <!-- Optional Call-to-Action -->
-            <a href="{{ route('home') }}" class="btn btn-dark rounded-pill px-4">Back to Home</a>
-            <a href="{{ route('start.will') }}" class="btn btn-outline-dark rounded-pill px-4 ms-2">Start Another Will</a>
+            <a href="{{ route('home') }}" class="btn-outline">Back to Home</a>
 
         </div>
     </section>

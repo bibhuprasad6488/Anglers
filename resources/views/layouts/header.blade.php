@@ -60,7 +60,7 @@
                 <li class="nav-item"><a class="nav-link" href="tel:{{ $siteSetting->contact_phone }}">
                         <img src="{{ asset('assets/images/call-icon.svg') }}" alt="Image"
                             style="background: #6d7743; padding:5px; border-radius:50%; margin:0 5px" width="30px">
-                        <span class="text-muted">{{ $siteSetting->contact_phone }}</span>
+                        <span class="text-white">{{ $siteSetting->contact_phone }}</span>
                     </a></li>
             </ul>
         </div>

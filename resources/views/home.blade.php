@@ -121,7 +121,7 @@
                 @foreach ($properties as $p)
                     <div class="col-md-4">
                         <div class="d-flex flex-column h-100 gap-2">
-                            <div class="flex-fill">
+                            <div class="">
                                 <img src="{{ $p->images->first()->img_path }}" class="img-fluid w-100">
                             </div>
                             <div class="c-list-info">
@@ -163,7 +163,7 @@
     </section>
 
     <section class="section">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row g-4 py-4">
                 <div class="col-md-12 mx-auto mb-4">
                     <div class="swiper gallerySwiper1">
@@ -194,66 +194,6 @@
     @include('cta_common')
 @endsection
 @push('scripts')
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-
-            const checkIn = document.getElementById("check_in_date");
-            const checkOut = document.getElementById("check_out_date");
-
-            const today = new Date();
-            const todayFormatted = today.toISOString().split("T")[0];
-
-            const tomorrow = new Date();
-            tomorrow.setDate(today.getDate() + 1);
-            const tomorrowFormatted = tomorrow.toISOString().split("T")[0];
-
-            /* disable past dates */
-            checkIn.min = todayFormatted;
-
-            /* if no request value then set default */
-            if (!checkIn.value) {
-                checkIn.value = todayFormatted;
-            }
-
-            /* set checkout min based on checkin */
-            let checkInDate = new Date(checkIn.value);
-            let nextDay = new Date(checkInDate);
-            nextDay.setDate(nextDay.getDate() + 1);
-            let nextDayFormatted = nextDay.toISOString().split("T")[0];
-
-            checkOut.min = nextDayFormatted;
-
-            if (!checkOut.value) {
-                checkOut.value = nextDayFormatted;
-            }
-
-            /* when checkin changes */
-            checkIn.addEventListener("change", function() {
-
-                let checkInDate = new Date(this.value);
-
-                let nextDay = new Date(checkInDate);
-                nextDay.setDate(nextDay.getDate() + 1);
-
-                let nextDayFormatted = nextDay.toISOString().split("T")[0];
-
-                checkOut.min = nextDayFormatted;
-                checkOut.value = nextDayFormatted;
-
-            });
-
-            /* prevent invalid checkout */
-            checkOut.addEventListener("change", function() {
-
-                if (checkOut.value <= checkIn.value) {
-                    alert("Checkout date must be after check-in date");
-                    checkOut.value = "";
-                }
-
-            });
-
-        });
-    </script>
     <script>
         var swiper = new Swiper(".gallerySwiper1", {
             loop: true,

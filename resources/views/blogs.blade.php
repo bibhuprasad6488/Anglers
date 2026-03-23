@@ -5,22 +5,12 @@
 
 @section('content')
 
-    <div class="contact_page" class="text-center">
-        <!-- HERO -->
-        <div class="contact_page" class="text-center">
-            {{-- <video class="bg-video" autoplay muted loop playsinline>
-            <source src="{{ asset('assets/videos/intro.mp4') }}" type="video/mp4">
-        </video> --}}
-            {{-- <img src="{{ asset('assets/images/banner_bg.jpg') }}" class="bg-video" alt="Sterling Wills & Estate Planning"> --}}
-
-            <!-- Overlay (optional dark mask) -->
-            <div class="mask">
-                <div class="text-white">
-                    <h2 class="mb-3 inner-page-title text-white">NEWS</h2>
-                </div>
+    <div class="contact_page">
+        <div class="container py-5">
+            <div class="text-white text-center">
+                <h2 class="inner-page-title text-white">NEWS</h2>
             </div>
         </div>
-
         <!-- MOB HEADER -->
         @include('layouts.mob_header')
 
@@ -28,32 +18,44 @@
 
     <section class="section">
         <div class="container py-5">
-            {{-- <h2 class="text-center mb-5 maastrix">Our Services</h2> --}}
-            <div class="row g-4">
-                @foreach ($blogs as $k => $blog)
-                    <div class="col-md-8 mx-auto">
-                        <a href="{{ route('blog.details', $blog->slug) }}" class="text-decoration-none">
-                            <div class="card service-card h-100 rounded-0 border-0">
+
+
+            @foreach ($blogs as $k => $blog)
+                <div class="row g-4 py-5">
+                    <div class="col-md-4">
+
+                        <div class="slider">
+                            <div class="slides">
                                 <img src="{{ asset('storage/images/blog_images/' . $blog->blog_img) }}" class="card-img-top"
                                     width="100%" alt="{{ $blog->title }}">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-start align-items-left mb-2 p-0 border-0">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card service-card h-100 rounded-0 border-0">
+                            <div class="d-flex flex-column justify-content-center align-items-start gap-3">
+                                <a href="{{ route('blog.details', $blog->slug) }}" class="text-decoration-none">
+                                    <div>
                                         <h2>{{ $blog->title }}</h2>
                                     </div>
-                                    <div
-                                        class="d-flex justify-content-start align-items-center mb-3 p-0 border-0 text-muted">
-                                        <p>{{ Str::limit($blog->short_desc, 250, '...') }}</p>
+                                    <div class="taj">
+                                        <p>{{ Str::limit($blog->short_desc, 320, '...') }}</p>
                                     </div>
-                                    <div class="d-flex">
-                                        <div><a href="{{ route('blog.details', $blog->slug) }}" class="btn-outline">Read
-                                                more</a></div>
-                                    </div>
+                                </a>
+                                <div>
+                                    <a href="{{ route('blog.details', $blog->slug) }}" class="btn book-cabin-btn">View
+                                        Details</a>
                                 </div>
                             </div>
-                        </a>
+                        </div>
+
                     </div>
-                @endforeach
-            </div>
+
+                </div>
+            @endforeach
+
+
             <div class="row mt-4">
                 <div class="col-12 d-flex justify-content-center">
                     {{ $blogs->links('pagination::bootstrap-5') }}

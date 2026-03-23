@@ -5,10 +5,10 @@
 
 @section('content')
 
-    <div class="contact_page" class="text-center">
-        <div class="mask">
-            <div class="text-white">
-                <h2 class="mb-3 inner-page-title text-white">{{ $contactPage->title }}</h2>
+    <div class="contact_page">
+        <div class="container py-5">
+            <div class="text-white text-center">
+                <h2 class="inner-page-title text-white">{{ $contactPage->title }}</h2>
             </div>
         </div>
 

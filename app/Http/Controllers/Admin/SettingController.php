@@ -48,7 +48,7 @@ class SettingController extends Controller
     /**
      * Display the specified resource.
      */
-    
+
     public function show(string $id)
     {
         $admin = Auth::guard('admin')->user();
@@ -170,6 +170,7 @@ class SettingController extends Controller
             $setting->site_desc = $request->site_desc;
             $setting->site_map_key = $request->site_map_key;
             $setting->address = $request->address;
+            $setting->admin_tax = $request->admin_tax;
             $setting->site_meta_desc = $request->site_meta_desc;
             $setting->site_meta_key = $request->site_meta_key;
             $setting->smtp_host = $request->smtp_host;

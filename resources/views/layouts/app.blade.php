@@ -161,51 +161,6 @@
     {{-- <script src="{{ asset('assets/js/timeline.js') }}"></script> --}}
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-
-            const checkIn = document.getElementById("check_in_date");
-            const checkOut = document.getElementById("check_out_date");
-
-            /* today date */
-            let today = new Date().toISOString().split("T")[0];
-
-            /* disable past dates */
-            checkIn.setAttribute("min", today);
-            checkOut.setAttribute("min", today);
-
-            /* when checkin changes */
-            checkIn.addEventListener("change", function() {
-
-                let checkInDate = new Date(this.value);
-
-                /* next day */
-                let nextDay = new Date(checkInDate);
-                nextDay.setDate(nextDay.getDate() + 1);
-
-                let nextDayFormatted = nextDay.toISOString().split("T")[0];
-
-                /* set checkout min */
-                checkOut.min = nextDayFormatted;
-
-                /* auto set checkout */
-                checkOut.value = nextDayFormatted;
-
-            });
-
-            /* prevent invalid checkout */
-            checkOut.addEventListener("change", function() {
-
-                if (checkOut.value <= checkIn.value) {
-                    alert("Checkout date must be after check-in date");
-                    checkOut.value = "";
-                }
-
-            });
-
-        });
-    </script>
     <script>
         window.onload = function() {
             let alert = document.getElementById('success-alert');
@@ -239,6 +194,61 @@
                 behavior: "smooth"
             });
         };
+    </script>
+    <script>
+        $(document).on('input', '.numeric-only', function() {
+            this.value = this.value.replace(/\D/g, '');
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const checkIn = document.getElementById("check_in_date");
+            const checkOut = document.getElementById("check_out_date");
+
+
+            /* get tomorrow date */
+            let today = new Date();
+            let tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+
+            let tomorrowFormatted = tomorrow.toISOString().split("T")[0];
+
+            /* disable today & past dates */
+            checkIn.setAttribute("min", tomorrowFormatted);
+            checkOut.setAttribute("min", tomorrowFormatted);
+
+            /* when checkin changes */
+            checkIn.addEventListener("change", function() {
+
+                let checkInDate = new Date(this.value);
+
+                /* next day */
+                let nextDay = new Date(checkInDate);
+                nextDay.setDate(nextDay.getDate() + 1);
+
+                let nextDayFormatted = nextDay.toISOString().split("T")[0];
+
+                /* set checkout min */
+                checkOut.min = nextDayFormatted;
+
+                /* auto set checkout */
+                checkOut.value = nextDayFormatted;
+
+            });
+
+            /* prevent invalid checkout */
+            checkOut.addEventListener("change", function() {
+
+                if (checkOut.value <= checkIn.value) {
+                    alert("Checkout date must be after check-in date");
+                    checkOut.value = "";
+                }
+
+            });
+
+        });
     </script>
     @stack('scripts')
 </body>

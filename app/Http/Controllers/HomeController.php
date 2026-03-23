@@ -76,10 +76,7 @@ class HomeController extends Controller
 
     public function galleryPageDetails()
     {
-        $galleries = CmsGallery::orderBy('id')->where('status', 1)->get()->map(function ($g) {
-            $g->img_path = $g->img_path ? asset('storage/images/cmspage/' . $g->img_path) : '';
-            return $g;
-        });
+        $galleries = CmsGallery::orderBy('id')->where('status', 1)->paginate(24);
         return view('gallery_page', compact('galleries'));
     }
 
@@ -185,6 +182,41 @@ class HomeController extends Controller
         return view('properties', compact('cat', 'properties'));
     }
 
+    public function catPropertiesFilter(Request $request, $id)
+    {
+        $propertyId = $request->query('prop_id');
+        try {
+            // Get category by slug
+            $cat = PropertyCategory::where('id', $id)->firstOrFail();
+            $properties = Property::where('category_id', $cat->id)->with('images')->where('status', 1)->get()->map(function ($p) {
+                $p->images = $p->images->map(function ($img) {
+                    $img->img_path = $img->img_path ? asset('storage/images/property/' . $img->img_path) : '';
+                    return $img;
+                });
+                return $p;
+            });
+            $html = '
+            <select name="property_id" id="property_id" class="form-control border-secondary" required>
+                <option value="" disabled ' . (!$propertyId ? 'selected' : '') . '>Select Property</option>';
+
+            if ($properties->isEmpty()) {
+                $html .= '<option disabled>No properties found</option>';
+            } else {
+                foreach ($properties as $value) {
+                    $selected = ($propertyId && $propertyId == $value->id) ? 'selected' : '';
+                    $html .= '<option value="' . $value->id . '" ' . $selected . '>' . $value->title . '</option>';
+                }
+            }
+
+            $html .= '</select>';
+
+            return response()->json(['status' => true, 'message' => 'Passed', 'html' => $html]);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => false, 'message' => 'Failed Error: ' . $th->getMessage()]);
+        }
+    }
+
+
     public function propertyDetails($id)
     {
         $property = Property::where('slug', $id)->with('images', 'category')->first();
@@ -211,6 +243,7 @@ class HomeController extends Controller
         $toDate = $request->input('check_out_date') ?? $request->input('check_out');
         $propertyId = $request->input('property_id');
         $categoryId = $request->input('category_id');
+        $typeVal = $request->input('type_val');
 
         $bookedDates = [];
         $bookedIds = [];
@@ -218,17 +251,35 @@ class HomeController extends Controller
 
         if ($formDate && $toDate && $propertyId && $categoryId) {
 
+            // $checkBooking = Booking::where('property_id', $propertyId)
+            //     ->where('category_id', $categoryId)
+            //     ->where('status', '!=', 'locked')
+            //     ->orWhere('status', '!=', 'confirmed')
+            //     ->where(function ($query) use ($formDate, $toDate) {
+            //         $query->whereBetween('check_in', [$formDate, $toDate])
+            //             ->orWhereBetween('check_out', [$formDate, $toDate])
+            //             ->orWhere(function ($q) use ($formDate, $toDate) {
+            //                 $q->where('check_in', '<=', $formDate)
+            //                     ->where('check_out', '>=', $toDate);
+            //             });
+            //     })
+            //     ->exists();
+
             $checkBooking = Booking::where('property_id', $propertyId)
                 ->where('category_id', $categoryId)
+                ->whereIn('status', ['locked', 'confirmed']) // ✅ correct
                 ->where(function ($query) use ($formDate, $toDate) {
-                    $query->whereBetween('check_in', [$formDate, $toDate])
-                        ->orWhereBetween('check_out', [$formDate, $toDate])
-                        ->orWhere(function ($q) use ($formDate, $toDate) {
-                            $q->where('check_in', '<=', $formDate)
-                                ->where('check_out', '>=', $toDate);
-                        });
+                    $query->where('check_in', '<', $toDate)
+                        ->where('check_out', '>', $formDate);
                 })
                 ->exists();
+
+
+
+
+            // 10-15 booked
+            // 1-20 search
+            $qry = 'Select * from bookings where check_in < todate and check_out > fromdate where cat';
 
             if ($checkBooking) {
                 $bookedDates = Booking::where('property_id', $propertyId)
@@ -242,25 +293,56 @@ class HomeController extends Controller
                             });
                     })
                     ->get(['check_in', 'check_out']);
-                return back()->with('error', 'Selected Dates are not available for that property. Please select different dates.');
-            } else {
-                $property = Property::with('images', 'category')->find($propertyId);
-                if ($property) {
-                    $property->images = $property->images->map(function ($img) {
-                        $img->img_path = $img->img_path ? asset('storage/images/property/' . $img->img_path) : '';
-                        return $img;
-                    });
-                }
 
-                $home_page_data = CmsHomePage::find(1);
-                if ($home_page_data) {
-                    $home_page_data->banner_img = $home_page_data->banner_img ? asset('storage/images/cmspage/' . $home_page_data->banner_img) : '';
-                    $home_page_data->setion_one_img = $home_page_data->setion_one_img ? asset('storage/images/cmspage/' . $home_page_data->setion_one_img) : '';
-                    $home_page_data->setion_two_img = $home_page_data->setion_two_img ? asset('storage/images/cmspage/' . $home_page_data->setion_two_img) : '';
+                $messageD = [
+                    'type' => 'error',
+                    'message' => 'Selected Dates are not available for that property. Please select different dates.'
+                ];
+                return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'messageD'));
+            } else {
+                if ($typeVal == 'book_now') {
+                    return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId'));
+                } else {
+                    DB::beginTransaction();
+                    try {
+                        $pricing = $this->getFinalBookingPrice($propertyId, $formDate, $toDate);
+
+                        $lastBooking = Booking::latest('id')->first();
+
+                        if ($lastBooking) {
+                            // Extract last number
+                            $lastNumber = (int) substr($lastBooking->booking_id, -4);
+                            $newNumber = $lastNumber + 1;
+                        } else {
+                            $newNumber = 1;
+                        }
+
+                        // Generate formatted booking number
+                        $bookingNo = 'BK-' . date('Y') . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+
+                        // create new booking
+                        $booking = new Booking();
+                        $booking->booking_id = $bookingNo;
+                        $booking->property_id = $propertyId;
+                        $booking->category_id = $categoryId;
+                        $booking->check_in = $formDate;
+                        $booking->check_out = $toDate;
+                        $booking->total_nights = $pricing['total_days'];
+                        $booking->booking_amount = $pricing['final_price'];
+                        $booking->save();
+                        DB::commit();
+
+                        return redirect()->route('booking.confirm', $booking->booking_id);
+                    } catch (\Throwable $th) {
+                        DB::rollBack();
+
+                        $messageD = [
+                            'type' => 'error',
+                            'message' => 'Error: ' . $th->getMessage()
+                        ];
+                        return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'messageD'));
+                    }
                 }
-                $siteSetting = SiteSetting::find(1);
-                $pricing = $this->getFinalBookingPrice($propertyId, $formDate, $toDate);
-                return view('property_details', compact('property', 'home_page_data', 'siteSetting', 'pricing'));
             }
         } else if ($formDate && $toDate && $categoryId) {
 
@@ -296,20 +378,11 @@ class HomeController extends Controller
 
                     return $p;
                 });
-            if ($properties) {
-                return view('properties', compact('cat', 'properties'));
-            } else {
-                return view('search_result', compact('formDate', 'toDate'));
-            }
+            return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId'));
         } else if ($formDate && $toDate) {
-            $bookedIds = Booking::where(function ($query) use ($formDate, $toDate) {
-                $query->whereBetween('check_in', [$formDate, $toDate])
-                    ->orWhereBetween('check_out', [$formDate, $toDate])
-                    ->orWhere(function ($q) use ($formDate, $toDate) {
-                        $q->where('check_in', '<=', $formDate)
-                            ->where('check_out', '>=', $toDate);
-                    });
-            })
+            $bookedIds = Booking::whereIn('status', ['locked', 'confirmed'])
+                ->where('check_in', '<', $toDate)
+                ->where('check_out', '>', $formDate)
                 ->pluck('property_id')
                 ->toArray();
 
@@ -330,13 +403,17 @@ class HomeController extends Controller
 
                     return $p;
                 });
-            // dd($properties);
-            return view('search_result', compact('formDate', 'toDate', 'properties'));
+
+            return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'properties'));
         }
     }
 
     private function getFinalBookingPrice($propertyId, $formDate, $toDate)
     {
+
+        $adminTax = SiteSetting::find(1)->admin_tax ?? 5;
+        $finalTax = ($adminTax / 100);
+
         $property = Property::find($propertyId);
         $pricePerDay = $property->price_per_night;
         $pricePerWeek = $property->price_per_week;
@@ -374,6 +451,11 @@ class HomeController extends Controller
             ($daysLeftAfterWeeksDiff * $pricePerDay);
 
 
+        $totalAmount = round($finalPrice, 2);
+
+        $priceWithTax = ($finalTax *  $totalAmount) +  $totalAmount;
+        $priceWithOutTax = $priceWithTax / (1 + $adminTax / 100);
+
         return [
             'check_in' => $formDate,
             'check_out' => $toDate,
@@ -382,7 +464,8 @@ class HomeController extends Controller
             'months' => $mothsDiff,
             'weeks' => $weeksDiff,
             'days' => $daysLeftAfterWeeksDiff,
-            'final_price' => round($finalPrice, 2)
+            'total_price' => $priceWithOutTax,
+            'final_price' =>  $priceWithTax
         ];
     }
 
