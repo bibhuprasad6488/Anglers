@@ -171,6 +171,8 @@ class SettingController extends Controller
             $setting->site_map_key = $request->site_map_key;
             $setting->address = $request->address;
             $setting->admin_tax = $request->admin_tax;
+            $setting->stripe_key = $request->stripe_key;
+            $setting->stripe_secret = $request->stripe_secret;
             $setting->site_meta_desc = $request->site_meta_desc;
             $setting->site_meta_key = $request->site_meta_key;
             $setting->smtp_host = $request->smtp_host;

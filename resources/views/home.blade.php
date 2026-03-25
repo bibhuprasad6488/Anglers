@@ -195,6 +195,7 @@
 @endsection
 @push('scripts')
     <script>
+        localStorage.clear();
         var swiper = new Swiper(".gallerySwiper1", {
             loop: true,
             spaceBetween: 1,

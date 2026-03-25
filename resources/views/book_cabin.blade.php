@@ -18,7 +18,7 @@
     <section class="section ">
         <div class="container">
             <form action="{{ route('booking.update', $booking->id) }}" method="POST"
-                class="row  rounded-3 shadow-sm search-form-on">
+                class="row  rounded-3 shadow-sm search-form-on" id="bookConfirmForm">
                 @csrf
                 @method('PUT')
                 <div class="row">
@@ -102,22 +102,48 @@
                             <div class="fs-5">Pay by Card (Stripe)</div>
                             <small>Pay with your credit card Via Stripe</small>
                         </div>
-                        <div class="card p-2 shadow-sm mb-4">
+
+                        <input type="hidden" name="amount" id="finalAmount" value="{{ $booking->booking_amount }}">
+                        <div class="card p-3 shadow-sm mb-4">
+                            <label>Credit or debit card</label>
+                            <div id="card-element" class="form-control p-3"></div>
+                            <div id="card-errors" class="text-danger mt-2"></div>
+                        </div>
+                        {{-- <div class="card p-2 shadow-sm mb-4">
 
                             <div class="form-group mb-4">
                                 <label class="fs-5">Credit od debit card</label>
-                                <input id="card_number" type="text" name="card_number" class="form-control" 
+                                <input id="card_number" type="text" name="card_number" class="form-control"
                                     value="{{ $bookin->card_number ?? old('card_number') }}"
                                     placeholder="0000 0000 0000 0000" inputmode="numeric" pattern="[0-9\s]*">
                                 <img id="card_icon" src="" width="40"
                                     style="position:absolute; right:14px; top:52%; transform:translateY(-50%); display:none;"
                                     src="{{ asset('assets/images/cards/default.png') }}">
                             </div>
+                            <div id="card_extra" class="row mt-3" style="display: none;">
 
-                        </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fs-5">Expiry Date</label>
+                                        <input type="text" id="exp_month" name="exp_month" class="form-control"
+                                            placeholder="MM/YY" maxlength="5" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fs-5">CVV</label>
+                                        <input type="text" id="cvv" name="cvv" class="form-control"
+                                            placeholder="CVV" maxlength="4" required>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div> --}}
                         @if ($booking->status == 'locked')
                             <div class="form-group mb-3">
-                                <input type="submit" class="btn book-cabin-btn" value="Book Now">
+                                <input type="button" class="btn book-cabin-btn" value="Book Now" id="payBtn">
                             </div>
                         @endif
                     </div>
@@ -172,11 +198,18 @@
                                         </tr>
 
                                         <tr class="border-light">
-                                            <th>Dates</th>
-                                            <th class="text-end">Amount</th>
+                                            <th colspan="2">Dates</th>
+                                            {{-- <th class="text-end">Amount</th> --}}
                                         </tr>
 
-                                        @foreach ($booking->dates as $date)
+                                        <tr class="border-light">
+                                            <td class="text-muted">
+                                                {{ \Carbon\Carbon::parse($booking->check_in)->format('F d, Y') }}</td>
+                                            <td class="text-muted text-end">
+                                                {{ \Carbon\Carbon::parse($booking->check_out)->format('F d, Y') }}</td>
+                                        </tr>
+
+                                        {{-- @foreach ($booking->dates as $date)
                                             <tr class="border-light">
                                                 <td class="text-muted">
                                                     {{ \Carbon\Carbon::parse($date)->format('F d, Y') }}
@@ -190,7 +223,7 @@
                                         <tr class="border-light">
                                             <th>Dates Subtotal</th>
                                             <th class="text-end">${{ $booking->price_without_tax }}</th>
-                                        </tr>
+                                        </tr> --}}
 
                                         <tr class="border-light">
                                             <th>Accommodation Subtotal</th>
@@ -245,8 +278,11 @@
     </section>
 @endsection
 @push('scripts')
+    <script src="https://js.stripe.com/v3/"></script>
     <!-- Script -->
     <script>
+        localStorage.clear();
+
         function showPriceBreakUp(btn) {
             let section = document.getElementById('priceBreakup');
             let bCat = document.getElementById('bkCat');
@@ -300,6 +336,9 @@
     <script>
         let cardInput = document.getElementById('card_number');
         let cardIcon = document.getElementById('card_icon');
+        let extraBlock = document.getElementById('card_extra');
+        let expField = document.getElementById('exp_month');
+        let cvvField = document.getElementById('cvv');
 
         if (cardInput) {
 
@@ -318,6 +357,36 @@
 
                 // Format safely
                 e.target.value = formatCardNumber(value, type);
+
+                // Update CVV length dynamically
+                updateCVVLength(type);
+
+                // UI adjustments
+                cardIcon.style.top = '52%';
+
+                // ✅ When complete
+                if (value.length === maxLength) {
+
+                    // Luhn validation
+                    if (!isValidCardNumber(value)) {
+                        cardInput.classList.add('is-invalid');
+                        if (extraBlock) extraBlock.style.display = 'none';
+                        return;
+                    } else {
+                        cardInput.classList.remove('is-invalid');
+                    }
+
+                    if (extraBlock) extraBlock.style.display = 'flex';
+                    cardIcon.style.top = '30%';
+
+                    if (expField) expField.focus();
+                }
+
+                // ✅ If user edits back
+                if (value.length < maxLength) {
+                    if (extraBlock) extraBlock.style.display = 'none';
+                    cardInput.classList.remove('is-invalid');
+                }
 
                 // Update icon
                 updateCardIcon(type, value);
@@ -343,7 +412,6 @@
                         ' '));
                 }
 
-                // default (Visa, MasterCard, Discover)
                 return value.replace(/(\d{1,4})/g, '$1 ').trim();
             }
 
@@ -354,9 +422,41 @@
                 }
 
                 let icon = type ? type : 'default';
-
                 cardIcon.src = `/assets/images/cards/${icon}.png`;
                 cardIcon.style.display = 'block';
+            }
+
+            // ✅ CVV dynamic length
+            function updateCVVLength(type) {
+                if (!cvvField) return;
+
+                if (type === 'amex') {
+                    cvvField.setAttribute('maxlength', '4');
+                    cvvField.setAttribute('placeholder', '4-digit CVV');
+                } else {
+                    cvvField.setAttribute('maxlength', '3');
+                    cvvField.setAttribute('placeholder', '3-digit CVV');
+                }
+            }
+
+            // ✅ Luhn Algorithm
+            function isValidCardNumber(number) {
+                let sum = 0;
+                let shouldDouble = false;
+
+                for (let i = number.length - 1; i >= 0; i--) {
+                    let digit = parseInt(number.charAt(i));
+
+                    if (shouldDouble) {
+                        digit *= 2;
+                        if (digit > 9) digit -= 9;
+                    }
+
+                    sum += digit;
+                    shouldDouble = !shouldDouble;
+                }
+
+                return sum % 10 === 0;
             }
 
             // fallback if image missing
@@ -364,5 +464,110 @@
                 this.src = '/assets/images/cards/default.png';
             };
         }
+
+
+        // ✅ Expiry auto format
+        if (expField) {
+            expField.addEventListener('input', function(e) {
+                let val = e.target.value.replace(/\D/g, '').substring(0, 4);
+
+                if (val.length >= 3) {
+                    val = val.substring(0, 2) + '/' + val.substring(2);
+                }
+
+                e.target.value = val;
+            });
+        }
+
+        // ✅ CVV numeric only
+        if (cvvField) {
+            cvvField.addEventListener('input', function(e) {
+                e.target.value = e.target.value.replace(/\D/g, '');
+            });
+        }
+    </script>
+    <script>
+        let adultValue = document.getElementById('number_of_adult');
+        let childValue = document.getElementById('number_of_child');
+        let firstName = document.getElementById('first_name');
+        let lastName = document.getElementById('last_name');
+        let emailValue = document.getElementById('user_email');
+        let phoneValue = document.getElementById('user_phone');
+        let bookingForm = document.getElementById('bookConfirmForm');
+        let payBtn = document.getElementById('payBtn');
+        // const stripe = Stripe(
+        //     "pk_test_51TES9NQcR5k9cNV7ALf7HLqeRDxHIbLyjHcxpBzKfOrN8YFoEfVDytxUvhinZA5VOhuf5ruJ8jzR2IdBPEE8dGz1008rCzPS4D"
+        // );
+        const stripe = Stripe("{{ $stripeKey }}");
+        const elements = stripe.elements();
+
+        const card = elements.create("card");
+        card.mount("#card-element");
+
+
+        payBtn.addEventListener("click", async function() {
+            payBtn.value = 'Processing...';
+            // Correct way to disable button
+            payBtn.setAttribute('disabled', true);
+
+            if (adultValue.value == '') {
+                adultValue.focus();
+            }
+            if (childValue.value == '') {
+                childValue.focus();
+            }
+            if (firstName.value == '') {
+                firstName.focus();
+            }
+            if (lastName.value == '') {
+                lastName.focus();
+            }
+            if (emailValue.value == '') {
+                emailValue.focus();
+            }
+            if (phoneValue.value == '') {
+                phoneValue.focus();
+            }
+
+            // return false;
+            // Step 1: call controller
+            let res = await fetch("{{ route('payment.store') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    amount: document.getElementById('finalAmount').value,
+                    booking_id: "{{ $booking->id }}",
+                    name: firstName.value + ' ' + lastName.value,
+                    email: emailValue.value,
+                    phone: phoneValue.value
+                })
+            });
+
+            let data = await res.json();
+            console.log(data);
+            // return false;
+            // Step 2: confirm payment
+            const result = await stripe.confirmCardPayment(data.client_secret, {
+                payment_method: {
+                    card: card
+                }
+            });
+
+            if (result.error) {
+                document.getElementById("card-errors").innerText = result.error.message;
+                // Re-enable on failure
+                payBtn.removeAttribute('disabled');
+                payBtn.value = 'Book Now';
+            } else {
+                if (result.paymentIntent.status === "succeeded") {
+                    bookingForm.submit();
+                    // console.log(result);
+                    // window.location.href = "/payment-success";
+                }
+            }
+        });
     </script>
 @endpush

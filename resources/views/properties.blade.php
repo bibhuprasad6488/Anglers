@@ -111,6 +111,11 @@
 @endsection
 @push('scripts')
     <script>
+        let checkInDate = localStorage.getItem('check_in_date');
+        let checkOutDate = localStorage.getItem('check_out_date');
+
+        document.getElementById("check_in_date").value = checkInDate;
+        document.getElementById("check_out_date").value = checkOutDate;
         document.addEventListener("DOMContentLoaded", function() {
 
             document.querySelectorAll(".slider").forEach(function(slider) {

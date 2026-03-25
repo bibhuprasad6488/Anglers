@@ -10,7 +10,9 @@
         <div class="row">
             <div class="col-lg-8 mx-auto">
                 <div class="card">
-                    <div class="card-header primary-color"><h4>Settings</h4></div>
+                    <div class="card-header primary-color">
+                        <h4>Settings</h4>
+                    </div>
                     @if (session('success'))
                         <div class="alert alert-success mx-4 mt-3 rounded-3 shadow-sm" id="success-alert">
                             {{ session('success') }}
@@ -82,8 +84,7 @@
                                 </div>
                             </div>
                             <div class="form-group  row  mb-2">
-                                <label for=""
-                                    class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Footer
+                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Footer
                                     Logo</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input type="file" name="footer_logo" id="footer_logo" class="form-control"
@@ -96,8 +97,7 @@
                             </div>
 
                             <div class="form-group row  mb-2">
-                                <label for=""
-                                    class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Favicon
+                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Favicon
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input type="file" name="favicon" id="favicon" class="form-control"
@@ -125,200 +125,212 @@
                                 </div>
                             </div>
                             <div class="form-group  row  mb-2">
-                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Admin Tax
+                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Admin
+                                    Tax
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12 ">
                                     <div class="input-group">
-                                        <input type="text" name="admin_tax" id="admin_tax" class="form-control numeric-only"
+                                        <input type="text" name="admin_tax" id="admin_tax"
+                                            class="form-control numeric-only"
                                             value="{{ optional($setting)->admin_tax }}">
-                                            <div class="input-group-append ">
-                                                <input type="button" class=" form-control" value="%" readonly>
-                                            </div>
+                                        <div class="input-group-append ">
+                                            <input type="button" class=" form-control" value="%" readonly>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group d-none row  mb-2">
-                                <label for=""
-                                    class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Call/Whatsapp No
+                            <div class="form-group  row  mb-2">
+                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">STRIPE KEY
                                 </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" name="call_wp_number" id="call_wp_number" class="form-control"
-                                        value="{{ optional($setting)->call_wp_number }}">
+                                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                    <textarea name="stripe_key" id="stripe_key" rows="3" class="form-control" placeholder="STRIPE KEY">{{ optional($setting)->stripe_key }}</textarea>
                                 </div>
                             </div>
-                            <div class="form-group d-none row  mb-2">
-                                <label for=""
-                                    class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Whatsapp Message
+                            <div class="form-group  row  mb-2">
+                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">STRIPE SECRET
                                 </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <textarea name="wp_message" id="wp_message" class="form-control" rows="3">{{ optional($setting)->wp_message }}</textarea>
+                                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                    <textarea name="stripe_secret" id="stripe_secret" rows="3" class="form-control" placeholder="STRIPE SECRET">{{ optional($setting)->stripe_secret }}</textarea>
                                 </div>
                             </div>
-                            <div class="form-group d-none row  mb-2">
-                                <label for=""
-                                    class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Footer
-                                    Logo One</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="file" name="footer_logo_one" id="footer_logo_one"
-                                        class="form-control">
-                                    <img @if ($setting && $setting->footer_logo_one) src="{{ $setting->footer_logo_one }}"
-                                    @else style="display: none;" @endif
-                                        alt="Site Logo" width="100">
-                                </div>
-                            </div>
-                            <div class="form-group d-none row  mb-2">
-                                <label for=""
-                                    class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Footer
-                                    Logo Two</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="file" name="footer_logo_two" id="footer_logo_two"
-                                        class="form-control">
-                                    <img @if ($setting && $setting->footer_logo_two) src="{{ $setting->footer_logo_two }}"
-                                    @else style="display: none;" @endif
-                                        alt="Site Logo" width="100">
-                                </div>
-                            </div>
-
-                            <div class="form-group d-none row  mb-2">
-                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
-                                    Google Map Setting
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <textarea name="site_map_key" id="site_map_key" class="form-control" rows="3" placeholder="Iframe link">{{ optional($setting)->site_map_key }}</textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-group d-none row mb-2">
-                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Site
-                                    CTA Title </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" name="cta_title" id="cta_title" class="form-control"
-                                        value="{{ optional($setting)->cta_title }}" placeholder="CTA Title">
-                                </div>
-                            </div>
-                            <div class="form-group d-none row mb-2">
-                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Site
-                                    CTA Sub Title</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" name="cta_sub_title" id="cta_sub_title" class="form-control"
-                                        value="{{ optional($setting)->cta_sub_title }}" placeholder="CTA Sub Title">
-                                </div>
-                            </div>
-                            <div class="form-group d-none row mb-2">
-                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Site
-                                    Footer Text One</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <textarea name="footer_text_one" id="footer_text_one" class="form-control" rows="3">{{ optional($setting)->footer_text_one }}</textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-group d-none row mb-2">
-                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Site
-                                    Footer Text Two</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <textarea name="footer_text_two" id="cont" class="form-control" rows="3">{{ optional($setting)->footer_text_two }}</textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-group row  mb-2">
-                                <label for=""
-                                    class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Copyrights
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" name="copyright" id="copyright" class="form-control"
-                                        value="{{ optional($setting)->copyright }}" required>
-                                </div>
-                            </div>
-
-                            <div class="form-group d-none row mb-2">
-                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Site
-                                    Meta
-                                    Description</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <textarea name="site_meta_desc" id="site_meta_desc" class="form-control" rows="3">{{ optional($setting)->site_meta_desc }}</textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-group d-none row mb-2">
-                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Site
-                                    Meta
-                                    Keywords</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <textarea name="site_meta_key" id="site_meta_key" class="form-control" rows="3">{{ optional($setting)->site_meta_key }}</textarea>
-                                </div>
-                            </div>
-                            <div class="form-group d-none row  mb-2">
-                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">SMTP
-                                    Host
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" name="smtp_host" id="smtp_host" class="form-control"
-                                        value="{{ optional($setting)->smtp_host }}">
-                                </div>
-                            </div>
-                            <div class="form-group d-none row  mb-2">
-                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">SMTP
-                                    Port
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" name="smtp_port" id="smtp_port" class="form-control"
-                                        value="{{ optional($setting)->smtp_port }}">
-                                </div>
-                            </div>
-                            <div class="form-group d-none row  mb-2">
-                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">SMTP
-                                    Username
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" name="smtp_username" id="smtp_username" class="form-control"
-                                        value="{{ optional($setting)->smtp_username }}">
-                                </div>
-                            </div>
-                            <div class="form-group d-none row  mb-2">
-                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">SMTP
-                                    Password
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" name="smtp_password" id="smtp_password" class="form-control"
-                                        value="{{ optional($setting)->smt_password }}">
-                                </div>
-                            </div>
-                            <div class="form-group d-none row  mb-2">
-                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">SMTP
-                                    From
-                                    Name
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" name="smtp_from_name" id="smtp_from_name" class="form-control"
-                                        value="{{ optional($setting)->smtp_from_name }}">
-                                </div>
-                            </div>
-                            <div class="form-group d-none row  mb-2">
-                                <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">SMTP
-                                    From
-                                    Email
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" name="smtp_from_email" id="smtp_from_email"
-                                        class="form-control" value="{{ optional($setting)->smtp_from_email }}">
-                                </div>
-                            </div>
-
-
-                            <hr />
-                            <div class="row">
-                                <div class="d-flex justify-content-center">
-                                    <div class="d-md-flex d-grid align-items-center gap-3">
-                                        <button type="submit" id="submitBtn1" class="btn primary-color px-4"
-                                            name="submit2">Update</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
                     </div>
+                    <div class="form-group d-none row  mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Call/Whatsapp
+                            No
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="call_wp_number" id="call_wp_number" class="form-control"
+                                value="{{ optional($setting)->call_wp_number }}">
+                        </div>
+                    </div>
+                    <div class="form-group d-none row  mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Whatsapp
+                            Message
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea name="wp_message" id="wp_message" class="form-control" rows="3">{{ optional($setting)->wp_message }}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group d-none row  mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Footer
+                            Logo One</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="file" name="footer_logo_one" id="footer_logo_one" class="form-control">
+                            <img @if ($setting && $setting->footer_logo_one) src="{{ $setting->footer_logo_one }}"
+                                    @else style="display: none;" @endif
+                                alt="Site Logo" width="100">
+                        </div>
+                    </div>
+                    <div class="form-group d-none row  mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Footer
+                            Logo Two</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="file" name="footer_logo_two" id="footer_logo_two" class="form-control">
+                            <img @if ($setting && $setting->footer_logo_two) src="{{ $setting->footer_logo_two }}"
+                                    @else style="display: none;" @endif
+                                alt="Site Logo" width="100">
+                        </div>
+                    </div>
+
+                    <div class="form-group d-none row  mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
+                            Google Map Setting
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea name="site_map_key" id="site_map_key" class="form-control" rows="3" placeholder="Iframe link">{{ optional($setting)->site_map_key }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group d-none row mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Site
+                            CTA Title </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="cta_title" id="cta_title" class="form-control"
+                                value="{{ optional($setting)->cta_title }}" placeholder="CTA Title">
+                        </div>
+                    </div>
+                    <div class="form-group d-none row mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Site
+                            CTA Sub Title</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="cta_sub_title" id="cta_sub_title" class="form-control"
+                                value="{{ optional($setting)->cta_sub_title }}" placeholder="CTA Sub Title">
+                        </div>
+                    </div>
+                    <div class="form-group d-none row mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Site
+                            Footer Text One</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea name="footer_text_one" id="footer_text_one" class="form-control" rows="3">{{ optional($setting)->footer_text_one }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group d-none row mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Site
+                            Footer Text Two</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea name="footer_text_two" id="cont" class="form-control" rows="3">{{ optional($setting)->footer_text_two }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row  mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Copyrights
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="copyright" id="copyright" class="form-control"
+                                value="{{ optional($setting)->copyright }}" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group d-none row mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Site
+                            Meta
+                            Description</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea name="site_meta_desc" id="site_meta_desc" class="form-control" rows="3">{{ optional($setting)->site_meta_desc }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group d-none row mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Site
+                            Meta
+                            Keywords</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea name="site_meta_key" id="site_meta_key" class="form-control" rows="3">{{ optional($setting)->site_meta_key }}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group d-none row  mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">SMTP
+                            Host
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="smtp_host" id="smtp_host" class="form-control"
+                                value="{{ optional($setting)->smtp_host }}">
+                        </div>
+                    </div>
+                    <div class="form-group d-none row  mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">SMTP
+                            Port
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="smtp_port" id="smtp_port" class="form-control"
+                                value="{{ optional($setting)->smtp_port }}">
+                        </div>
+                    </div>
+                    <div class="form-group d-none row  mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">SMTP
+                            Username
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="smtp_username" id="smtp_username" class="form-control"
+                                value="{{ optional($setting)->smtp_username }}">
+                        </div>
+                    </div>
+                    <div class="form-group d-none row  mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">SMTP
+                            Password
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="smtp_password" id="smtp_password" class="form-control"
+                                value="{{ optional($setting)->smt_password }}">
+                        </div>
+                    </div>
+                    <div class="form-group d-none row  mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">SMTP
+                            From
+                            Name
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="smtp_from_name" id="smtp_from_name" class="form-control"
+                                value="{{ optional($setting)->smtp_from_name }}">
+                        </div>
+                    </div>
+                    <div class="form-group d-none row  mb-2">
+                        <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">SMTP
+                            From
+                            Email
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="smtp_from_email" id="smtp_from_email" class="form-control"
+                                value="{{ optional($setting)->smtp_from_email }}">
+                        </div>
+                    </div>
+
+
+                    <hr />
+                    <div class="row">
+                        <div class="d-flex justify-content-center">
+                            <div class="d-md-flex d-grid align-items-center gap-3">
+                                <button type="submit" id="submitBtn1" class="btn primary-color px-4"
+                                    name="submit2">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection
 @push('scripts')

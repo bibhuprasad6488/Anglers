@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ResourcesController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\StripeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -122,3 +123,4 @@ Route::get('/privacy-policy', [HomeController::class, 'privacyPolicy'])->name('p
 Route::get('/terms-of-business', [HomeController::class, 'termsOfBusiness'])->name('terms.business');
 Route::resource('booking', BookingController::class)->names('booking');
 Route::get('/booking-confirmation/{id}', [BookingController::class, 'edit'])->name('booking.confirm');
+Route::resource('payment', StripeController::class)->names('payment');

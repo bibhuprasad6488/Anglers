@@ -274,31 +274,37 @@ class HomeController extends Controller
                 })
                 ->exists();
 
-
-
-
-            // 10-15 booked
-            // 1-20 search
-            $qry = 'Select * from bookings where check_in < todate and check_out > fromdate where cat';
-
             if ($checkBooking) {
-                $bookedDates = Booking::where('property_id', $propertyId)
-                    ->where('category_id', $categoryId)
-                    ->where(function ($query) use ($formDate, $toDate) {
-                        $query->whereBetween('check_in', [$formDate, $toDate])
-                            ->orWhereBetween('check_out', [$formDate, $toDate])
-                            ->orWhere(function ($q) use ($formDate, $toDate) {
-                                $q->where('check_in', '<=', $formDate)
-                                    ->where('check_out', '>=', $toDate);
-                            });
-                    })
-                    ->get(['check_in', 'check_out']);
+                $bookedIds = Booking::whereIn('status', ['locked', 'confirmed'])
+                    ->where('check_in', '<', $toDate)
+                    ->where('check_out', '>', $formDate)
+                    ->pluck('property_id')
+                    ->toArray();
+
+                $properties = Property::whereNotIn('id', $bookedIds)
+                    ->where('status', 1)
+                    ->with('images')
+                    ->get()
+                    ->map(function ($p) use ($formDate, $toDate) {
+
+                        $p->images = $p->images->map(function ($img) {
+                            $img->img_path = $img->img_path
+                                ? asset('storage/images/property/' . $img->img_path)
+                                : '';
+                            return $img;
+                        });
+
+                        $p->pricing = $this->getFinalBookingPrice($p->id, $formDate, $toDate);
+
+                        return $p;
+                    });
+
 
                 $messageD = [
                     'type' => 'error',
                     'message' => 'Selected Dates are not available for that property. Please select different dates.'
                 ];
-                return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'messageD'));
+                return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'messageD', 'properties'));
             } else {
                 if ($typeVal == 'book_now') {
                     return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId'));
@@ -349,14 +355,9 @@ class HomeController extends Controller
             $cat = PropertyCategory::find($categoryId);
 
             $bookedIds = Booking::where('category_id', $categoryId)
-                ->where(function ($query) use ($formDate, $toDate) {
-                    $query->whereBetween('check_in', [$formDate, $toDate])
-                        ->orWhereBetween('check_out', [$formDate, $toDate])
-                        ->orWhere(function ($q) use ($formDate, $toDate) {
-                            $q->where('check_in', '<=', $formDate)
-                                ->where('check_out', '>=', $toDate);
-                        });
-                })
+                ->whereIn('status', ['locked', 'confirmed'])
+                ->where('check_in', '<', $toDate)
+                ->where('check_out', '>', $formDate)
                 ->pluck('property_id')
                 ->toArray();
 
@@ -378,7 +379,7 @@ class HomeController extends Controller
 
                     return $p;
                 });
-            return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId'));
+            return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'properties'));
         } else if ($formDate && $toDate) {
             $bookedIds = Booking::whereIn('status', ['locked', 'confirmed'])
                 ->where('check_in', '<', $toDate)

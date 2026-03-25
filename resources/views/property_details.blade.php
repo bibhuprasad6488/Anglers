@@ -61,9 +61,9 @@
                     <label class="text-white">Check In</label>
                     <input id="check_in_date" type="date" name="check_in_date" class="form-control" required
                         value="{{ request('check_in_date') ?? request('check_in') }}">
-                    <input type="hidden" name="type_val" value="book_now">
-                    <input type="hidden" name="property_id" value="{{ $property->id }}">
-                    <input type="hidden" name="category_id" value="{{ $property->category_id }}">
+                    {{-- <input type="hidden" name="type_val" value="book_now"> --}}
+                    {{-- <input type="hidden" name="property_id" value="{{ $property->id }}">
+                    <input type="hidden" name="category_id" value="{{ $property->category_id }}"> --}}
                 </div>
                 <div class="form-group col-12 col-md-3">
                     <label class="text-white">Check Out</label>
@@ -154,15 +154,15 @@
                     <form action="{{ route('search.result') }}" method="GET" id="booking-form-{{ $property->id }}"
                         class="rounded-3 ">
                         @csrf
-                        <input type="hidden" name="type_val" value="book_now">
+                        {{-- <input type="hidden" name="type_val" value="book_now"> --}}
                         <div class="form-group col-12 ">
                             <label class="text-white">Check In</label>
                             <input id="check_in" type="date" name="check_in_date" class="form-control" required
                                 value="{{ request('check_in_date') ?? request('check_in') }}" hidden>
                             <input id="check_out" type="date" name="check_out_date" class="form-control" required
                                 value="{{ request('check_out_date') ?? request('check_out') }}" hidden>
-                            <input type="hidden" name="property_id" value="{{ $property->id }}">
-                            <input type="hidden" name="category_id" value="{{ $property->category_id }}">
+                            {{-- <input type="hidden" name="property_id" value="{{ $property->id }}">
+                            <input type="hidden" name="category_id" value="{{ $property->category_id }}"> --}}
                         </div>
                         <div class="form-group">
                             <input type="button" class="btn book-cabin-btn" id="bookingBtn" value="Book Now">
@@ -263,13 +263,21 @@
     </script>
 
     <script>
-        
         $("#bookingBtn").on('click', function() {
             $('#bookBtn').click();
         });
 
+        let checkInDate = localStorage.getItem('check_in_date');
+        let checkOutDate = localStorage.getItem('check_out_date');
 
+        document.getElementById("check_in_date").value = checkInDate;
+        document.getElementById("check_out_date").value = checkOutDate;
+        document.getElementById("check_in").value = checkInDate;
+        document.getElementById("check_out").value = checkOutDate;
+
+        // console.log(checkInDate + ', ' + checkOutDate);
         document.addEventListener("DOMContentLoaded", function() {
+
 
             const checkIn = document.getElementById("check_in");
             const checkOut = document.getElementById("check_out");
