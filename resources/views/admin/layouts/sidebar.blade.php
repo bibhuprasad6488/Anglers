@@ -44,6 +44,12 @@
                     Properties
                 </a>
 
+                <a class="nav-link {{ request()->routeIs(['admin.bookings.*']) ? 'active' : '' }} "
+                    href="{{ route('admin.bookings.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    Bookings
+                </a>
+
                 <!-- Setting -->
                 <a class="nav-link {{ request()->routeIs(['admin.site.setting']) ? 'active' : '' }} "
                     href="{{ route('admin.site.setting') }}">

@@ -158,6 +158,7 @@
         let files = [];
 
         const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+        const maxSize = 2 * 1024 * 1024; // ✅ 2MB in bytes
 
 
         dropArea.addEventListener('click', () => fileInput.click());
@@ -190,6 +191,16 @@
                     continue;
                 }
 
+
+                // ✅ Size validation
+                if (file.size > maxSize) {
+                    alert("Maximum allowed size is 2MB.");
+                    continue;
+                }
+
+                if (files.some(f => f.name === file.name && f.size === file.size)) {
+                    continue;
+                }
 
                 files.push(file);
 

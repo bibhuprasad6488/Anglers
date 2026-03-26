@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BlogPostController;
+use App\Http\Controllers\Admin\BookingController as AdminBookingController;
 use App\Http\Controllers\Admin\CmsContactpageController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\HomepageController;
@@ -84,6 +85,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Properties
         Route::resource('properties', PropertyController::class)->names('properties');
         Route::get('del-property-img/{id}', [PropertyController::class, 'deletePropertyImage'])->name('del-property-img');
+        // Bookings
+        Route::resource('bookings', AdminBookingController::class)->names('bookings');
 
         // Setting
         Route::resource('profile-setting', SettingController::class)->names('profile-setting');

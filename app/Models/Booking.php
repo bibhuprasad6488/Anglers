@@ -22,4 +22,9 @@ class Booking extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function property()
+    {
+        return $this->belongsTo(Property::class, 'property_id', 'id');
+    }
 }
