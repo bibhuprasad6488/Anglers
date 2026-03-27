@@ -27,7 +27,7 @@
                     <p class="mt-3 text-muted">
                         {{ $blog->short_desc }}
                     </p>
-                    <h2><span class="text-dark ltc">Lake Texoma Cabin Rentals - </span>{{ $siteSetting->site_title }}</h2>
+                    <h2 class="left-align"><span class="text-dark ltc">Lake Texoma Cabin Rentals - </span>{{ $siteSetting->site_title }}</h2>
                     <div>
                         {!! $blog->long_desc !!}
                     </div>

@@ -61,7 +61,7 @@
                 <div class="col-md-7 ">
                     <div class="d-flex flex-column h-100 gap-4">
                         <div class="feature-box flex-fill">
-                            <h2>{{ $home_page_data->setion_one_title }}</h2>
+                            <h2 class="left-align">{{ $home_page_data->setion_one_title }}</h2>
                             {!! $home_page_data->setion_one_desc !!}
                         </div>
                         <div class="feature-box flex-fill">
@@ -88,7 +88,7 @@
         <div class="container">
             <div class="row justify-content-center text-center">
                 <div class="col-lg-12">
-                    <h2 class=" text-white mb-3 maatic">
+                    <h2 class=" text-white mb-3  center-align">
                         {{ $home_page_data->setion_two_title }}
                     </h2>
 
@@ -107,7 +107,7 @@
                 <div class="col-md-10 mx-auto text-center">
                     <div class="d-flex flex-column h-100 gap-4">
                         <div class="feature-box flex-fill">
-                            <h2 class="maatic">VIEW ALL OUR CABINS</h2>
+                            <h2 class=" center-align">VIEW ALL OUR CABINS</h2>
                         </div>
                     </div>
                 </div>
@@ -132,8 +132,7 @@
                                     <b>Price start at:</b>
                                     <span class="mphb-price">
                                         <span class="mphb-currency">$</span>{{ $p->price_per_night }}</span>
-                                    <span class="mphb-price-period" title="Choose dates to see relevant prices">per
-                                        night</span>
+                                    per night
                                 </h6>
                             </div>
                         </div>
@@ -153,8 +152,8 @@
                 <div class="col-md-10 mx-auto text-center">
                     <div class="d-flex flex-column h-100 gap-4">
                         <div class="feature-box flex-fill">
-                            <h2 class="maatic">BROWSE OUR GALLERY</h2>
-                            <h4 class="text-muted fw-bold"><i>“Find the best place to stay!”</i></h4>
+                            <h2 class=" center-align">BROWSE OUR GALLERY</h2>
+                            <h4 class="text-muted fw-bold center-h4"><i>“Find the best place to stay!”</i></h4>
                         </div>
                     </div>
                 </div>
@@ -186,7 +185,7 @@
                     </div>
                 </div>
                 <div class="col-md-12 text-center py-4">
-                    <a href="{{ route('gallery') }}" class=" btn-outline">View All Photos</a>
+                    <a href="{{ route('gallery') }}" class="btn book-cabin-btn">View All Photos</a>
                 </div>
             </div>
         </div>

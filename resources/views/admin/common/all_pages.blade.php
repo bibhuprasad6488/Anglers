@@ -53,6 +53,16 @@
                                         <td><a href="{{ route('admin.contact-page-setting.index') }}"
                                                 class="btn primary-color">Edit</a></td>
                                     </tr>
+                                    <tr>
+                                        <td>Terms & Condition</td>
+                                        <td><a href="{{ route('admin.term.business') }}"
+                                                class="btn primary-color">Edit</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Privacy Policy</td>
+                                        <td><a href="{{ route('admin.privacy.policy') }}"
+                                                class="btn primary-color">Edit</a></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

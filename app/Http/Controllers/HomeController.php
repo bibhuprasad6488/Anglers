@@ -272,7 +272,7 @@ class HomeController extends Controller
                     $query->where('check_in', '<', $toDate)
                         ->where('check_out', '>', $formDate);
                 })
-                ->exists();
+                ->first();
 
             if ($checkBooking) {
                 $bookedIds = Booking::whereIn('status', ['locked', 'confirmed'])
@@ -304,7 +304,8 @@ class HomeController extends Controller
                     'type' => 'error',
                     'message' => 'Selected Dates are not available for that property. Please select different dates.'
                 ];
-                return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'messageD', 'properties'));
+                return back()->with('error', 'This property is booked from ' . Carbon::parse($checkBooking->check_in)->format('F d, Y') . ' to ' . Carbon::parse($checkBooking->check_out)->format('F d, Y') . '. Please select different dates.');
+                // return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'messageD', 'properties'));
             } else {
                 if ($typeVal == 'book_now') {
                     return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId'));

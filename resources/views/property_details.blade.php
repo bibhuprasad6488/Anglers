@@ -49,6 +49,16 @@
         <!-- Overlay (optional dark mask) -->
         <div class="container">
 
+            @if (session('success'))
+                <div class="alert alert-success mx-1 mt-3 rounded-3 shadow-sm" id="success-alert">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger mx-1 mt-3 rounded-3 shadow-sm" id="success-alert">
+                    {{ session('error') }}
+                </div>
+            @endif
             <form action="{{ route('search.result') }}" method="GET" class="row  rounded-3 shadow-sm search-form-one"
                 id="bookingForm">
                 @csrf
@@ -62,8 +72,8 @@
                     <input id="check_in_date" type="date" name="check_in_date" class="form-control" required
                         value="{{ request('check_in_date') ?? request('check_in') }}">
                     {{-- <input type="hidden" name="type_val" value="book_now"> --}}
-                    {{-- <input type="hidden" name="property_id" value="{{ $property->id }}">
-                    <input type="hidden" name="category_id" value="{{ $property->category_id }}"> --}}
+                    <input type="hidden" name="property_id" value="{{ $property->id }}">
+                    <input type="hidden" name="category_id" value="{{ $property->category_id }}">
                 </div>
                 <div class="form-group col-12 col-md-3">
                     <label class="text-white">Check Out</label>
@@ -112,22 +122,11 @@
                     <p class="taj d-none d-lg-block">{{ $property->short_desc }}</p>
                 </div>
                 <div class="col-12 col-md-12 col-lg-5">
-                    <h2>{{ $property->title }}</h2>
+                    <h2 class="left-align">{{ $property->title }}</h2>
                     <p class="tag-list">{{ $property->sub_title }}</p>
                     <p>{!! $property->long_desc !!}</p>
-                    <p><strong>Categories:</strong> <span class="text-dark">{{ $property->category->title }}</span></p>
+                    <p><strong>Categorie:</strong> <span class="text-dark">{{ $property->category->title }}</span></p>
                     {{-- <h2 class="mphb-calendar-title">Availability</h2> --}}
-
-                    @if (session('success'))
-                        <div class="alert alert-success mx-1 mt-3 rounded-3 shadow-sm" id="success-alert">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-                    @if (session('error'))
-                        <div class="alert alert-danger mx-1 mt-3 rounded-3 shadow-sm" id="success-alert">
-                            {{ session('error') }}
-                        </div>
-                    @endif
                     {{-- <form action="{{ route('search.result') }}" method="GET"
                         class="row  rounded-3 shadow-sm search-form-one">
                         @csrf

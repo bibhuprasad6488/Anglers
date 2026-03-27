@@ -1,7 +1,7 @@
-<section class="section cnt_info pb-5 cm10">
+<section class="section cnt_info pb-5 ">
     <div class="container">
-        <h2>CONTACT INFORMATION</h2>
-        <div class="row g-4">
+        <h2 class="left-align">CONTACT INFORMATION</h2>
+        <div class="row">
             <div class="col-lg-6">
                 <div class="card rounded-0 border-0">
                     <h6>{{ $siteSetting->site_title }}</h6>

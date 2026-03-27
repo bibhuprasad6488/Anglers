@@ -78,7 +78,7 @@
                                     <div
                                         class="card-body d-flex flex-column justify-content-center align-items-start gap-3">
                                         <div>
-                                            <h2>{{ $p->title }}</h2>
+                                            <h2 class="left-align">{{ $p->title }}</h2>
                                         </div>
                                         <div class="taj">
                                             <p>{{ Str::limit($p->short_desc, 430, '...') }}</p>
@@ -104,7 +104,7 @@
                     </div>
                 @endforeach
             @else
-                <h4 class="my-5">No Data Available</h4>
+                <h4 class="my-5 py-5">There is No Property Available</h4>
             @endif
         </div>
     </section>

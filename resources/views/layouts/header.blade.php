@@ -24,7 +24,7 @@
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs(['home']) ? 'active' : '' }}"
                         href="{{ route('home') }}">Home</a></li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle {{ request()->routeIs(['category.properties']) ? 'active' : '' }}"
+                    <a class="nav-link dropdown-toggle {{ request()->routeIs(['category.properties', 'property.details']) ? 'active' : '' }}"
                         href="javascript:;" id="aboutDropdown" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         Book Now </a>
@@ -45,7 +45,8 @@
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs(['contact']) ? 'active' : '' }}"
                         href="{{ route('contact') }}">Contact</a></li>
 
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs(['blogs']) ? 'active' : '' }}"
+                <li class="nav-item"><a
+                        class="nav-link {{ request()->routeIs(['blogs', 'blog.details']) ? 'active' : '' }}"
                         href="{{ route('blogs') }}">Blog</a></li>
                 {{-- <li class="nav-item ms-lg-3">
                     <a href="{{ route('start.will') }}" class="btn btn-outline-light rounded-0 start_btn">

@@ -33,11 +33,11 @@
 
             <!-- Message -->
             <p class="mb-4 fs-5 text-muted">
-                Your booking has been received successfully.<br>
+                {{ $siteSetting->footer_text_one }}
             </p>
 
             <!-- Optional Call-to-Action -->
-            <a href="{{ route('home') }}" class="btn-outline">Back to Home</a>
+            <a href="{{ route('home') }}" class="btn book-cabin-btn">Back to Home</a>
 
         </div>
     </section>

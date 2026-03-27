@@ -18,7 +18,7 @@
     </div>
     <section class="section about_us py-5">
         <div class="container">
-            <div class="row g-4 py-4">
+            <div class="row ">
 
                 <!-- LEFT IMAGE BOX -->
                 <div class="col-md-7 ">
@@ -45,7 +45,7 @@
 
     <section class="section about_us">
         <div class="container">
-            <div class="row g-4 py-4">
+            <div class="row">
 
                 <!-- LEFT IMAGE BOX -->
                 <div class="col-md-5 ">
@@ -68,11 +68,11 @@
         </div>
     </section>
 
-    <section class="ctttt cm10">
+    <section class="section  pb-5">
         <div class="container">
             <div class="row justify-content-center text-center">
                 <div class="col-lg-12">
-                    <h2 class=" mb-3 maatic">
+                    <h2 class=" mb-3 center-align">
                         {{ $resourcePage->resource_title }}
                     </h2>
 
@@ -82,15 +82,15 @@
                     <div class="d-flex flex-row h-100 gap-1 btn-box-wrap justify-content-center">
                         <div class="feature-box">
                             <a href="{{ $resourcePage->resource_btn_one_link }}"
-                                class=" btn-outline">{{ $resourcePage->resource_btn_one_text }}</a>
+                                class="btn book-cabin-btn">{{ $resourcePage->resource_btn_one_text }}</a>
                         </div>
                         <div class="feature-box">
                             <a href="{{ $resourcePage->resource_btn_one_link }}"
-                                class=" btn-outline">{{ $resourcePage->resource_btn_one_text }}</a>
+                                class="btn book-cabin-btn">{{ $resourcePage->resource_btn_one_text }}</a>
                         </div>
                         <div class="feature-box">
                             <a href="{{ $resourcePage->resource_btn_one_link }}"
-                                class=" btn-outline">{{ $resourcePage->resource_btn_one_text }}</a>
+                                class="btn book-cabin-btn">{{ $resourcePage->resource_btn_one_text }}</a>
                         </div>
                     </div>
                 </div>

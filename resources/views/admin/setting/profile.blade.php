@@ -35,7 +35,7 @@
                     </div>
                     <div class="card-body">
                         <form method="POST"
-                            action="{{ route('admin.profile-setting.update', isset($adminUser) ? $adminUser->id : '') }}">
+                            action="{{ route('admin.profile-setting.update', isset($adminUser) ? $adminUser->id : '') }}" class="sForm">
                             @csrf
                             @method('PUT')
 
@@ -51,7 +51,7 @@
                                     value="{{ isset($adminUser) ? $adminUser->email : '' }}" required>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn1">Update Profile</button>
                         </form>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                     </div>
                     <div class="card-body">
                         <form method="POST" id="passworForm"
-                            action="{{ route('admin.chnage-password', isset($adminUser) ? $adminUser->id : '') }}">
+                            action="{{ route('admin.chnage-password', isset($adminUser) ? $adminUser->id : '') }}" id="spForm">
                             @csrf
 
                             <div class="mb-3">
@@ -86,7 +86,7 @@
                             </div>
                             <div id="errors"></div>
 
-                            <button type="submit" class="btn btn-primary">Update Password</button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn2">Update Password</button>
                         </form>
                     </div>
                 </div>
@@ -148,6 +148,26 @@
             // If validation passes  submit the form
             this.submit();
 
+        });
+
+
+        let subBtn = document.getElementById('submitBtn1');
+        let subForm = document.getElementById('sForm');
+        subBtn.addEventListener("click", async function() {
+            subBtn.innerText = 'Processing...';
+            // Correct way to disable button
+            subBtn.setAttribute('disabled', true);
+            subForm.submit();
+        });
+
+        
+        let subBtn2 = document.getElementById('submitBtn2');
+        let subForm2 = document.getElementById('spForm');
+        subBtn2.addEventListener("click", async function() {
+            subBtn2.innerText = 'Processing...';
+            // Correct way to disable button
+            subBtn2.setAttribute('disabled', true);
+            subForm2.submit();
         });
     </script>
 @endpush

@@ -33,7 +33,7 @@
                     @endif
 
                     <form action="{{ route('admin.property-categories.update', $cat->id) }}"
-                        class="form-horizontal form-label-left" method="POST" enctype="multipart/form-data">
+                        class="form-horizontal form-label-left" method="POST" enctype="multipart/form-data" id="sForm">
                         @csrf
                         @method('PUT')
                         <div class="card mb-5">
@@ -74,3 +74,15 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        let subBtn = document.getElementById('submitBtn1');
+        let subForm = document.getElementById('sForm');
+        subBtn.addEventListener("click", async function() {
+            subBtn.innerText = 'Processing...';
+            // Correct way to disable button
+            subBtn.setAttribute('disabled', true);
+            subForm.submit();
+        });
+    </script>
+@endpush

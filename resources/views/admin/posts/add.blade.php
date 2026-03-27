@@ -31,7 +31,7 @@
                         </div>
                     @endif
                     <form action="{{ route('admin.posts.store') }}" class="form-horizontal form-label-left" method="POST"
-                        enctype="multipart/form-data">
+                        enctype="multipart/form-data" id="sForm">
                         @csrf
                         <div class="card">
                             <div class="card-header primary-color">
@@ -154,6 +154,16 @@
                     foreground: '#000000',
                 }
             });
+        });
+    </script>
+    <script>
+        let subBtn = document.getElementById('submitBtn1');
+        let subForm = document.getElementById('sForm');
+        subBtn.addEventListener("click", async function() {
+            subBtn.innerText = 'Processing...';
+            // Correct way to disable button
+            subBtn.setAttribute('disabled', true);
+            subForm.submit();
         });
     </script>
 @endpush

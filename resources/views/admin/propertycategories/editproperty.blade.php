@@ -209,6 +209,7 @@
         let files = [];
 
         const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+        const maxSize = 2 * 1024 * 1024; // ✅ 2MB in bytes
 
         dropArea.addEventListener('click', () => fileInput.click());
 
@@ -241,6 +242,16 @@
                     continue;
                 }
 
+                // ✅ Size validation
+                if (file.size > maxSize) {
+                    alert("Maximum allowed size is 2MB.");
+                    continue;
+                }
+                // Prevent duplicate files
+                if (files.some(f => f.name === file.name && f.size === file.size)) {
+                    continue;
+                }
+
 
                 files.push(file);
 
@@ -259,11 +270,17 @@
         uploadBtn.addEventListener('click', function(e) {
             e.preventDefault();
 
+            uploadBtn.innerText = 'Processing...';
+            // Correct way to disable button
+            uploadBtn.setAttribute('disabled', true);
+
             if (titleInput.value.trim() === '' || subTitleInput.value.trim() === '') {
                 alert("Please fill in the Title and Sub Title fields.");
+                uploadBtn.innerText = 'Save';
+                uploadBtn.removeAttribute('disabled');
                 return;
             }
-
+            
             // if (files.length === 0) {
             //     alert("Please select images first.");
             //     return;
@@ -305,13 +322,15 @@
                     console.log(data);
                     if (data.status) {
                         alert(data.message);
-                        window.location.reload();
+                        window.location.href = "{{ route('admin.property-categories.index') }}";
                     } else {
                         alert(data.message);
+                        uploadBtn.removeAttribute('disabled');
                     }
                 })
                 .catch(error => {
                     console.log(error);
+                    uploadBtn.removeAttribute('disabled');
                 });
         });
     </script>

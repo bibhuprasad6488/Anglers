@@ -2,11 +2,6 @@
 @section('title', 'CMS Gallery')
 @section('content')
     <div class="container-fluid px-4">
-        {{-- <h1 class="mt-4">CMS Home Page</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Dashboard</li>
-            <li class="breadcrumb-item ">CMS Home Page</li>
-        </ol> --}}
         <div class="row">
             <div class="col-lg-8 mx-auto">
                 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -219,8 +214,14 @@
         uploadBtn.addEventListener('click', function(e) {
             e.preventDefault();
 
+            uploadBtn.innerText = 'Processing...';
+            // Correct way to disable button
+            uploadBtn.setAttribute('disabled', true);
+
             if (files.length === 0) {
                 alert("Please select images first.");
+                uploadBtn.innerText = 'Save';
+                uploadBtn.removeAttribute('disabled');
                 return;
             }
 
@@ -241,6 +242,8 @@
                         return response.json().then(err => {
                             throw err;
                         });
+                        uploadBtn.innerText = 'Save';
+                        uploadBtn.removeAttribute('disabled');
                     }
                     return response.json();
                 })
@@ -250,6 +253,8 @@
                 })
                 .catch(error => {
                     console.log(error);
+                    uploadBtn.innerText = 'Save';
+                    uploadBtn.removeAttribute('disabled');
                 });
         });
     </script>

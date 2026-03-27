@@ -37,7 +37,7 @@
                             <div class="d-flex flex-column justify-content-center align-items-start gap-3">
                                 <a href="{{ route('blog.details', $blog->slug) }}" class="text-decoration-none">
                                     <div>
-                                        <h2>{{ $blog->title }}</h2>
+                                        <h2 class="left-align">{{ $blog->title }}</h2>
                                     </div>
                                     <div class="taj">
                                         <p>{{ Str::limit($blog->short_desc, 320, '...') }}</p>
