@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BlogPostController;
 use App\Http\Controllers\Admin\BookingController as AdminBookingController;
 use App\Http\Controllers\Admin\CmsContactpageController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\HomepageController;
 use App\Http\Controllers\Admin\PropertyCategoryController;
@@ -61,9 +62,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/reset-password', [App\Http\Controllers\Admin\Auth\LoginController::class, 'reset'])->name('password.store');
 
     Route::middleware('auth:admin')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
+        // Route::get('/dashboard', function () {
+        //     return view('admin.dashboard');
+        // })->name('dashboard');
+
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::get('all-pages', [SettingController::class, 'viewAllPages'])->name('all-page');
 

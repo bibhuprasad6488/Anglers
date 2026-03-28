@@ -12,7 +12,7 @@
             </div>
             <div class="ms-auto d-none">
                 <div class="btn-group">
-                    <a href="{{ route('admin.partners.create') }}" class="btn btn-primary">Add New</a>
+                    <a href="#" class="btn btn-primary">Add New</a>
                 </div>
             </div>
         </div>
@@ -29,13 +29,13 @@
             @endif
             <div class="col-md-6">
                 <div class="card mb-4">
-                    <div class="card-header">
+                    <div class="card-header primary-color">
                         <i class="fas fa-user-cog me-1"></i>
                         Update Profile Information
                     </div>
                     <div class="card-body">
                         <form method="POST"
-                            action="{{ route('admin.profile-setting.update', isset($adminUser) ? $adminUser->id : '') }}" class="sForm">
+                            action="{{ route('admin.profile-setting.update', isset($adminUser) ? $adminUser->id : '') }}" id="sForm">
                             @csrf
                             @method('PUT')
 
@@ -51,7 +51,7 @@
                                     value="{{ isset($adminUser) ? $adminUser->email : '' }}" required>
                             </div>
 
-                            <button type="submit" class="btn btn-primary" id="submitBtn1">Update Profile</button>
+                            <button type="submit" class="btn primary-color" id="submitBtn1">Update Profile</button>
                         </form>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
             <!-- Password update form-->
             <div class="col-md-6">
                 <div class="card mb-4">
-                    <div class="card-header">
+                    <div class="card-header primary-color">
                         <i class="fas fa-key me-1"></i>
                         Chnange Password
                     </div>
@@ -86,7 +86,7 @@
                             </div>
                             <div id="errors"></div>
 
-                            <button type="submit" class="btn btn-primary" id="submitBtn2">Update Password</button>
+                            <button type="submit" class="btn primary-color" id="submitBtn2">Update Password</button>
                         </form>
                     </div>
                 </div>
@@ -160,7 +160,7 @@
             subForm.submit();
         });
 
-        
+
         let subBtn2 = document.getElementById('submitBtn2');
         let subForm2 = document.getElementById('spForm');
         subBtn2.addEventListener("click", async function() {
