@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        @include('layouts.mob_header')
+
     </div>
 
     <section class="py-5 mb-6 cm10">

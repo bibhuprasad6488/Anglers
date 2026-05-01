@@ -11,8 +11,6 @@
                     <h1 class="mb-3 inner-page-title text-white">{{ $blog->title }}</h1>
                 </div>
             </div>
-        <!-- MOB HEADER -->
-        @include('layouts.mob_header')
 
     </div>
 

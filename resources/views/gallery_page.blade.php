@@ -75,8 +75,7 @@
                 <h2 class="inner-page-title text-white">Gallery</h2>
             </div>
         </div>
-        <!-- MOB HEADER -->
-        @include('layouts.mob_header')
+
 
     </div>
     <section class="section about_us py-5">

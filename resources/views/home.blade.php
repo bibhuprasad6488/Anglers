@@ -50,8 +50,7 @@
         </div>
     </div>
 
-    <!-- MOB HEADER -->
-    @include('layouts.mob_header')
+
 
     <section class="section about_us">
         <div class="container">
@@ -120,7 +119,7 @@
             <div class="row g-4 py-2">
                 @foreach ($properties as $p)
                     <div class="col-md-4">
-                        <div class="d-flex flex-column h-100 gap-2">
+                        <div class="d-flex flex-column h-100 gap-1 card p-2 shadow">
                             <div class="">
                                 <img src="{{ $p->images->first()->img_path }}" class="img-fluid w-100">
                             </div>

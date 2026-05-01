@@ -11,8 +11,6 @@
                 <h2 class="inner-page-title text-white">NEWS</h2>
             </div>
         </div>
-        <!-- MOB HEADER -->
-        @include('layouts.mob_header')
 
     </div>
 

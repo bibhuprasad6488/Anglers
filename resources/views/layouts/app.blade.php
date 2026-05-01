@@ -129,8 +129,12 @@
             </div>
         </nav> --}}
 
+        @include('layouts.header')
+        <!-- MOB HEADER -->
+        @include('layouts.mob_header')
         <main>
-            @include('layouts.header')
+
+            <!-- content -->
             @yield('content')
         </main>
     </div>

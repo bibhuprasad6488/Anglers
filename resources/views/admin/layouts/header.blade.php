@@ -1,6 +1,7 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark ">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="{{ route('admin.dashboard') }}">{{ Auth::guard('admin')->user()->name ? Auth::guard('admin')->user()->name : '' }}</a>
+    <a class="navbar-brand ps-3"
+        href="{{ route('admin.dashboard') }}">{{ Auth::guard('admin')->user()->name ? Auth::guard('admin')->user()->name : '' }}</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
             class="fas fa-bars"></i></button>
@@ -20,7 +21,8 @@
                 {{ Auth::guard('admin')->user()->name ? Auth::guard('admin')->user()->name : '' }}</a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item"
-                        href="{{ route('admin.profile-setting.show', Auth::guard('admin')->user()->id) }}">Settings</a></li>
+                        href="{{ route('admin.profile-setting.show', Auth::guard('admin')->user()->id) }}">Profile
+                        Settings</a></li>
                 {{-- <li><a class="dropdown-item" href="#!">Activity Log</a></li> --}}
                 <li>
                     <hr class="dropdown-divider" />

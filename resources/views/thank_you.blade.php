@@ -12,8 +12,7 @@
                 <h2 class="mb-3 inner-page-title text-white">Thank You</h2>
             </div>
         </div>
-        <!-- MOB HEADER -->
-        @include('layouts.mob_header')
+
 
     </div>
 

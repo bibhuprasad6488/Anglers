@@ -1,14 +1,14 @@
 @font-face {
-    font-family: 'Lora';
-    src: url('fonts/Lora-VariableFont_wght.ttf') format('truetype');
+    font-family: 'Montserrat';
+    src: url('fonts/Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
     font-weight: 100 900;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'Inter';
-    src: url('fonts/Inter-VariableFont_opsz_wght.ttf') format('truetype');
+    font-family: 'Open Sans';
+    src: url('fonts/Open_Sans/OpenSans-VariableFont_wdth.ttf') format('truetype');
     font-weight: 100 900;
     font-style: normal;
     font-display: swap;
@@ -31,11 +31,10 @@ body {
 
 
 body {
-    font-family: 'Inter', sans-serif;
-    color: #444;
+    font-family: 'Open Sans', sans-serif !important;
+    color: #000;
     line-height: 1.7;
 }
-
 
 
 /* extra css */
@@ -166,7 +165,7 @@ ul.cont-info-wrap li a {
 .btn-outline {
     font-size: 18px;
     color: #6d7743;
-    font-family: "Freight Sans Pro Semibold";
+    font-family: 'Montserrat', sans-serif;
     min-width: 237px;
     box-shadow: 4.092px 4.388px 0px rgb(0 0 0 / 35%);
     border: 2px solid #6d7743;
@@ -204,7 +203,7 @@ ul.cont-info-wrap li a {
     font-size: 18px;
     line-height: 25px;
     color: #6d7743;
-    font-family: "Freight Sans Pro Semibold";
+    font-family: 'Montserrat', sans-serif;
     min-width: 237px;
     box-shadow: 4.092px 4.388px 0px rgb(0 0 0 / 35%);
     border: 2px solid #6d7743;
@@ -224,18 +223,18 @@ h1,
 h2,
 h3,
 h4 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     letter-spacing: .5px;
 }
 
 h5,
 h6 {
-    /*font-family: 'Lora';*/
+    font-family: 'Montserrat', sans-serif;
     height: auto;
 }
 
 h2 {
-    font-size: 36px !important;
+    font-size: 34px !important;
     line-height: 40px !important;
     color: #6d7743 !important;
     padding-bottom: 10px;
@@ -287,7 +286,7 @@ h2.center-align::after {
 }
 
 .c-list-info h3 a {
-    font-size: 30px !important;
+    font-size: 25px !important;
     line-height: 36px !important;
     color: #6d7743 !important;
     font-weight: 600 !important;
@@ -304,7 +303,7 @@ p.tag-list {
 }
 
 p.truncate-overflow {
-    line-height: 1.4rem;
+    line-height: 1.8rem;
     position: relative;
     font-size: 18px;
     color: #333333;
@@ -413,7 +412,7 @@ form.mphb_sc_search-form label {
     font-size: 16px;
     line-height: 20px;
     color: #ffffff;
-    font-family: "Freight Sans Pro Book";
+    font-family: 'Montserrat', sans-serif;
 }
 
 /* 16-03-2026 */
@@ -662,7 +661,7 @@ iframe {
 
 .my_menu li {
     font-size: 18px;
-    font-family: 'Lora';
+    font-family: 'Open Sans', sans-serif
 }
 
 .hero {
@@ -696,6 +695,7 @@ iframe {
 
 .about_us .feature-box p {
     text-align: justify;
+    font-size: 15px;
 }
 
 .text-lg-right {

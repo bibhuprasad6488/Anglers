@@ -12,8 +12,7 @@
             </div>
         </div>
 
-        <!-- MOB HEADER -->
-        @include('layouts.mob_header')
+
 
     </div>
     <section class="section about_us py-5">

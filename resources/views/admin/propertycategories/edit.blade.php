@@ -61,7 +61,7 @@
                                         <div class="d-flex justify-content-center">
                                             <div class="d-md-flex d-grid align-items-center gap-3">
                                                 <button type="submit" id="submitBtn1" class="btn primary-color px-4"
-                                                    name="submit2">Save</button>
+                                                    name="submit2">Update</button>
                                             </div>
                                         </div>
                                     </div>

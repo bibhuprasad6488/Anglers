@@ -91,7 +91,7 @@
                                         <td>{{ \Carbon\Carbon::parse($g->created_at)->format('d-m-Y') }}</td>
                                         <td>
                                             <a href="{{ route('admin.property-categories.edit', $g->id) }}"
-                                                class="btn btn-sm btn-info d-none">Edit Property Type</a>
+                                                class="btn btn-sm btn-warning ">Edit Property Type</a>
                                             <a href="{{ route('admin.add-property', $g->id) }}"
                                                 class="btn btn-sm btn-primary">Add Property</a>
                                             <a href="{{ route('admin.view-properties', $g->id) }}"
