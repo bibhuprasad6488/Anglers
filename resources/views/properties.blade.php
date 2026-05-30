@@ -103,8 +103,52 @@
                     </div>
                 @endforeach
             @else
-                <h4 class="my-5 py-5">There is No Property Available</h4>
+                <h4 class="my-5 py-5">There is No Property Available For <b>{{ $cat->title }}</b></h4>
             @endif
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="row">
+
+                <!-- LEFT IMAGE BOX -->
+                <div class="col-md-10 mx-auto text-center">
+                    <div class="d-flex flex-column h-100 gap-4">
+                        <div class="feature-box flex-fill">
+                            <h2 class=" center-align">MORE SUGGESTED STAYS</h2>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="row g-4 py-2">
+                @foreach ($suggestedProperties as $p)
+                    <div class="col-md-4">
+                        <div class="d-flex flex-column h-100 gap-1 card p-2 shadow">
+                            <div class="">
+                                <img src="{{ $p->images->first()->img_path }}" class="img-fluid w-100">
+                            </div>
+                            <div class="c-list-info">
+                                <h3><a href="{{ route('property.details', $p->slug) }}">{{ $p->title }}</a></h3>
+                                <p class="tag-list">{{ $p->sub_title }}</p>
+                                <p class="truncate-overflow">{{ Str::limit($p->short_desc, 205, '...') }}</p>
+                                <h6>
+                                    <b>Price start at:</b>
+                                    <span class="mphb-price">
+                                        <span class="mphb-currency">$</span>{{ $p->price_per_night }}</span>
+                                    per night
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+            </div>
         </div>
     </section>
 @endsection

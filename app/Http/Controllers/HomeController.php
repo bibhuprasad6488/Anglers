@@ -179,7 +179,16 @@ class HomeController extends Controller
             });
             return $p;
         });
-        return view('properties', compact('cat', 'properties'));
+
+        $suggestedProperties = Property::where('category_id', '!=', $cat->id)->with('images')
+            ->where('status', 1)->orderBy('title')->limit(6)->get()->map(function ($p) {
+                $p->images = $p->images->map(function ($img) {
+                    $img->img_path = $img->img_path ? asset('storage/images/property/' . $img->img_path) : '';
+                    return $img;
+                });
+                return $p;
+            });
+        return view('properties', compact('cat', 'properties', 'suggestedProperties'));
     }
 
     public function catPropertiesFilter(Request $request, $id)
