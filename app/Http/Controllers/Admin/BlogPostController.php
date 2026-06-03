@@ -7,6 +7,8 @@ use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class BlogPostController extends Controller
@@ -173,5 +175,178 @@ class BlogPostController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Post delete failed Error: ' . $th->getMessage());
         }
+    }
+
+    public function getLiveBlogs()
+    {
+        ini_set('memory_limit', '512M');
+        set_time_limit(0);
+        $page = 1;
+        $allPosts = [];
+        $postArr = [];
+
+        do {
+
+            $response = Http::withoutVerifying()
+                ->timeout(120)
+                ->get(
+                    'https://www.anglershideawaycabins.com/wp-json/wp/v2/posts',
+                    [
+                        'per_page' => 10,
+                        'page' => $page,
+                        '_fields' => 'id,title,slug,excerpt,content,featured_media,date'
+                    ]
+                );
+
+            if (!$response->successful()) {
+                break;
+            }
+
+            $posts = $response->json();
+
+            $allPosts = array_merge($allPosts, $posts);
+
+            $page++;
+        } while (!empty($posts));
+
+        //     /*
+        // |--------------------------------------------------------------------------
+        // | Fetch all media separately
+        // |--------------------------------------------------------------------------
+        // */
+
+        $mediaMap = [];
+
+        $mediaPage = 1;
+
+        do {
+
+            $mediaResponse = Http::withoutVerifying()
+                ->timeout(120)
+                ->get(
+                    'https://www.anglershideawaycabins.com/wp-json/wp/v2/media',
+                    [
+                        'per_page' => 10,
+                        'page' => $mediaPage,
+                        '_fields' => 'id,title,slug,excerpt,content,featured_media,date'
+                    ]
+                );
+
+            if (!$mediaResponse->successful()) {
+                break;
+            }
+
+            $mediaItems = $mediaResponse->json();
+
+            foreach ($mediaItems as $media) {
+                $mediaMap[$media['id']] = $media['source_url'] ?? '';
+            }
+
+            $mediaPage++;
+        } while (!empty($mediaItems));
+
+        //     /*
+        // |--------------------------------------------------------------------------
+        // | Prepare posts data
+        // |--------------------------------------------------------------------------
+        // */
+
+        foreach ($allPosts as $post) {
+
+            $featuredImage = '';
+
+            if (!empty($post['featured_media'])) {
+                $featuredImage = $mediaMap[$post['featured_media']] ?? '';
+            }
+
+            $postArr[] = [
+                'wp_post_id'     => $post['id'],
+                'title'          => html_entity_decode($post['title']['rendered'] ?? ''),
+                'slug'           => $post['slug'] ?? '',
+                'content'        => $post['content']['rendered'] ?? '',
+                'short_content'  => trim(strip_tags($post['excerpt']['rendered'] ?? '')),
+                'featured_image' => $featuredImage,
+                'published_at'   => $post['date'] ?? '',
+            ];
+        }
+
+        // dd($postArr);
+        //     /*
+        // |--------------------------------------------------------------------------
+        // | Save blogs
+        // |--------------------------------------------------------------------------
+        // */
+
+        foreach ($postArr as $post) {
+
+            $checkExisting = Blog::where('title', $post['title'])->first();
+
+            if (!$checkExisting) {
+
+                $blog = new Blog();
+                $blog->title = $post['title'];
+                $blog->slug = Str::slug(trim($post['title']));
+                $blog->short_desc = $post['short_content'];
+                $blog->added_by = 1;
+                $blog->long_desc = $post['content'];
+                $blog->meta_title = $post['title'];
+                $blog->meta_desc = $post['short_content'];
+                $blog->meta_key = '';
+
+                // // Download featured image
+                if (!empty($post['featured_image'])) {
+
+                    try {
+
+                        $destinationPath = public_path('storage/images/blog_images/');
+
+                        if (!file_exists($destinationPath)) {
+                            mkdir($destinationPath, 0777, true);
+                        }
+
+                        $extension = pathinfo(
+                            parse_url($post['featured_image'], PHP_URL_PATH),
+                            PATHINFO_EXTENSION
+                        );
+
+                        $extension = !empty($extension) ? $extension : 'jpg';
+
+                        $fileName = time() . '_' . uniqid() . '.' . $extension;
+
+                        $fullPath = $destinationPath . $fileName;
+
+                        $imageResponse = Http::withoutVerifying()
+                            ->timeout(60)
+                            ->get($post['featured_image']);
+
+                        if ($imageResponse->successful()) {
+
+                            file_put_contents(
+                                $fullPath,
+                                $imageResponse->body()
+                            );
+
+                            $blog->blog_img = $fileName;
+                        }
+                    } catch (\Exception $e) {
+
+                        Log::error(
+                            'Blog image download failed: ' .
+                                $post['featured_image'] .
+                                ' | Error: ' .
+                                $e->getMessage()
+                        );
+                    }
+                }
+
+                $blog->save();
+            }
+        }
+
+        return response()->json([
+            'status' => true,
+            'total_posts' => count($postArr),
+            'imported' => Blog::count()
+        ]);
     }
 }

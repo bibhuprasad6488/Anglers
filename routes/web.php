@@ -130,3 +130,4 @@ Route::get('/terms-of-business', [HomeController::class, 'termsOfBusiness'])->na
 Route::resource('booking', BookingController::class)->names('booking');
 Route::get('/booking-confirmation/{id}', [BookingController::class, 'edit'])->name('booking.confirm');
 Route::resource('payment', StripeController::class)->names('payment');
+Route::get('/get-live-blog', [BlogPostController::class, 'getLiveBlogs']);
