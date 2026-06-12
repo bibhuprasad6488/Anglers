@@ -73,6 +73,9 @@ class PropertyCategoryController extends Controller
     public function editProperty($id)
     {
         $property = Property::with('images')->find($id);
+        if ($property) {
+            $property->thumbnail = $property->thumbnail ? asset('storage/images/property/' . $property->thumbnail) : '';
+        }
         $images = $property->images->map(function ($img) {
             $img->img_path = $img->img_path ? asset('storage/images/property/' . $img->img_path) : '';
             return $img;

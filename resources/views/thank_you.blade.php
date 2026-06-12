@@ -33,6 +33,9 @@
             <!-- Message -->
             <p class="mb-4 fs-5 text-muted">
                 {{ $siteSetting->footer_text_one }}
+            <div class="mx-1 mt-3 rounded-3 shadow-sm fw-bold" id="mess">
+                {{ session('success') }}
+            </div>
             </p>
 
             <!-- Optional Call-to-Action -->
@@ -41,3 +44,19 @@
         </div>
     </section>
 @endsection
+@push('scripts')
+    <script>
+        @if (session('success'))
+            localStorage.setItem('mess', @json(session('success')));
+        @endif
+
+        const mess = localStorage.getItem('mess');
+
+        if (mess) {
+            console.log(mess);
+            $('#mess').text(mess);
+            // Optional: remove after reading
+            // localStorage.removeItem('mess');
+        }
+    </script>
+@endpush

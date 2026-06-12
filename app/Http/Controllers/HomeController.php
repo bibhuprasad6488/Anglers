@@ -53,6 +53,7 @@ class HomeController extends Controller
         });
 
         $properties = Property::with('images')->where('status', 1)->orderBy('title')->limit(6)->get()->map(function ($p) {
+            $p->thumbnail = $p->thumbnail ? asset('storage/images/property/' . $p->thumbnail) : asset('assets/images/no-img.png');
             $p->images = $p->images->map(function ($img) {
                 $img->img_path = $img->img_path ? asset('storage/images/property/' . $img->img_path) : '';
                 return $img;
@@ -173,19 +174,69 @@ class HomeController extends Controller
     {
         $cat = PropertyCategory::where('slug', $id)->first();
         $properties = Property::where('category_id', $cat->id)->with('images')->where('status', 1)->get()->map(function ($p) {
-            $p->images = $p->images->map(function ($img) {
-                $img->img_path = $img->img_path ? asset('storage/images/property/' . $img->img_path) : '';
+            // Format existing images
+            $images = $p->images->map(function ($img) {
+                $img->img_path = $img->img_path
+                    ? asset('storage/images/property/' . $img->img_path)
+                    : '';
+
                 return $img;
             });
+
+            if ($p->thumbnail) {
+                $thumbnailUrl = $p->thumbnail
+                    ? asset('storage/images/property/' . $p->thumbnail)
+                    : asset('assets/images/no-img.png');
+
+                $p->thumbnail = $thumbnailUrl;
+                // Add thumbnail as first image
+                if ($thumbnailUrl) {
+                    $thumbnailObj = (object) [
+                        'id' => 0,
+                        'img_path' => $thumbnailUrl,
+                        'is_thumbnail' => true,
+                    ];
+
+                    $images->prepend($thumbnailObj);
+                }
+            }
+
+            $p->images = $images->values();
+
+
             return $p;
         });
 
         $suggestedProperties = Property::where('category_id', '!=', $cat->id)->with('images')
             ->where('status', 1)->orderBy('title')->limit(6)->get()->map(function ($p) {
-                $p->images = $p->images->map(function ($img) {
-                    $img->img_path = $img->img_path ? asset('storage/images/property/' . $img->img_path) : '';
+                // Format existing images
+                $images = $p->images->map(function ($img) {
+                    $img->img_path = $img->img_path
+                        ? asset('storage/images/property/' . $img->img_path)
+                        : '';
+
                     return $img;
                 });
+
+                if ($p->thumbnail) {
+                    $thumbnailUrl = $p->thumbnail
+                        ? asset('storage/images/property/' . $p->thumbnail)
+                        : asset('assets/images/no-img.png');
+
+                    $p->thumbnail = $thumbnailUrl;
+                    // Add thumbnail as first image
+                    if ($thumbnailUrl) {
+                        $thumbnailObj = (object) [
+                            'id' => 0,
+                            'img_path' => $thumbnailUrl,
+                            'is_thumbnail' => true,
+                        ];
+
+                        $images->prepend($thumbnailObj);
+                    }
+                }
+
+                $p->images = $images->values();
                 return $p;
             });
         return view('properties', compact('cat', 'properties', 'suggestedProperties'));
@@ -198,10 +249,36 @@ class HomeController extends Controller
             // Get category by slug
             $cat = PropertyCategory::where('id', $id)->firstOrFail();
             $properties = Property::where('category_id', $cat->id)->with('images')->where('status', 1)->get()->map(function ($p) {
-                $p->images = $p->images->map(function ($img) {
-                    $img->img_path = $img->img_path ? asset('storage/images/property/' . $img->img_path) : '';
+                // Format existing images
+                $images = $p->images->map(function ($img) {
+                    $img->img_path = $img->img_path
+                        ? asset('storage/images/property/' . $img->img_path)
+                        : '';
+
                     return $img;
                 });
+
+                if ($p->thumbnail) {
+                    $thumbnailUrl = $p->thumbnail
+                        ? asset('storage/images/property/' . $p->thumbnail)
+                        : asset('assets/images/no-img.png');
+
+                    $p->thumbnail = $thumbnailUrl;
+                    // Add thumbnail as first image
+                    if ($thumbnailUrl) {
+                        $thumbnailObj = (object) [
+                            'id' => 0,
+                            'img_path' => $thumbnailUrl,
+                            'is_thumbnail' => true,
+                        ];
+
+                        $images->prepend($thumbnailObj);
+                    }
+                }
+
+                $p->images = $images->values();
+
+
                 return $p;
             });
             $html = '
@@ -230,10 +307,34 @@ class HomeController extends Controller
     {
         $property = Property::where('slug', $id)->with('images', 'category')->first();
         if ($property) {
-            $property->images = $property->images->map(function ($img) {
-                $img->img_path = $img->img_path ? asset('storage/images/property/' . $img->img_path) : '';
+
+            $thumbnailUrl = $property->thumbnail
+                ? asset('storage/images/property/' . $property->thumbnail)
+                : asset('assets/images/no-img.png');
+
+            $property->thumbnail = $thumbnailUrl;
+
+            // Format existing images
+            $images = $property->images->map(function ($img) {
+                $img->img_path = $img->img_path
+                    ? asset('storage/images/property/' . $img->img_path)
+                    : '';
+
                 return $img;
             });
+
+            // Add thumbnail as first image
+            if ($thumbnailUrl) {
+                $thumbnailObj = (object) [
+                    'id' => 0,
+                    'img_path' => $thumbnailUrl,
+                    'is_thumbnail' => true,
+                ];
+
+                $images->prepend($thumbnailObj);
+            }
+
+            $property->images = $images->values();
         }
 
         $home_page_data = CmsHomePage::find(1);
@@ -258,7 +359,7 @@ class HomeController extends Controller
         $bookedIds = [];
         $pricing = [];
 
-        if ($formDate && $toDate && $propertyId && $categoryId) {
+        if ($formDate && ($toDate || $request->input('duration')) && $propertyId && $categoryId) {
 
             // $checkBooking = Booking::where('property_id', $propertyId)
             //     ->where('category_id', $categoryId)
@@ -273,6 +374,25 @@ class HomeController extends Controller
             //             });
             //     })
             //     ->exists();
+            $duration = $request->input('duration');
+
+            $checkIn = Carbon::parse($formDate);
+
+            if (in_array($categoryId, [1, 3])) {
+
+                if ($duration == 3) {
+                    $checkOut = $checkIn->copy()->addMonths(3);
+                } elseif ($duration == 2) {
+                    $checkOut = $checkIn->copy()->addMonths(2);
+                } else {
+                    $checkOut = $checkIn->copy()->addMonth();
+                }
+            } else {
+                $checkOut = Carbon::createFromFormat('Y-m-d', $toDate);
+            }
+
+            $formDate = $checkIn->format('Y-m-d');
+            $toDate = $checkOut->format('Y-m-d');
 
             $checkBooking = Booking::where('property_id', $propertyId)
                 ->where('category_id', $categoryId)
@@ -296,13 +416,33 @@ class HomeController extends Controller
                     ->get()
                     ->map(function ($p) use ($formDate, $toDate) {
 
-                        $p->images = $p->images->map(function ($img) {
+                        // Format existing images
+                        $images = $p->images->map(function ($img) {
                             $img->img_path = $img->img_path
                                 ? asset('storage/images/property/' . $img->img_path)
                                 : '';
                             return $img;
                         });
 
+                        if ($p->thumbnail) {
+                            $thumbnailUrl = $p->thumbnail
+                                ? asset('storage/images/property/' . $p->thumbnail)
+                                : asset('assets/images/no-img.png');
+
+                            $p->thumbnail = $thumbnailUrl;
+                            // Add thumbnail as first image
+                            if ($thumbnailUrl) {
+                                $thumbnailObj = (object) [
+                                    'id' => 0,
+                                    'img_path' => $thumbnailUrl,
+                                    'is_thumbnail' => true,
+                                ];
+
+                                $images->prepend($thumbnailObj);
+                            }
+                        }
+
+                        $p->images = $images->values();
                         $p->pricing = $this->getFinalBookingPrice($p->id, $formDate, $toDate);
 
                         return $p;
@@ -360,8 +500,30 @@ class HomeController extends Controller
                     }
                 }
             }
-        } else if ($formDate && $toDate && $categoryId) {
+        } else if ($formDate && ($toDate || $request->input('duration')) && $categoryId) {
+            $duration = $request->input('duration');
 
+            $checkIn = Carbon::parse($formDate);
+
+            if (in_array($categoryId, [1, 3])) {
+
+                if ($duration == 3) {
+                    $checkOut = $checkIn->copy()->addMonths(3);
+                } elseif ($duration == 2) {
+                    $checkOut = $checkIn->copy()->addMonths(2);
+                } else {
+                    $checkOut = $checkIn->copy()->addMonth();
+                }
+            } else {
+                $checkOut = Carbon::createFromFormat('Y-m-d', $toDate);
+            }
+
+            $formDate = $checkIn->format('Y-m-d');
+            $toDate = $checkOut->format('Y-m-d');
+            // dd(
+            //     $formDate,
+            //     $toDate
+            // );
             $cat = PropertyCategory::find($categoryId);
 
             $bookedIds = Booking::where('category_id', $categoryId)
@@ -378,43 +540,86 @@ class HomeController extends Controller
                 ->get()
                 ->map(function ($p) use ($formDate, $toDate) {
 
-                    $p->images = $p->images->map(function ($img) {
+                    // Format existing images
+                    $images = $p->images->map(function ($img) {
                         $img->img_path = $img->img_path
                             ? asset('storage/images/property/' . $img->img_path)
                             : '';
+
                         return $img;
                     });
 
-                    $p->final_price = $this->getFinalBookingPrice($p->id, $formDate, $toDate)['final_price'];
+                    if ($p->thumbnail) {
+                        $thumbnailUrl = $p->thumbnail
+                            ? asset('storage/images/property/' . $p->thumbnail)
+                            : asset('assets/images/no-img.png');
+
+                        $p->thumbnail = $thumbnailUrl;
+                        // Add thumbnail as first image
+                        if ($thumbnailUrl) {
+                            $thumbnailObj = (object) [
+                                'id' => 0,
+                                'img_path' => $thumbnailUrl,
+                                'is_thumbnail' => true,
+                            ];
+
+                            $images->prepend($thumbnailObj);
+                        }
+                    }
+
+                    $p->images = $images->values();
+
+                    $p->pricing = $this->getFinalBookingPrice($p->id, $formDate, $toDate);
 
                     return $p;
                 });
             return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'properties'));
         } else if ($formDate && $toDate) {
+            $excludesCat = [1, 3];
             $bookedIds = Booking::whereIn('status', ['locked', 'confirmed'])
                 ->where('check_in', '<', $toDate)
                 ->where('check_out', '>', $formDate)
                 ->pluck('property_id')
                 ->toArray();
 
-            $properties = Property::whereNotIn('id', $bookedIds)
+            $properties = Property::whereNotIn('id', $bookedIds)->whereNotIn('category_id', $excludesCat)
                 ->where('status', 1)
                 ->with('images')
                 ->get()
                 ->map(function ($p) use ($formDate, $toDate) {
-
-                    $p->images = $p->images->map(function ($img) {
+                    // Format existing images
+                    $images = $p->images->map(function ($img) {
                         $img->img_path = $img->img_path
                             ? asset('storage/images/property/' . $img->img_path)
                             : '';
+
                         return $img;
                     });
 
+                    if ($p->thumbnail) {
+                        $thumbnailUrl = $p->thumbnail
+                            ? asset('storage/images/property/' . $p->thumbnail)
+                            : asset('assets/images/no-img.png');
+
+                        $p->thumbnail = $thumbnailUrl;
+                        // Add thumbnail as first image
+                        if ($thumbnailUrl) {
+                            $thumbnailObj = (object) [
+                                'id' => 0,
+                                'img_path' => $thumbnailUrl,
+                                'is_thumbnail' => true,
+                            ];
+
+                            $images->prepend($thumbnailObj);
+                        }
+                    }
+
+                    $p->images = $images->values();
                     $p->pricing = $this->getFinalBookingPrice($p->id, $formDate, $toDate);
 
                     return $p;
                 });
-
+            // dd($properties);
             return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'properties'));
         }
     }
@@ -422,7 +627,8 @@ class HomeController extends Controller
     private function getFinalBookingPrice($propertyId, $formDate, $toDate)
     {
 
-        $adminTax = SiteSetting::find(1)->admin_tax ?? 5;
+        // $adminTax = SiteSetting::find(1)->admin_tax ?? 5;
+        $adminTax = 0;
         $finalTax = ($adminTax / 100);
 
         $property = Property::find($propertyId);
@@ -435,6 +641,29 @@ class HomeController extends Controller
         $checkOut = Carbon::createFromFormat('Y-m-d', $toDate);
         $daysDifference = $checkIn->diffInDays($checkOut);
 
+        if (in_array($property->category_id, [1, 3])) {
+
+            $monthsDiff = $checkIn->diffInMonths($checkOut);
+
+            $finalPrice = $monthsDiff * $pricePerMonth;
+
+            $totalAmount = round($finalPrice, 2);
+
+            $priceWithTax = ($finalTax * $totalAmount) + $totalAmount;
+            $priceWithOutTax = $priceWithTax / (1 + $adminTax / 100);
+
+            return [
+                'check_in' => $formDate,
+                'check_out' => $toDate,
+                'property' => $property,
+                'total_days' => $daysDifference,
+                'months' => $monthsDiff,
+                'weeks' => 0,
+                'days' => 0,
+                'total_price' => $priceWithOutTax,
+                'final_price' => $priceWithTax
+            ];
+        }
         // Get how many months, weeks and days between two dates
         $mothsDiff = 0;
         $dayleft = 0;

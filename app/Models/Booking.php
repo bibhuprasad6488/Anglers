@@ -12,13 +12,23 @@ class Booking extends Model
     protected $table = 'bookings';
     protected $fillable = [
         'booking_id',
+        'payment_id',
         'property_id',
         'category_id',
         'booking_type',
         'check_in',
         'check_out',
         'total_nights',
+        'user_name',
+        'user_email',
+        'user_phone',
+        'user_address',
+        'number_of_adult',
+        'number_of_child',
+        'number_of_pet',
         'booking_amount',
+        'status',
+        'confirmed_at',
         'created_at',
         'updated_at'
     ];

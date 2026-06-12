@@ -26,7 +26,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="card border-0">
+                        <div class="card shadow mb-4 border-0">
                             @if (session('success'))
                                 <div class="alert alert-success mx-1 mt-3 rounded-3 shadow-sm" id="success-alert">
                                     {{ session('success') }}
@@ -38,19 +38,19 @@
                                 </div>
                             @endif
                             <div class="card-header primary-color">
-                                <h4>Booking Details</h4>
+                                <h4 class="mb-0">Booking Details</h4>
                             </div>
                             <div class="card-body">
 
                                 <table class="table">
                                     <tbody>
                                         <tr>
-                                            <th>Bookng Id</th>
+                                            <th width="250">Bookng Id</th>
                                             <td>{{ $booking->booking_id }}</td>
                                         </tr>
                                         <tr>
                                             <th>Bookng Amount</th>
-                                            <td>${{ $booking->booking_amount }}</td>
+                                            <td>${{ number_format($booking->booking_amount, 2) }}</td>
                                         </tr>
                                         <tr>
                                             <th>Check In Date</th>
@@ -76,16 +76,16 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="card border-0">
+                        <div class="card shadow mb-4 border-0">
                             <div class="card-header primary-color">
-                                <h4>User Details</h4>
+                                <h4 class="mb-0">User Details</h4>
                             </div>
                             <div class="card-body">
 
                                 <table class="table">
                                     <tbody>
                                         <tr>
-                                            <th>User Name</th>
+                                            <th width="250">User Name</th>
                                             <td>{{ $booking->user_name }}</td>
                                         </tr>
                                         <tr>
@@ -104,22 +104,26 @@
                                             <th>Number of Adult</th>
                                             <td>{{ $booking->number_of_adult }}</td>
                                         </tr>
+                                        <tr>
+                                            <th>Number of Pet</th>
+                                            <td>{{ $booking->number_of_pet }}</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="card border-0">
+                        <div class="card shadow mb-4 border-0">
                             <div class="card-header primary-color">
-                                <h4>Cabin Details</h4>
+                                <h4 class="mb-0">Cabin Details</h4>
                             </div>
                             <div class="card-body">
 
                                 <table class="table">
                                     <tbody>
                                         <tr>
-                                            <th>Title</th>
+                                            <th width="250">Title</th>
                                             <td>{{ $booking->property->title }}</td>
                                         </tr>
                                         <tr>
@@ -137,6 +141,142 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-6">
+                        {{-- <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <h4 class="mb-0">Stripe Payment Details</h4>
+                            </div>
+
+                            <div class="card-body">
+
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th width="250">Payment Intent ID</th>
+                                        <td>{{ optional($paymentIntent)->id }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Status</th>
+                                        <td>
+                                            @if (optional($paymentIntent)->status == 'succeeded')
+                                                <span class="badge bg-success">Succeeded</span>
+                                            @elseif(optional($paymentIntent)->status == 'processing')
+                                                <span class="badge bg-warning">Processing</span>
+                                            @else
+                                                <span class="badge bg-danger">
+                                                    {{ ucfirst(optional($paymentIntent)->status) }}
+                                                </span>
+                                            @endif
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Amount</th>
+                                        <td>
+                                            {{ strtoupper(optional($paymentIntent)->currency) }}
+                                            {{ number_format(optional($paymentIntent)->amount / 100, 2) }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Created</th>
+                                        <td>
+                                            {{ \Carbon\Carbon::createFromTimestamp(optional($paymentIntent)->created)->format('d M Y h:i A') }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Customer ID</th>
+                                        <td>{{ optional($paymentIntent)->customer ?? 'N/A' }}</td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </div> --}}
+
+                        @if (isset($charge))
+                            <div class="card shadow">
+                                <div class="card-header primary-color">
+                                    <h4 class="mb-0">Payment Details</h4>
+                                </div>
+
+                                <div class="card-body">
+
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th width="250">Payment Intent ID</th>
+                                            <td>{{ optional($paymentIntent)->id }}</td>
+                                        </tr>
+
+                                        {{-- <tr>
+                                            <th width="250">Charge ID</th>
+                                            <td>{{ optional($charge)->id }}</td>
+                                        </tr> --}}
+
+                                        <tr>
+                                            <th>Customer Name</th>
+                                            <td>{{ optional($charge)->metadata->name ?? 'N/A' }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Customer Email</th>
+                                            <td>{{ optional($charge)->metadata->email ?? 'N/A' }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Amount</th>
+                                            <td>
+                                                {{ strtoupper(optional($charge)->currency) }}
+                                                {{ number_format(optional($charge)->amount / 100, 2) }}
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Card Brand</th>
+                                            <td>{{ ucfirst(optional($charge)->payment_method_details->card->brand) ?? 'N/A' }}
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Card Last 4</th>
+                                            <td>
+                                                **** **** ****
+                                                {{ optional($charge)->payment_method_details->card->last4 ?? 'N/A' }}
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Status</th>
+                                            <td>
+                                                @if (optional($paymentIntent)->status == 'succeeded')
+                                                    <span class="badge bg-success">Succeeded</span>
+                                                @elseif(optional($paymentIntent)->status == 'processing')
+                                                    <span class="badge bg-warning">Processing</span>
+                                                @else
+                                                    <span class="badge bg-danger">
+                                                        {{ ucfirst(optional($paymentIntent)->status) }}
+                                                    </span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Receipt</th>
+                                            <td>
+                                                @if (optional($charge)->receipt_url)
+                                                    <a href="{{ optional($charge)->receipt_url }}" target="_blank"
+                                                        class="btn btn-primary btn-sm">
+                                                        View Receipt
+                                                    </a>
+                                                @else
+                                                    N/A
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

@@ -44,6 +44,60 @@
         .litepicker {
             box-shadow: none;
         }
+
+        .search-input {
+            height: 55px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+        }
+
+        .duration-group {
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+        }
+
+        .duration-option {
+            margin: 0;
+        }
+
+        .duration-option input {
+            display: none;
+        }
+
+        .duration-option span {
+            display: inline-block;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #000;
+            transition: all .3s ease;
+            font-weight: 500;
+            background: #fff;
+        }
+
+        .duration-option input:checked+span {
+            background: #c4511c;
+            color: #fff;
+            border-color: #c59d5f;
+        }
+
+        .search-btn {
+            height: 55px;
+            border-radius: 12px;
+            background: #c59d5f;
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            transition: all .3s ease;
+        }
+
+        .search-btn:hover {
+            background: #b48b4e;
+            transform: translateY(-2px);
+        }
     </style>
     <div class="contact_page" class="text-center">
         <!-- Overlay (optional dark mask) -->
@@ -75,11 +129,34 @@
                     <input type="hidden" name="property_id" value="{{ $property->id }}">
                     <input type="hidden" name="category_id" value="{{ $property->category_id }}">
                 </div>
-                <div class="form-group col-12 col-md-3">
-                    <label class="text-white">Check Out</label>
-                    <input id="check_out_date" type="date" name="check_out_date" class="form-control" required
-                        value="{{ request('check_out_date') ?? request('check_out') }}">
-                </div>
+                @if (in_array($property->category_id, [1, 3]))
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label">Duration</label>
+
+                        <div class="duration-group">
+                            <label class="duration-option">
+                                <input type="radio" name="duration" value="1">
+                                <span>1 Month</span>
+                            </label>
+
+                            <label class="duration-option">
+                                <input type="radio" name="duration" value="2">
+                                <span>2 Months</span>
+                            </label>
+
+                            <label class="duration-option">
+                                <input type="radio" name="duration" value="3">
+                                <span>3 Months</span>
+                            </label>
+                        </div>
+                    </div>
+                @else
+                    <div class="form-group col-12 col-md-3">
+                        <label class="text-white">Check Out</label>
+                        <input id="check_out_date" type="date" name="check_out_date" class="form-control" required
+                            value="{{ request('check_out_date') ?? request('check_out') }}">
+                    </div>
+                @endif
 
                 <div class="form-group col-12 col-md-3">
                     <input type="submit" class="btn book-cabin-btn" value="Search" id="bookBtn">
@@ -123,8 +200,12 @@
                 <div class="col-12 col-md-12 col-lg-5">
                     <h2 class="left-align">{{ $property->title }}</h2>
                     <p class="tag-list">{{ $property->sub_title }}</p>
+                    <h2 class="mphb-details-title">Details</h2>
                     <p>{!! $property->long_desc !!}</p>
                     <p><strong>Categorie:</strong> <span class="text-dark">{{ $property->category->title }}</span></p>
+                    <small class="fw-semibold"> Price per pet ${{ $property->price_per_pet }}, Maximum
+                        2 dogs less than 50
+                        lb. No Cats </small>
                     {{-- <h2 class="mphb-calendar-title">Availability</h2> --}}
                     {{-- <form action="{{ route('search.result') }}" method="GET"
                         class="row  rounded-3 shadow-sm search-form-one">
@@ -261,180 +342,184 @@
     </script>
 
     <script>
-        $("#bookingBtn").on('click', function() {
-            $('#bookBtn').click();
-        });
-
-        let checkInDate = localStorage.getItem('check_in_date');
-        let checkOutDate = localStorage.getItem('check_out_date');
-
-        document.getElementById("check_in_date").value = checkInDate;
-        document.getElementById("check_out_date").value = checkOutDate;
-        document.getElementById("check_in").value = checkInDate;
-        document.getElementById("check_out").value = checkOutDate;
-
-        // console.log(checkInDate + ', ' + checkOutDate);
         document.addEventListener("DOMContentLoaded", function() {
 
+            const form = document.getElementById("bookingForm");
 
-            const checkIn = document.getElementById("check_in");
-            const checkOut = document.getElementById("check_out");
-
-            /* today date */
-            let today = new Date().toISOString().split("T")[0];
-
-            /* disable past dates */
-            checkIn.setAttribute("min", today);
-            checkOut.setAttribute("min", today);
-
-            /* when checkin changes */
-            checkIn.addEventListener("change", function() {
-
-                let checkInDate = new Date(this.value);
-
-                /* next day */
-                let nextDay = new Date(checkInDate);
-                nextDay.setDate(nextDay.getDate() + 1);
-
-                let nextDayFormatted = nextDay.toISOString().split("T")[0];
-
-                /* set checkout min */
-                checkOut.min = nextDayFormatted;
-
-                /* auto set checkout */
-                checkOut.value = nextDayFormatted;
-
-            });
-
-            /* prevent invalid checkout */
-            checkOut.addEventListener("change", function() {
-
-                if (checkOut.value <= checkIn.value) {
-                    alert("Checkout date must be after check-in date");
-                    checkOut.value = "";
-                }
-
-            });
-
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-
-            const checkInInput = document.getElementById("check_in");
-            const checkOutInput = document.getElementById("check_out");
-
-            const today = new Date();
-            const tomorrow = new Date();
-            tomorrow.setDate(today.getDate() + 1);
-
-            const todayFormatted = today.toISOString().split('T')[0];
-            const tomorrowFormatted = tomorrow.toISOString().split('T')[0];
-
-            // /* ----------------------------------
-            //    Set default values if empty
-            // ---------------------------------- */
-
-            if (!checkInInput.value) {
-                checkInInput.value = todayFormatted;
-            }
-
-            if (!checkOutInput.value) {
-                checkOutInput.value = tomorrowFormatted;
-            }
-
-            // /* ----------------------------------
-            //    Initialize Litepicker
-            // ---------------------------------- */
-
-            const picker = new Litepicker({
-
-                element: document.getElementById('booking-calendar'),
-
-                inlineMode: true, // always visible calendar
-                singleMode: false, // date range
-
-                numberOfMonths: 2,
-                numberOfColumns: 2,
-
-                minDate: today,
-
-                format: 'YYYY-MM-DD',
-
-                setup: (picker) => {
-
-                    picker.on('selected', (date1, date2) => {
-
-                        if (date1) {
-                            checkInInput.value = date1.format('YYYY-MM-DD');
-                        }
-
-                        if (date2) {
-                            checkOutInput.value = date2.format('YYYY-MM-DD');
-                        }
-
-                    });
-
-                }
-
-            });
-
-            /* ----------------------------------
-               Sync calendar with input values
-            ---------------------------------- */
-
-            if (checkInInput.value && checkOutInput.value) {
-                picker.setDateRange(checkInInput.value, checkOutInput.value);
-            }
-
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
             const checkIn = document.getElementById("check_in_date");
             const checkOut = document.getElementById("check_out_date");
 
+            // /* -----------------------------
+            //    Set default minimum dates
+            // ----------------------------- */
 
-            /* get tomorrow date */
-            let today = new Date();
-            let tomorrow = new Date(today);
+            const today = new Date();
+
+            const tomorrow = new Date();
             tomorrow.setDate(today.getDate() + 1);
 
-            let tomorrowFormatted = tomorrow.toISOString().split("T")[0];
+            const tomorrowFormatted = tomorrow.toISOString().split('T')[0];
 
-            /* disable today & past dates */
-            checkIn.setAttribute("min", tomorrowFormatted);
-            checkOut.setAttribute("min", tomorrowFormatted);
+            if (checkIn) {
+                checkIn.setAttribute("min", tomorrowFormatted);
+            }
 
-            /* when checkin changes */
-            checkIn.addEventListener("change", function() {
+            if (checkOut) {
+                checkOut.setAttribute("min", tomorrowFormatted);
+            }
 
-                let checkInDate = new Date(this.value);
+            // /* -----------------------------
+            //    Load Local Storage Values
+            // ----------------------------- */
 
-                /* next day */
-                let nextDay = new Date(checkInDate);
-                nextDay.setDate(nextDay.getDate() + 1);
+            const storedCheckIn = localStorage.getItem('check_in_date');
+            const storedCheckOut = localStorage.getItem('check_out_date');
 
-                let nextDayFormatted = nextDay.toISOString().split("T")[0];
+            if (checkIn && storedCheckIn) {
+                checkIn.value = storedCheckIn;
+            }
 
-                /* set checkout min */
-                checkOut.min = nextDayFormatted;
+            if (checkOut && storedCheckOut) {
+                checkOut.value = storedCheckOut;
+            }
 
-                /* auto set checkout */
-                checkOut.value = nextDayFormatted;
+            // /* -----------------------------
+            //    Check-In Change
+            // ----------------------------- */
 
-            });
+            if (checkIn && checkOut) {
 
-            /* prevent invalid checkout */
-            checkOut.addEventListener("change", function() {
+                checkIn.addEventListener("change", function() {
 
-                if (checkOut.value <= checkIn.value) {
-                    alert("Checkout date must be after check-in date");
-                    checkOut.value = "";
-                }
+                    const selectedDate = new Date(this.value);
 
-            });
+                    const nextDay = new Date(selectedDate);
+                    nextDay.setDate(nextDay.getDate() + 1);
 
+                    const nextDayFormatted = nextDay.toISOString().split('T')[0];
+
+                    checkOut.min = nextDayFormatted;
+
+                    if (
+                        !checkOut.value ||
+                        checkOut.value <= this.value
+                    ) {
+                        checkOut.value = nextDayFormatted;
+                    }
+
+                });
+
+                checkOut.addEventListener("change", function() {
+
+                    if (checkOut.value <= checkIn.value) {
+
+                        alert("Checkout date must be after Check-in date");
+
+                        checkOut.value = '';
+
+                        checkOut.focus();
+                    }
+
+                });
+
+            }
+
+            // /* -----------------------------
+            //    Save Dates To Local Storage
+            // ----------------------------- */
+
+            if (checkIn) {
+
+                checkIn.addEventListener("change", function() {
+                    localStorage.setItem(
+                        "check_in_date",
+                        this.value
+                    );
+                });
+
+            }
+
+            if (checkOut) {
+
+                checkOut.addEventListener("change", function() {
+                    localStorage.setItem(
+                        "check_out_date",
+                        this.value
+                    );
+                });
+
+            }
+
+            // /* -----------------------------
+            //    Form Validation
+            // ----------------------------- */
+
+            if (form) {
+
+                form.addEventListener("submit", function(e) {
+
+                    if (checkIn && !checkIn.value) {
+                        e.preventDefault();
+                        alert("Please select Check-In Date.");
+                        checkIn.focus();
+                        return false;
+                    }
+
+                    if (checkOut && !checkOut.value) {
+                        e.preventDefault();
+                        alert("Please select Check-Out Date.");
+                        checkOut.focus();
+                        return false;
+                    }
+
+                    if (checkIn && checkOut) {
+
+                        const checkInDate = new Date(checkIn.value);
+                        const checkOutDate = new Date(checkOut.value);
+
+                        if (checkOutDate <= checkInDate) {
+
+                            e.preventDefault();
+
+                            alert("Checkout date must be after Check-in date.");
+
+                            checkOut.focus();
+
+                            return false;
+                        }
+                    }
+
+                    // /* Duration Validation */
+
+                    const durationRadios = document.querySelectorAll(
+                        'input[name="duration"]'
+                    );
+
+                    if (durationRadios.length > 0) {
+
+                        const selectedDuration = document.querySelector(
+                            'input[name="duration"]:checked'
+                        );
+
+                        if (!selectedDuration) {
+
+                            e.preventDefault();
+
+                            alert("Please select a duration.");
+
+                            return false;
+                        }
+                    }
+
+                });
+
+            }
+
+        });
+    </script>
+    <script>
+        $("#bookingBtn").on('click', function() {
+            $("#bookBtn").trigger('click');
         });
     </script>
 @endpush

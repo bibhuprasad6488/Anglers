@@ -13,12 +13,67 @@
             color: #fff !important;
             font-weight: 600;
         }
+
+        .search-input {
+            height: 55px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+        }
+
+        .duration-group {
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+        }
+
+        .duration-option {
+            margin: 0;
+        }
+
+        .duration-option input {
+            display: none;
+        }
+
+        .duration-option span {
+            display: inline-block;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #000;
+            transition: all .3s ease;
+            font-weight: 500;
+            background: #fff;
+        }
+
+        .duration-option input:checked+span {
+            background: #c4511c;
+            color: #fff;
+            border-color: #c59d5f;
+        }
+
+        .search-btn {
+            height: 55px;
+            border-radius: 12px;
+            background: #c59d5f;
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            transition: all .3s ease;
+        }
+
+        .search-btn:hover {
+            background: #b48b4e;
+            transform: translateY(-2px);
+        }
     </style>
     <div class="contact_page" class="text-center">
         <!-- Overlay (optional dark mask) -->
         <div class="container">
 
-            <form action="{{ route('search.result') }}" method="GET" class="row rounded-3 shadow-sm search-form-one">
+            <form action="{{ route('search.result') }}" method="GET" class="row rounded-3 shadow-sm search-form-one"
+                id="cabinSearchForm">
                 @csrf
                 <div class="form-group col-12 col-md-3">
                     <h4>
@@ -30,15 +85,36 @@
                     <input id="check_in_date" type="date" name="check_in_date" class="form-control" autocomplete="off"
                         required value="{{ request('check_in_date') }}">
 
-                    {{-- <input type="hidden" name="category_id" value="{{ $cat->id }}"> --}}
+                    <input type="hidden" name="category_id" value="{{ $cat->id }}">
                 </div>
+                @if (in_array($cat->id, [1, 3]))
+                    <div class="form-group col-12 col-md-3">
+                        <label class="form-label">Duration</label>
 
-                <div class="form-group col-12 col-md-3">
-                    <label class="text-white">Check Out</label>
-                    <input id="check_out_date" type="date" name="check_out_date" class="form-control" autocomplete="off"
-                        required value="{{ request('check_out_date') }}">
-                </div>
+                        <div class="duration-group">
+                            <label class="duration-option">
+                                <input type="radio" name="duration" value="1">
+                                <span>1 Month</span>
+                            </label>
 
+                            <label class="duration-option">
+                                <input type="radio" name="duration" value="2">
+                                <span>2 Months</span>
+                            </label>
+
+                            <label class="duration-option">
+                                <input type="radio" name="duration" value="3">
+                                <span>3 Months</span>
+                            </label>
+                        </div>
+                    </div>
+                @else
+                    <div class="form-group col-12 col-md-3">
+                        <label class="text-white">Check Out</label>
+                        <input id="check_out_date" type="date" name="check_out_date" class="form-control"
+                            autocomplete="off" required value="{{ request('check_out_date') }}">
+                    </div>
+                @endif
                 <div class="form-group col-12 col-md-3">
                     <input type="submit" class="btn book-cabin-btn" value="Search">
                 </div>
@@ -83,7 +159,17 @@
                                             <p>{{ Str::limit($p->short_desc, 430, '...') }}</p>
                                         </div>
                                         <div class="text-muted">
-                                            <h5 class="fw-bold">Price $ {{ $p->price_per_night }} per night</h5>
+                                            @if (in_array($p->category_id, [1, 3]))
+                                                <h5 class="fw-bold">Price $ {{ $p->price_per_month }} per month</h5>
+                                                <small class="fw-semibold"> Price per pet ${{ $p->price_per_pet }}, Maximum
+                                                    2 dogs less than 50
+                                                    lb. No Cats </small>
+                                            @else
+                                                <h5 class="fw-bold">Price $ {{ $p->price_per_night }} per night</h5>
+                                                <small class="fw-semibold"> Price per pet ${{ $p->price_per_pet }}, Maximum
+                                                    2 dogs less than 50
+                                                    lb. No Cats </small>
+                                            @endif
                                         </div>
                                         <div>
                                             @if ($p->final_price)
@@ -131,7 +217,7 @@
                     <div class="col-md-4">
                         <div class="d-flex flex-column h-100 gap-1 card p-2 shadow">
                             <div class="">
-                                <img src="{{ $p->images->first()->img_path }}" class="img-fluid w-100">
+                                <img src="{{ $p->thumbnail }}" class="img-fluid w-100">
                             </div>
                             <div class="c-list-info">
                                 <h3><a href="{{ route('property.details', $p->slug) }}">{{ $p->title }}</a></h3>
@@ -139,9 +225,15 @@
                                 <p class="truncate-overflow">{{ Str::limit($p->short_desc, 205, '...') }}</p>
                                 <h6>
                                     <b>Price start at:</b>
-                                    <span class="mphb-price">
+                                    @if (in_array($p->category_id, [1, 3]))
+                                        <span class="mphb-price">
+                                            <span class="mphb-currency">$</span>{{ $p->price_per_month }}</span>
+                                        per month
+                                    @else
                                         <span class="mphb-currency">$</span>{{ $p->price_per_night }}</span>
-                                    per night
+                                        per night
+                                    @endif
+
                                 </h6>
                             </div>
                         </div>
@@ -191,6 +283,32 @@
                     showSlide(currentSlide + 1);
                 }, 3000);
 
+            });
+
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const form = document.getElementById('cabinSearchForm');
+
+            if (!form) return;
+
+            form.addEventListener('submit', function(e) {
+
+                const durationRadios = document.querySelectorAll('input[name="duration"]');
+
+                // Only validate if duration options exist on the page
+                if (durationRadios.length > 0) {
+
+                    const selectedDuration = document.querySelector('input[name="duration"]:checked');
+
+                    if (!selectedDuration) {
+                        e.preventDefault();
+                        alert('Please select a duration.');
+                        return false;
+                    }
+                }
             });
 
         });

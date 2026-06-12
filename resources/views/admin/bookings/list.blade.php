@@ -8,7 +8,7 @@
             <li class="breadcrumb-item ">CMS Home Page</li>
         </ol> --}}
         <div class="row">
-            <div class="col-lg-8 mx-auto">
+            <div class="col-lg-12">
                 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
                     <div class="py-2 d-none">
                         <h1 class="mt-4">Contact Forms</h1>
@@ -64,6 +64,9 @@
                                             $ds = 'd-none';
                                         } elseif ($booking->status == 'confirmed') {
                                             $clr = 'success';
+                                            $ds = '';
+                                        }elseif ($booking->status == 'pending') {
+                                            $clr = 'warning';
                                             $ds = '';
                                         }
                                     @endphp

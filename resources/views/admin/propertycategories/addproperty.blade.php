@@ -31,6 +31,13 @@
                             {{ session('error') }}
                         </div>
                     @endif
+                    @php
+                        if (in_array($pCat->id, [1, 3])) {
+                            $dsplClass = 'd-none';
+                        } else {
+                            $dsplClass = '';
+                        }
+                    @endphp
                     <form action="{{ route('admin.properties.store') }}" class="form-horizontal form-label-left"
                         method="POST" enctype="multipart/form-data" id="pUploadForm">
                         @csrf
@@ -81,6 +88,20 @@
                                 </div>
                                 <div class="form-group row  mb-2">
                                     <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
+                                        Thumbnail Image <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="file" name="thumbnail" id="thumbnail"
+                                            onchange="previewThumbnailImage(event)" accept=".jpg,.jpeg" class="form-control"
+                                            required>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6 col-xs-12">
+                                        <img src="" alt="preview" id="thumbnailPreview" style="display: none; "
+                                            class="w-100">
+                                    </div>
+                                </div>
+                                <div class="form-group row {{ $dsplClass }} mb-2">
+                                    <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
                                         Price Per Night
                                     </label>
                                     <div class="col-md-9 col-sm-6 col-xs-12">
@@ -89,7 +110,7 @@
                                             placeholder="Price">
                                     </div>
                                 </div>
-                                <div class="form-group row  mb-2">
+                                <div class="form-group row {{ $dsplClass }} mb-2">
                                     <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
                                         Price Per Week
                                     </label>
@@ -107,6 +128,67 @@
                                         <input type="text" name="price_per_month" id="price_per_month"
                                             class="form-control numeric-only" value="{{ old('price_per_month') }}"
                                             placeholder="Price">
+                                    </div>
+                                </div>
+                                <div class="form-group row  mb-2">
+                                    <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
+                                        Minimum Diposit
+                                    </label>
+                                    <div class="col-md-9 col-sm-6 col-xs-12">
+                                        <input type="text" name="minimum_diposit" id="minimum_diposit"
+                                            class="form-control numeric-only" value="{{ old('minimum_diposit') ?? 200 }}"
+                                            placeholder="Price" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row  mb-2">
+                                    <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
+                                        Price Per Pet
+                                    </label>
+                                    <div class="col-md-9 col-sm-6 col-xs-12">
+                                        <input type="text" name="price_per_pet" id="price_per_pet"
+                                            class="form-control numeric-only" value="{{ old('price_per_pet') ?? 50 }}"
+                                            placeholder="Price">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row  mb-2">
+                                    <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
+                                        No. of Bed
+                                    </label>
+                                    <div class="col-md-9 col-sm-6 col-xs-12">
+                                        <input type="text" name="number_of_bed" id="number_of_bed"
+                                            class="form-control numeric-only" value="{{ old('number_of_bed') }}"
+                                            placeholder="Number of bed" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row  mb-2">
+                                    <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
+                                        Maximum Adult
+                                    </label>
+                                    <div class="col-md-9 col-sm-6 col-xs-12">
+                                        <input type="text" name="max_adult" id="max_adult"
+                                            class="form-control numeric-only" value="{{ old('max_adult') }}"
+                                            placeholder="Max adult" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row  mb-2">
+                                    <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
+                                        Maximum child
+                                    </label>
+                                    <div class="col-md-9 col-sm-6 col-xs-12">
+                                        <input type="text" name="max_child" id="max_child"
+                                            class="form-control numeric-only" value="{{ old('max_child') }}"
+                                            placeholder="Max child" required>
+                                    </div>
+                                </div>
+                                <div class="form-group d-none row  mb-2">
+                                    <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">
+                                        Maximum pet
+                                    </label>
+                                    <div class="col-md-9 col-sm-6 col-xs-12">
+                                        <input type="text" name="max_pet" id="max_pet"
+                                            class="form-control numeric-only" value="{{ old('max_pet') ?? 2 }}"
+                                            placeholder="Max pet">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-2">
@@ -133,7 +215,7 @@
 
                                         <div class="drop-area" id="dropArea">
                                             <p>Drag & Drop Images Here or Click to Select</p>
-                                            <input type="file" id="fileInput" name="img_path[]" multiple hidden
+                                            <input type="file" id="fileInput" name="images[]" multiple hidden
                                                 accept=".jpg,.jpeg,.png,.webp">
                                         </div>
 
@@ -195,8 +277,16 @@
 @endsection
 @push('scripts')
     <script>
+        const categoryIdInput = document.getElementById('category_id');
         const titleInput = document.getElementById('title');
         const subTitleInput = document.getElementById('sub_title');
+        const thumbnailInput = document.getElementById('thumbnail');
+        const ppnInput = document.getElementById('price_per_night');
+        const ppwInput = document.getElementById('price_per_week');
+        const ppmInput = document.getElementById('price_per_month');
+        const noOfBedInput = document.getElementById('number_of_bed');
+        const maxAdultInput = document.getElementById('max_adult');
+        const maxChildInput = document.getElementById('max_child');
         const shortDescInput = document.getElementById('short_desc');
         const longDescInput = document.getElementById('long_desc');
         const metaTitleInput = document.getElementById('meta_title');
@@ -213,61 +303,90 @@
         const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
         const maxSize = 2 * 1024 * 1024; // ✅ 2MB in bytes
 
-        dropArea.addEventListener('click', () => fileInput.click());
+        // Store all files here
+        const dt = new DataTransfer();
 
-        fileInput.addEventListener('change', function() {
-            handleFiles(this.files);
+        dropArea.addEventListener('click', () => {
+            fileInput.click();
         });
 
-        dropArea.addEventListener('dragover', (e) => {
+        // Manual selection
+        fileInput.addEventListener('change', function() {
+            addFiles(this.files);
+        });
+
+        // Drag over
+        dropArea.addEventListener('dragover', function(e) {
             e.preventDefault();
             dropArea.classList.add('dragover');
         });
 
-        dropArea.addEventListener('dragleave', () => {
+        // Drag leave
+        dropArea.addEventListener('dragleave', function() {
             dropArea.classList.remove('dragover');
         });
 
-        dropArea.addEventListener('drop', (e) => {
+        // Drop
+        dropArea.addEventListener('drop', function(e) {
             e.preventDefault();
             dropArea.classList.remove('dragover');
-            handleFiles(e.dataTransfer.files);
+
+            addFiles(e.dataTransfer.files);
         });
 
-        function handleFiles(selectedFiles) {
-            for (let file of selectedFiles) {
+        function addFiles(selectedFiles) {
 
+            Array.from(selectedFiles).forEach(file => {
 
-                // allow only jpg, jpeg, png, webp
                 if (!allowedTypes.includes(file.type)) {
-                    alert("Only JPG, JPEG, PNG and WEBP files are allowed.");
-                    continue;
+                    alert('Only JPG, JPEG, PNG and WEBP files are allowed.');
+                    return;
                 }
 
-                // ✅ Size validation
                 if (file.size > maxSize) {
-                    alert("Maximum allowed size is 2MB.");
-                    continue;
+                    alert('Maximum allowed size is 2MB.');
+                    return;
                 }
+
                 // Prevent duplicate files
-                if (files.some(f => f.name === file.name && f.size === file.size)) {
-                    continue;
+                const exists = Array.from(dt.files).some(existingFile =>
+                    existingFile.name === file.name &&
+                    existingFile.size === file.size &&
+                    existingFile.lastModified === file.lastModified
+                );
+
+                if (exists) {
+                    return;
                 }
 
-                files.push(file);
+                // Add file to DataTransfer
+                dt.items.add(file);
 
-                let reader = new FileReader();
+                // Update actual input
+                fileInput.files = dt.files;
+
+                // Preview
+                const reader = new FileReader();
+
                 reader.onload = function(e) {
-                    let img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.width = "120px";
-                    img.style.margin = "5px";
-                    preview.appendChild(img);
-                }
-                reader.readAsDataURL(file);
-            }
-        }
 
+                    const img = document.createElement('img');
+
+                    img.src = e.target.result;
+                    img.style.width = '120px';
+                    img.style.margin = '5px';
+                    img.style.borderRadius = '6px';
+
+                    preview.appendChild(img);
+                };
+
+                reader.readAsDataURL(file);
+
+            });
+
+            console.log('Total Files:', fileInput.files.length);
+        }
+        
         uploadBtn.addEventListener('click', function(e) {
             e.preventDefault();
 
@@ -275,15 +394,82 @@
             // Correct way to disable button
             uploadBtn.setAttribute('disabled', true);
 
-            if (titleInput.value.trim() === '' || subTitleInput.value.trim() === '') {
-                alert("Please fill in the Title and Sub Title fields.");
+            if (titleInput.value.trim() === '') {
+                titleInput.focus();
                 uploadBtn.innerText = 'Save';
                 uploadBtn.removeAttribute('disabled');
                 return;
             }
 
-            if (files.length === 0) {
+            if (subTitleInput.value.trim() === '') {
+                subTitleInput.focus();
+                uploadBtn.innerText = 'Save';
+                uploadBtn.removeAttribute('disabled');
+                return;
+            }
+
+            if (thumbnailInput.files.length === 0) {
+                // alert("Please select thumbnail image.");
+                thumbnailInput.focus();
+                uploadBtn.innerText = 'Save';
+                uploadBtn.removeAttribute('disabled');
+                return;
+            }
+
+            const categoryId = parseInt(categoryIdInput.value);
+
+            if ([1, 3].includes(categoryId)) {
+                if (ppmInput.value.trim() === '') {
+                    ppmInput.focus();
+                    uploadBtn.innerText = 'Save';
+                    uploadBtn.removeAttribute('disabled');
+                    return;
+                }
+            } else {
+                if (ppnInput.value.trim() === '') {
+                    ppnInput.focus();
+                    uploadBtn.innerText = 'Save';
+                    uploadBtn.removeAttribute('disabled');
+                    return;
+                }
+
+                if (ppwInput.value.trim() === '') {
+                    ppwInput.focus();
+                    uploadBtn.innerText = 'Save';
+                    uploadBtn.removeAttribute('disabled');
+                    return;
+                }
+
+                if (ppmInput.value.trim() === '') {
+                    ppmInput.focus();
+                    uploadBtn.innerText = 'Save';
+                    uploadBtn.removeAttribute('disabled');
+                    return;
+                }
+            }
+
+            if (fileInput.files.length === 0) {
                 alert("Please select images first.");
+                uploadBtn.innerText = 'Save';
+                uploadBtn.removeAttribute('disabled');
+                return;
+            }
+
+            if (noOfBedInput.value.trim() === '') {
+                noOfBedInput.focus();
+                uploadBtn.innerText = 'Save';
+                uploadBtn.removeAttribute('disabled');
+                return;
+            }
+
+            if (maxAdultInput.value.trim() === '') {
+                maxAdultInput.focus();
+                uploadBtn.innerText = 'Save';
+                uploadBtn.removeAttribute('disabled');
+                return;
+            }
+            if (maxChildInput.value.trim() === '') {
+                maxChildInput.focus();
                 uploadBtn.innerText = 'Save';
                 uploadBtn.removeAttribute('disabled');
                 return;
@@ -295,6 +481,9 @@
                 formData.append('images[]', file);
             });
 
+            form.submit();
+            return;
+
             formData.append('_token', "{{ csrf_token() }}");
             formData.append('title', titleInput.value.trim());
             formData.append('category_id', document.getElementById('category_id').value);
@@ -302,6 +491,9 @@
             formData.append('price_per_week', document.getElementById('price_per_week').value);
             formData.append('price_per_month', document.getElementById('price_per_month').value);
             formData.append('sub_title', subTitleInput.value.trim());
+            if (thumbnailInput.files.length > 0) {
+                formData.append('thumbnail', thumbnailInput.files[0]);
+            }
             formData.append('short_desc', shortDescInput.value.trim());
             formData.append('long_desc', longDescInput.value.trim());
             formData.append('meta_title', metaTitleInput.value.trim());
@@ -354,5 +546,21 @@
         $(document).on('input', '.numeric-only', function() {
             this.value = this.value.replace(/\D/g, '');
         });
+    </script>
+
+    <script>
+        function previewThumbnailImage(event) {
+            const input = event.target;
+            const preview = document.getElementById('thumbnailPreview');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
     </script>
 @endpush

@@ -121,7 +121,7 @@
                     <div class="col-md-4">
                         <div class="d-flex flex-column h-100 gap-1 card p-2 shadow">
                             <div class="">
-                                <img src="{{ $p->images->first()->img_path }}" class="img-fluid w-100">
+                                <img src="{{ $p->thumbnail }}" class="img-fluid w-100">
                             </div>
                             <div class="c-list-info">
                                 <h3><a href="{{ route('property.details', $p->slug) }}">{{ $p->title }}</a></h3>
@@ -129,9 +129,14 @@
                                 <p class="truncate-overflow">{{ Str::limit($p->short_desc, 205, '...') }}</p>
                                 <h6>
                                     <b>Price start at:</b>
-                                    <span class="mphb-price">
+                                    @if (in_array($p->category_id, [1, 3]))
+                                        <span class="mphb-price">
+                                            <span class="mphb-currency">$</span>{{ $p->price_per_month }}</span>
+                                        per month
+                                    @else
                                         <span class="mphb-currency">$</span>{{ $p->price_per_night }}</span>
-                                    per night
+                                        per night
+                                    @endif
                                 </h6>
                             </div>
                         </div>

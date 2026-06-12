@@ -4,6 +4,71 @@
 @section('meta_description', '')
 
 @section('content')
+    <style>
+        .booking-timer-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: linear-gradient(135deg, #fff7e8, #fff);
+            border: 2px solid #9EAA6C;
+            border-radius: 15px;
+            padding: 18px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+        }
+
+        .timer-icon {
+            width: 60px;
+            height: 60px;
+            min-width: 60px;
+            border-radius: 50%;
+            background: #9EAA6C;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .timer-content {
+            flex: 1;
+        }
+
+        .timer-label {
+            font-size: 14px;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .timer-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #9EAA6C;
+            line-height: 1;
+        }
+
+        .timer-note {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.2;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
     <div class="contact_page" class="text-center">
         <div class="container">
             <div class=" text-center my-5">
@@ -13,6 +78,13 @@
 
 
     </div>
+    @php
+        if ($booking->total_nights >= 30) {
+            $amount = $booking->booking_amount + $property->minimum_diposit;
+        } else {
+            $amount = $booking->booking_amount;
+        }
+    @endphp
 
     <section class="section ">
         <div class="container">
@@ -26,10 +98,25 @@
                             Your Trip
                         </h3>
                         <br>
+                        @if (session('success'))
+                            <div class="alert alert-success mx-1 mt-3 rounded-3 shadow-sm" id="success-alert">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        @if (session('error'))
+                            <div class="alert alert-danger mx-1 mt-3 rounded-3 shadow-sm" id="success-alert">
+                                {{ session('error') }}
+                            </div>
+                        @endif
                         <h4 class="fw-bold">Date</h4>
                         <h6>{{ \Carbon\Carbon::parse($booking->check_in)->format('F d, Y') }} -
                             {{ \Carbon\Carbon::parse($booking->check_out)->format('F d, Y') }}</h6>
+
                         <input type="hidden" id="propID" value="{{ $property->id }}">
+                        <input type="hidden" id="created_at" value="{{ $booking->created_at->timestamp }}">
+                        <input type="hidden" name="payment_id" id="payment_id" value="" readonly>
+                        <input type="hidden" name="booking_amount" id="finalAmount" value="{{ $amount }}">
+
                         <h3 class="trip-head mb-4">Accommodation #1</h3>
                         <h6 class="mb-4">Accommodation Type: <span class="fw-bold">
                                 {{ $property->title }}
@@ -39,11 +126,9 @@
                             <label class="fs-5">Adults <span>*</span></label>
                             <select name="number_of_adult" id="number_of_adult" class="form-control" required>
                                 <option value="">Select</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                                @for ($i = 1; $i <= $property->max_adult; $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
                             </select>
                         </div>
 
@@ -51,40 +136,37 @@
                             <label class="fs-5">Childrens <span>*</span></label>
                             <select name="number_of_child" id="number_of_child" class="form-control" required>
                                 <option value="">Select</option>
-                                <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                                @for ($i = 0; $i <= $property->max_child; $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        <div class="form-group  mb-4">
+                            <label class="fs-5">Pets <span>*</span></label>
+                            <select name="number_of_pet" id="number_of_pet" class="form-control" required>
+                                <option value="">Select</option>
+                                @for ($i = 0; $i <= $property->max_pet; $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
                             </select>
                         </div>
 
                         <h3 class="trip-head mb-4">Your Information</h3>
-                        @if (session('success'))
-                            <div class="alert alert-success mx-1 mt-3 rounded-3 shadow-sm" id="success-alert">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="alert alert-danger mx-1 mt-3 rounded-3 shadow-sm" id="success-alert">
-                                {{ session('message') }}
-                            </div>
-                        @endif
                         <div class="form-group mb-4">
                             <label class="fs-5">First Name <span>*</span></label>
                             <input id="first_name" type="text" name="first_name" class="form-control " required
-                                value="" placeholder="First name">
+                                value="{{ $bookin->first_name ?? old('first_name') }}" placeholder="First name">
                         </div>
                         <div class="form-group mb-4">
                             <label class="fs-5">Last Name <span>*</span></label>
                             <input id="last_name" type="text" name="last_name" class="form-control " required
-                                value="" placeholder="Last name">
+                                value="{{ $bookin->last_name ?? old('last_name') }}" placeholder="Last name">
                         </div>
                         <div class="form-group mb-4">
                             <label class="fs-5">Email <span>*</span></label>
                             <input id="user_email" type="email" name="user_email" class="form-control " required
-                                value="{{ $bookin->uuser_emaile ?? old('user_email') }}" placeholder="Enter your email">
+                                value="{{ $bookin->user_email ?? old('user_email') }}" placeholder="Enter your email">
                         </div>
                         <div class="form-group mb-4">
                             <label class="fs-5">Phone <span>*</span></label>
@@ -99,47 +181,14 @@
                         <h3 class="trip-head mb-4">Payment Method</h3>
                         <div class="mb-4">
                             <div class="fs-5">Pay by Card (Stripe)</div>
-                            <small>Pay with your credit card Via Stripe</small>
+                            {{-- <small>Pay with your credit card Via Stripe</small> --}}
                         </div>
 
-                        <input type="hidden" name="amount" id="finalAmount" value="{{ $booking->booking_amount }}">
                         <div class="card p-3 shadow-sm mb-4">
                             <label>Credit or debit card</label>
                             <div id="card-element" class="form-control p-3"></div>
                             <div id="card-errors" class="text-danger mt-2"></div>
                         </div>
-                        {{-- <div class="card p-2 shadow-sm mb-4">
-
-                            <div class="form-group mb-4">
-                                <label class="fs-5">Credit od debit card</label>
-                                <input id="card_number" type="text" name="card_number" class="form-control"
-                                    value="{{ $bookin->card_number ?? old('card_number') }}"
-                                    placeholder="0000 0000 0000 0000" inputmode="numeric" pattern="[0-9\s]*">
-                                <img id="card_icon" src="" width="40"
-                                    style="position:absolute; right:14px; top:52%; transform:translateY(-50%); display:none;"
-                                    src="{{ asset('assets/images/cards/default.png') }}">
-                            </div>
-                            <div id="card_extra" class="row mt-3" style="display: none;">
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fs-5">Expiry Date</label>
-                                        <input type="text" id="exp_month" name="exp_month" class="form-control"
-                                            placeholder="MM/YY" maxlength="5" required>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="fs-5">CVV</label>
-                                        <input type="text" id="cvv" name="cvv" class="form-control"
-                                            placeholder="CVV" maxlength="4" required>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div> --}}
                         @if ($booking->status == 'locked')
                             <div class="form-group mb-3">
                                 <input type="button" class="btn book-cabin-btn" value="Book Now" id="payBtn">
@@ -195,6 +244,10 @@
                                             <td class="text-muted">Nights</td>
                                             <td class="text-muted text-end">{{ $booking->total_nights }}</td>
                                         </tr>
+                                        <tr class="border-light">
+                                            <td class="text-muted">Pets</td>
+                                            <td class="text-muted text-end" id="petCount">0</td>
+                                        </tr>
 
                                         <tr class="border-light">
                                             <th colspan="2">Dates</th>
@@ -230,23 +283,30 @@
                                         </tr>
 
                                         <tr class="border-light">
-                                            <th colspan="2">Accommodation Taxes</th>
+                                            <td>Additional Price (<small>Pet diposit Non-refundable</small>)</td>
+                                            <td class="text-muted text-end">$<span id="petprice">0</span></td>
                                         </tr>
 
-                                        <tr class="border-light">
+                                        {{-- <tr class="border-light">
                                             <td class="text-muted">New tax</td>
                                             <td class="text-muted text-end">${{ $booking->tax_amount }}</td>
-                                        </tr>
+                                        </tr> --}}
+                                        @if ($booking->total_nights >= 30)
+                                            <tr class="border-light">
+                                                <th class="text-muted">Diposit</th>
+                                                <td class="text-muted text-end">${{ $property->minimum_diposit }}</td>
+                                            </tr>
+                                        @endif
 
-                                        <tr class="border-light">
+                                        {{-- <tr class="border-light">
                                             <th>Taxes Subtotal</th>
                                             <th class="text-end">${{ $booking->tax_amount }}</th>
-                                        </tr>
+                                        </tr> --}}
 
-                                        <tr class="border-light">
+                                        {{-- <tr class="border-light">
                                             <th>Subtotal</th>
                                             <th class="text-end">${{ $booking->booking_amount }}</th>
-                                        </tr>
+                                        </tr> --}}
                                     </tbody>
                                 </table>
                             </div>
@@ -254,31 +314,136 @@
                             <!-- Summary -->
                             <table class="table mt-1">
                                 <tbody>
-                                    <tr class="border-light">
+                                    {{-- <tr class="border-light">
                                         <td class="text-muted">Subtotal (excl. taxes)</td>
                                         <td class="text-muted text-end">${{ $booking->price_without_tax }}</td>
                                     </tr>
                                     <tr class="border-light">
                                         <td class="text-muted">Taxes</td>
                                         <td class="text-muted text-end">${{ $booking->tax_amount }}</td>
-                                    </tr>
+                                    </tr> --}}
                                     <tr class="border-light">
                                         <th>Total</th>
-                                        <th class="text-end">${{ $booking->booking_amount }}</th>
+                                        <th class="text-end">$ <span id="totalAmount">{{ $amount }}</span>
+                                        </th>
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="booking-timer-card">
+                                <div class="timer-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
 
+                                <div class="timer-content">
+                                    <div class="timer-label">
+                                        Reservation Hold Time
+                                    </div>
+
+                                    <div id="bookingTimer" class="timer-value">
+                                        10:00
+                                    </div>
+
+                                    <div class="timer-note">
+                                        Complete your booking before the timer expires.
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </form>
+            <form action="{{ route('booking.destroy', $booking->id) }}" method="POST" style="display: inline-block;"
+                id="deletForm">
+                @csrf
+                @method('DELETE')
+            </form>
         </div>
     </section>
+    <div class="modal fade" id="sessionExpiredModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+
+                <div class="modal-body text-center p-5">
+                    <div class="mb-3">
+                        <i class="fas fa-clock text-danger" style="font-size:50px;"></i>
+                    </div>
+
+                    <h4 class="mb-3">Booking Session Expired</h4>
+
+                    <p class="text-muted">
+                        Redirecting in <span id="redirectCount">3</span> seconds...
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
 @endsection
 @push('scripts')
     <script src="https://js.stripe.com/v3/"></script>
     <!-- Script -->
+
+    <script>
+        const createdAt = Number(document.getElementById('created_at').value);
+        const deleteForm = document.getElementById('deletForm');
+        const timerElement = document.getElementById('bookingTimer');
+
+        // Expire 10 minutes after creation
+        const expiryTime = createdAt + (10 * 60);
+
+        const timer = setInterval(() => {
+
+            const now = Math.floor(Date.now() / 1000);
+            const remaining = expiryTime - now;
+
+            if (remaining <= 300 && remaining > 60) {
+                timerElement.style.color = '#ff9800';
+            }
+
+            if (remaining <= 60 && remaining > 0) {
+                timerElement.style.color = '#dc3545';
+                timerElement.style.animation = 'pulse 1s infinite';
+            }
+
+            if (remaining <= 0) {
+                clearInterval(timer);
+
+                timerElement.innerText = '00:00';
+                let count = 3;
+                const expiredModal = new bootstrap.Modal(
+                    document.getElementById('sessionExpiredModal'), {
+                        backdrop: 'static',
+                        keyboard: false
+                    }
+                );
+
+                expiredModal.show();
+
+                const interval = setInterval(() => {
+                    count--;
+                    document.getElementById('redirectCount').innerText = count;
+
+                    if (count <= 0) {
+                        clearInterval(interval);
+                        deleteForm.submit();
+                    }
+                }, 1000);
+
+                return;
+            }
+
+            const mins = Math.floor(remaining / 60);
+            const secs = remaining % 60;
+
+            timerElement.innerText =
+                String(mins).padStart(2, '0') +
+                ':' +
+                String(secs).padStart(2, '0');
+
+        }, 1000);
+    </script>
     <script>
         localStorage.clear();
 
@@ -297,201 +462,43 @@
             }
         }
 
-
         $(document).on('change', '#number_of_adult', function() {
             const value = $(this).val();
             $('#adultCount').text(value);
         });
+
         $(document).on('change', '#number_of_child', function() {
             const value = $(this).val();
             $('#childCount').text(value);
 
         });
-    </script>
 
-    <script>
-        // const cvvInput = document.getElementById('cvv');
-        // if (cvvInput) {
-        //     cvvInput.addEventListener('input', function(e) {
-        //         let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+        $(document).on('change', '#number_of_pet', function() {
+            const perPetPrice = parseFloat('{{ $property->price_per_pet ?? 0 }}');
+            const bookingAmount = parseFloat('{{ $amount ?? 0 }}');
+            const petCount = parseInt($(this).val()) || 0;
 
-        //         // Limit to 4 digits (or change to 3 if your use case only supports that)
-        //         if (value.length > 4) {
-        //             value = value.slice(0, 4);
-        //         }
+            const petPrice = petCount * perPetPrice;
+            const finalAmount = bookingAmount + petPrice;
 
-        //         e.target.value = value;
-        //     });
-
-        //     cvvInput.addEventListener('blur', function(e) {
-        //         const digitsOnly = e.target.value;
-        //         if (digitsOnly.length < 3 || digitsOnly.length > 4) {
-        //             alert('CVV must be 3 or 4 digits.');
-        //             cvvInput.value = '';
-        //         }
-        //     });
-        // }
-    </script>
-    <script>
-        let cardInput = document.getElementById('card_number');
-        let cardIcon = document.getElementById('card_icon');
-        let extraBlock = document.getElementById('card_extra');
-        let expField = document.getElementById('exp_month');
-        let cvvField = document.getElementById('cvv');
-
-        if (cardInput) {
-
-            cardInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-
-                // Detect type FIRST
-                let type = detectCardType(value);
-
-                // Dynamic length
-                let maxLength = 16;
-                if (type === 'amex') maxLength = 15;
-                if (type === 'diners') maxLength = 14;
-
-                value = value.substring(0, maxLength);
-
-                // Format safely
-                e.target.value = formatCardNumber(value, type);
-
-                // Update CVV length dynamically
-                updateCVVLength(type);
-
-                // UI adjustments
-                cardIcon.style.top = '52%';
-
-                // ✅ When complete
-                if (value.length === maxLength) {
-
-                    // Luhn validation
-                    if (!isValidCardNumber(value)) {
-                        cardInput.classList.add('is-invalid');
-                        if (extraBlock) extraBlock.style.display = 'none';
-                        return;
-                    } else {
-                        cardInput.classList.remove('is-invalid');
-                    }
-
-                    if (extraBlock) extraBlock.style.display = 'flex';
-                    cardIcon.style.top = '30%';
-
-                    if (expField) expField.focus();
-                }
-
-                // ✅ If user edits back
-                if (value.length < maxLength) {
-                    if (extraBlock) extraBlock.style.display = 'none';
-                    cardInput.classList.remove('is-invalid');
-                }
-
-                // Update icon
-                updateCardIcon(type, value);
-            });
-
-            function detectCardType(number) {
-                if (/^4/.test(number)) return 'visa';
-                if (/^5[1-5]/.test(number)) return 'mastercard';
-                if (/^3[47]/.test(number)) return 'amex';
-                if (/^6(?:011|5)/.test(number)) return 'discover';
-                if (/^3(?:0[0-5]|[68])/.test(number)) return 'diners';
-                return '';
-            }
-
-            function formatCardNumber(value, type) {
-                if (type === 'amex') {
-                    return value.replace(/^(\d{0,4})(\d{0,6})(\d{0,5})$/, (_, a, b, c) => [a, b, c].filter(Boolean).join(
-                        ' '));
-                }
-
-                if (type === 'diners') {
-                    return value.replace(/^(\d{0,4})(\d{0,6})(\d{0,4})$/, (_, a, b, c) => [a, b, c].filter(Boolean).join(
-                        ' '));
-                }
-
-                return value.replace(/(\d{1,4})/g, '$1 ').trim();
-            }
-
-            function updateCardIcon(type, value) {
-                if (!value) {
-                    cardIcon.style.display = 'none';
-                    return;
-                }
-
-                let icon = type ? type : 'default';
-                cardIcon.src = `/assets/images/cards/${icon}.png`;
-                cardIcon.style.display = 'block';
-            }
-
-            // ✅ CVV dynamic length
-            function updateCVVLength(type) {
-                if (!cvvField) return;
-
-                if (type === 'amex') {
-                    cvvField.setAttribute('maxlength', '4');
-                    cvvField.setAttribute('placeholder', '4-digit CVV');
-                } else {
-                    cvvField.setAttribute('maxlength', '3');
-                    cvvField.setAttribute('placeholder', '3-digit CVV');
-                }
-            }
-
-            // ✅ Luhn Algorithm
-            function isValidCardNumber(number) {
-                let sum = 0;
-                let shouldDouble = false;
-
-                for (let i = number.length - 1; i >= 0; i--) {
-                    let digit = parseInt(number.charAt(i));
-
-                    if (shouldDouble) {
-                        digit *= 2;
-                        if (digit > 9) digit -= 9;
-                    }
-
-                    sum += digit;
-                    shouldDouble = !shouldDouble;
-                }
-
-                return sum % 10 === 0;
-            }
-
-            // fallback if image missing
-            cardIcon.onerror = function() {
-                this.src = '/assets/images/cards/default.png';
-            };
-        }
+            $('#petCount').text(petCount);
+            $('#petprice').text(petPrice);
+            $('#finalAmount').val(finalAmount);
+            $('#totalAmount').text(finalAmount);
 
 
-        // ✅ Expiry auto format
-        if (expField) {
-            expField.addEventListener('input', function(e) {
-                let val = e.target.value.replace(/\D/g, '').substring(0, 4);
-
-                if (val.length >= 3) {
-                    val = val.substring(0, 2) + '/' + val.substring(2);
-                }
-
-                e.target.value = val;
-            });
-        }
-
-        // ✅ CVV numeric only
-        if (cvvField) {
-            cvvField.addEventListener('input', function(e) {
-                e.target.value = e.target.value.replace(/\D/g, '');
-            });
-        }
+        });
     </script>
     <script>
         let adultValue = document.getElementById('number_of_adult');
         let childValue = document.getElementById('number_of_child');
+        let petValue = document.getElementById('number_of_pet');
         let firstName = document.getElementById('first_name');
         let lastName = document.getElementById('last_name');
         let emailValue = document.getElementById('user_email');
         let phoneValue = document.getElementById('user_phone');
+        let addressValue = document.getElementById('user_address');
+        let finalBookingAmount = document.getElementById('finalAmount');
         let bookingForm = document.getElementById('bookConfirmForm');
         let payBtn = document.getElementById('payBtn');
         // const stripe = Stripe(
@@ -504,67 +511,92 @@
         card.mount("#card-element");
 
 
-        payBtn.addEventListener("click", async function() {
+        payBtn.addEventListener("click", async function(e) {
+
             payBtn.value = 'Processing...';
-            // Correct way to disable button
-            payBtn.setAttribute('disabled', true);
+            payBtn.disabled = true;
 
-            if (adultValue.value == '') {
+            let err = true;
+
+            if (adultValue.value.trim() === '') {
                 adultValue.focus();
-            }
-            if (childValue.value == '') {
+                err = false;
+            } else if (childValue.value.trim() === '') {
                 childValue.focus();
-            }
-            if (firstName.value == '') {
+                err = false;
+            } else if (petValue.value.trim() === '') {
+                petValue.focus();
+                err = false;
+            } else if (firstName.value.trim() === '') {
                 firstName.focus();
-            }
-            if (lastName.value == '') {
+                err = false;
+            } else if (lastName.value.trim() === '') {
                 lastName.focus();
-            }
-            if (emailValue.value == '') {
+                err = false;
+            } else if (emailValue.value.trim() === '') {
                 emailValue.focus();
-            }
-            if (phoneValue.value == '') {
+                err = false;
+            } else if (phoneValue.value.trim() === '') {
                 phoneValue.focus();
+                err = false;
             }
+            // else if (addressValue.value.trim() === '') {
+            //     addressValue.focus();
+            //     err = false;
+            // }
 
-            // return false;
-            // Step 1: call controller
-            let res = await fetch("{{ route('payment.store') }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({
-                    amount: document.getElementById('finalAmount').value,
-                    booking_id: "{{ $booking->id }}",
-                    name: firstName.value + ' ' + lastName.value,
-                    email: emailValue.value,
-                    phone: phoneValue.value
-                })
-            });
-
-            let data = await res.json();
-            console.log(data);
-            // return false;
-            // Step 2: confirm payment
-            const result = await stripe.confirmCardPayment(data.client_secret, {
-                payment_method: {
-                    card: card
-                }
-            });
-
-            if (result.error) {
-                document.getElementById("card-errors").innerText = result.error.message;
-                // Re-enable on failure
-                payBtn.removeAttribute('disabled');
+            if (!err) {
+                // bookingForm.submit();
                 payBtn.value = 'Book Now';
+                payBtn.disabled = false;
+                return;
             } else {
-                if (result.paymentIntent.status === "succeeded") {
-                    bookingForm.submit();
-                    // console.log(result);
-                    // window.location.href = "/payment-success";
+
+                // return false;
+                // Step 1: call stripe controller
+                let res = await fetch("{{ route('payment.store') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        amount: document.getElementById('finalAmount').value,
+                        booking_id: "{{ $booking->id }}",
+                        name: firstName.value + ' ' + lastName.value,
+                        email: emailValue.value,
+                        phone: phoneValue.value
+                    })
+                });
+
+                let data = await res.json();
+                // console.log(data);
+                // return false;
+                // Step 2: confirm payment
+                const result = await stripe.confirmCardPayment(data.client_secret, {
+                    payment_method: {
+                        card: card
+                    }
+                });
+
+                // console.log(result);
+                // return false;
+
+                if (result.error) {
+                    document.getElementById("card-errors").innerText = result.error.message;
+                    console.log(result);
+
+                    // Re-enable on failure
+                    payBtn.removeAttribute('disabled');
+                    payBtn.value = 'Book Now';
+                } else {
+                    if (result.paymentIntent.status === "succeeded") {
+                        $('#payment_id').val(result.paymentIntent.id);
+                        // return false;
+                        bookingForm.submit();
+                        // console.log(result);
+                        // window.location.href = "/payment-success";
+                    }
                 }
             }
         });

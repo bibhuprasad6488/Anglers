@@ -21,7 +21,6 @@
         <div class="container">
             <div class="row">
                 @if ($properties->isNotEmpty())
-
                     <h5 class="my-5">
                         {{ $properties->count() }} accommodations found from
                         {{ \Carbon\Carbon::parse($formDate)->format('F d, Y') }}
@@ -57,26 +56,35 @@
                                                 <p>{{ Str::limit($p->short_desc, 430, '...') }}</p>
                                             </div>
                                             <div class="text-muted">
-                                                <h5>
-                                                    <b>Price start at:</b>
-                                                    <span class="mphb-price">
-                                                        <span
-                                                            class="mphb-currency">$</span>{{ $p->pricing['total_price'] }}</span>
-                                                    <span class="mphb-price-period"
-                                                        title="Based on your search parameters">per
-                                                        night</span>
-                                                </h5>
-
+                                                @if (in_array($p->category_id, [1, 3]))
+                                                    <h5>
+                                                        <b>Price start at:</b>
+                                                        <span class="mphb-price">
+                                                            <span
+                                                                class="mphb-currency">$</span>{{ $p->price_per_month ?? 0 }} per month</span>
+                                                        {{-- <span class="mphb-price-period">per month</span> --}}
+                                                    </h5>
+                                                @else
+                                                    <h5>
+                                                        <b>Price start at:</b>
+                                                        <span class="mphb-price">
+                                                            <span
+                                                                class="mphb-currency">$</span>{{ $p->price_per_night ?? 0 }} per night</span>
+                                                        {{-- <span class="mphb-price-period">per night</span> --}}
+                                                    </h5>
+                                                @endif
+                                                <small class="fw-semibold"> Price per pet ${{ $p->price_per_pet }}, Maximum
+                                                    2 dogs less than 50 lb. No Cats</small>
                                             </div>
                                             <div>
                                                 <form action="{{ route('search.result') }}" method="GET">
                                                     @csrf
                                                     <input id="check_in_date" type="hidden" name="check_in_date"
                                                         class="form-control border-secondary"
-                                                        value="{{ request('check_in_date') ?? request('check_in') }}">
+                                                        value="{{ request('check_in_date') ?? (request('check_in') ?? $formDate) }}">
                                                     <input id="check_out_date" type="hidden" name="check_out_date"
                                                         class="form-control border-secondary"
-                                                        value="{{ request('check_out_date') ?? request('check_out') }}">
+                                                        value="{{ request('check_out_date') ?? (request('check_out') ?? $toDate) }}">
                                                     <input type="hidden" name="property_id" value="{{ $p->id }}">
                                                     <input type="hidden" name="category_id" value="{{ $p->category_id }}">
 
@@ -114,8 +122,8 @@
         let checkOutDate = document.getElementById('check_out_date').value;
 
         document.addEventListener("DOMContentLoaded", function() {
-            localStorage.setItem('check_in_date',checkInDate);
-            localStorage.setItem('check_out_date',checkOutDate);
+            localStorage.setItem('check_in_date', checkInDate);
+            localStorage.setItem('check_out_date', checkOutDate);
             // localStorage.clear();
             // console.log(checkInDate + ', ' + checkOutDate);
 

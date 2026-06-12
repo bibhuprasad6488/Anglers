@@ -295,11 +295,11 @@ h2.center-align::after {
 
 .c-list-info p,
 p.tag-list {
-    padding-bottom: 15px;
+    /* padding-bottom: 15px; */
     font-size: 16px;
     line-height: 26px;
     color: #666666;
-    min-height: 67px;
+    /* min-height: 67px; */
 }
 
 p.truncate-overflow {
@@ -558,6 +558,21 @@ iframe {
 
 .fixed-top {
     background: rgb(255, 255, 255);
+}
+
+.mphb-details-title {
+    margin: 0px;
+    line-height: 40px;
+    font-size: 36px;
+    padding: 0px 0px 30px;
+    border-width: medium;
+    border-style: none;
+    border-color: currentcolor;
+    border-image: initial;
+    list-style: none;
+    color: rgb(109, 119, 67);
+    ;
+    text-transform: uppercase;
 }
 
 .dropdown-item:hover,

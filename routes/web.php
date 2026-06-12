@@ -60,6 +60,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     })->name('password.reset');
 
     Route::post('/reset-password', [App\Http\Controllers\Admin\Auth\LoginController::class, 'reset'])->name('password.store');
+    // Route::post('/update-property/{id}', [PropertyController::class, 'update'])->name('update-property');
 
     Route::middleware('auth:admin')->group(function () {
         // Route::get('/dashboard', function () {
@@ -87,6 +88,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('view-properties/{id}', [PropertyCategoryController::class, 'viewProperties'])->name('view-properties');
         // Properties
         Route::resource('properties', PropertyController::class)->names('properties');
+        // Route::post('/update-property/{id}', [PropertyController::class, 'update'])->name('update-property');
         Route::get('del-property-img/{id}', [PropertyController::class, 'deletePropertyImage'])->name('del-property-img');
         // Bookings
         Route::resource('bookings', AdminBookingController::class)->names('bookings');

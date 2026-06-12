@@ -124,7 +124,7 @@
                                         value="{{ optional($setting)->alt_phone }}">
                                 </div>
                             </div>
-                            <div class="form-group  row  mb-2">
+                            <div class="form-group d-none row  mb-2">
                                 <label for="" class="col-md-3 d-flex justify-content-end col-sm-3 col-xs-12">Admin
                                     Tax
                                 </label>
