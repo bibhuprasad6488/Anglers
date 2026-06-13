@@ -35,7 +35,9 @@
     <!-- Add Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
-    <link href="{{ asset('admin/assets/summernote/summernote.min.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('admin/assets/summernote/summernote.min.css') }}" rel="stylesheet"> --}}
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.css" rel="stylesheet">
+
 
     <!-- Scripts -->
     @if (config('database.connections.mysql.username') === 'root')
@@ -120,6 +122,7 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="{{ asset('admin/js/scripts.js') }}"></script>
     {{-- <script src="{{ asset('admin/assets/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('admin/assets/demo/chart-bar-demo.js') }}"></script> --}}
@@ -132,7 +135,8 @@
     <!-- jQuery FIRST -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <script src="{{ asset('admin/assets/summernote/summernote.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.js"></script>
+    {{-- <script src="{{ asset('admin/assets/summernote/summernote.min.js') }}"></script> --}}
     <!-- Toastr SECOND -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     {{-- {!! Toastr::message() !!} --}}

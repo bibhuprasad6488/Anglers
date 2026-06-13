@@ -137,7 +137,7 @@
                             <div class="slider">
                                 <div class="slides">
                                     @foreach ($p->images as $image)
-                                        <img src="{{ $image->img_path }}" class="slide {{ $loop->first ? 'active' : '' }}"
+                                        <img src="{{ $image->img_path }}" class="slide {{ $loop->first ? 'active' : '' }} suggested-stay-img"
                                             alt="Property Image">
                                     @endforeach
                                 </div>
@@ -217,7 +217,7 @@
                     <div class="col-md-4">
                         <div class="d-flex flex-column h-100 gap-1 card p-2 shadow">
                             <div class="">
-                                <img src="{{ $p->thumbnail }}" class="img-fluid w-100">
+                                <img src="{{ $p->thumbnail }}" class="img-fluid w-100 suggested-stay-img">
                             </div>
                             <div class="c-list-info">
                                 <h3><a href="{{ route('property.details', $p->slug) }}">{{ $p->title }}</a></h3>
