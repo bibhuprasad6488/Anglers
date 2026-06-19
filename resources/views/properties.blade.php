@@ -137,7 +137,8 @@
                             <div class="slider">
                                 <div class="slides">
                                     @foreach ($p->images as $image)
-                                        <img src="{{ $image->img_path }}" class="slide {{ $loop->first ? 'active' : '' }} suggested-stay-img"
+                                        <img src="{{ $image->img_path }}"
+                                            class="slide {{ $loop->first ? 'active' : '' }} suggested-stay-img"
                                             alt="Property Image">
                                     @endforeach
                                 </div>
@@ -249,8 +250,16 @@
         let checkInDate = localStorage.getItem('check_in_date');
         let checkOutDate = localStorage.getItem('check_out_date');
 
-        document.getElementById("check_in_date").value = checkInDate;
-        document.getElementById("check_out_date").value = checkOutDate;
+        const checkInInput = document.getElementById("check_in_date");
+        const checkOutInput = document.getElementById("check_out_date");
+
+        if (checkInInput && checkInDate) {
+            checkInInput.value = checkInDate;
+        }
+
+        if (checkOutInput && checkOutDate) {
+            checkOutInput.value = checkOutDate;
+        }
         document.addEventListener("DOMContentLoaded", function() {
 
             document.querySelectorAll(".slider").forEach(function(slider) {
@@ -281,7 +290,7 @@
 
                 setInterval(function() {
                     showSlide(currentSlide + 1);
-                }, 3000);
+                }, 5000);
 
             });
 

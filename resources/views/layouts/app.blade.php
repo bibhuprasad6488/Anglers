@@ -210,47 +210,45 @@
         document.addEventListener("DOMContentLoaded", function() {
             const checkIn = document.getElementById("check_in_date");
             const checkOut = document.getElementById("check_out_date");
-
-
-            /* get tomorrow date */
+            
             let today = new Date();
             let tomorrow = new Date(today);
             tomorrow.setDate(today.getDate() + 1);
 
             let tomorrowFormatted = tomorrow.toISOString().split("T")[0];
 
-            /* disable today & past dates */
-            checkIn.setAttribute("min", tomorrowFormatted);
-            checkOut.setAttribute("min", tomorrowFormatted);
+            if (checkIn) {
+                checkIn.setAttribute("min", tomorrowFormatted);
+            }
 
-            /* when checkin changes */
-            checkIn.addEventListener("change", function() {
+            if (checkOut) {
+                checkOut.setAttribute("min", tomorrowFormatted);
+            }
 
-                let checkInDate = new Date(this.value);
+            if (checkIn && checkOut) {
 
-                /* next day */
-                let nextDay = new Date(checkInDate);
-                nextDay.setDate(nextDay.getDate() + 1);
+                checkIn.addEventListener("change", function() {
 
-                let nextDayFormatted = nextDay.toISOString().split("T")[0];
+                    let checkInDate = new Date(this.value);
 
-                /* set checkout min */
-                checkOut.min = nextDayFormatted;
+                    let nextDay = new Date(checkInDate);
+                    nextDay.setDate(nextDay.getDate() + 1);
 
-                /* auto set checkout */
-                checkOut.value = nextDayFormatted;
+                    let nextDayFormatted = nextDay.toISOString().split("T")[0];
 
-            });
+                    checkOut.min = nextDayFormatted;
+                    checkOut.value = nextDayFormatted;
+                });
 
-            /* prevent invalid checkout */
-            checkOut.addEventListener("change", function() {
+                checkOut.addEventListener("change", function() {
 
-                if (checkOut.value <= checkIn.value) {
-                    alert("Checkout date must be after check-in date");
-                    checkOut.value = "";
-                }
+                    if (checkOut.value <= checkIn.value) {
+                        alert("Checkout date must be after check-in date");
+                        checkOut.value = "";
+                    }
 
-            });
+                });
+            }
 
         });
     </script>

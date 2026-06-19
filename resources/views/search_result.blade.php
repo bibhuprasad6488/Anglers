@@ -35,7 +35,7 @@
                                     <div class="slides">
                                         @foreach ($p->images as $image)
                                             <img src="{{ $image->img_path }}"
-                                                class="slide {{ $loop->first ? 'active' : '' }}" alt="Property Image">
+                                                class="slide {{ $loop->first ? 'active' : '' }} suggested-stay-img" alt="Property Image">
                                         @endforeach
                                     </div>
 
