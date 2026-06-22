@@ -26,7 +26,7 @@
                 </div> --}}
 
                 <!-- Setting -->
-                <a class="nav-link {{ request()->routeIs(['admin.all-page', 'admin.home-page-setting.index', 'admin.contact-page-setting.index', 'admin.resources-page-setting.index', 'admin.gallery-page-setting.index', 'admin.term.business', 'admin.privacy.policy']) ? 'active' : '' }} "
+                <a class="nav-link {{ request()->routeIs(['admin.all-page', 'admin.home-page-setting.index', 'admin.contact-page-setting.index', 'admin.resources-page-setting.index', 'admin.gallery-page-setting.index', 'admin.term.business', 'admin.privacy.policy', 'admin.blocked-properties', 'admin.bookings-calender']) ? 'active' : '' }} "
                     href="{{ route('admin.all-page') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                     All Pages
@@ -44,10 +44,15 @@
                     Properties
                 </a>
 
-                <a class="nav-link {{ request()->routeIs(['admin.bookings.*']) ? 'active' : '' }} "
-                    href="{{ route('admin.bookings.index') }}">
+                <a class="nav-link {{ request()->routeIs(['admin.blocked-properties']) ? 'active' : '' }} "
+                    href="{{ route('admin.blocked-properties') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-stop-circle"></i></div>
+                    Block Booking
+                </a>
+                <a class="nav-link {{ request()->routeIs(['admin.bookings-calender']) ? 'active' : '' }} "
+                    href="{{ route('admin.bookings-calender') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                    Booking Calender
+                    Calender
                 </a>
 
                 <a class="nav-link {{ request()->routeIs(['admin.bookings.*']) ? 'active' : '' }} "

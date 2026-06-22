@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\Property;
 use App\Models\SiteSetting;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Stripe\Charge;
@@ -19,7 +22,7 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $bookings = Booking::orderByDesc('id')->with('property')->get();
+        $bookings = Booking::orderByDesc('id')->where('status', '!=', 'blocked')->with('property')->get();
         return view('admin.bookings.list', compact('bookings'));
     }
 
@@ -159,9 +162,171 @@ class BookingController extends Controller
         }
     }
 
-
     public function getBookingCalender(Request $request)
     {
-        
+        $bookings = Booking::orderByDesc('id')->with('property')->get();
+
+        $properties = Property::with(['bookings' => function ($q) {
+
+            $q->where(function ($q) {
+
+                $q->where('status', 'confirmed')
+                    ->where('payment_status', 'paid');
+            })
+                ->orWhere(function ($q) {
+
+                    $q->where('status', 'locked')
+                        ->where('payment_status', 'pending');
+                })
+                ->orWhere(function ($q) {
+
+                    $q->where('status', 'blocked')
+                        ->where('payment_status', 'pending');
+                });
+        }])->get();
+
+
+
+
+        $today = Carbon::now()->startOfDay();
+
+        $start = $today->copy()
+            ->subMonth()
+            ->startOfMonth();
+
+        $end = $today->copy()
+            ->addMonths(5)
+            ->endOfMonth();
+
+
+        $dates = [];
+
+        while ($start <= $end) {
+
+            $dates[] = $start->copy();
+
+            $start->addDay();
+        }
+
+        return view('admin.bookings.booking_calender', compact('bookings', 'properties', 'dates'));
+    }
+
+    public function pastDates(Request $request)
+    {
+        $before = Carbon::parse($request->before);
+
+        $today = Carbon::now()->startOfDay();
+
+        // last month first date
+        $minDate = $today->copy()
+            ->subMonth()
+            ->startOfMonth();
+
+
+        $date = $before->copy()->subDay();
+
+
+        // stop loading older than last month start
+        if ($date < $minDate) {
+
+            return response()->json([
+                'date' => null
+            ]);
+        }
+
+
+        return response()->json([
+            'date' => $date->format('Y-m-d')
+        ]);
+    }
+
+    public function getReservedDates(Request $request)
+    {
+
+        $bookings = Booking::where('property_id', $request->property_id)
+
+            ->whereIn('status', [
+
+                'confirmed',
+                'locked',
+                'blocked'
+
+            ])
+
+            ->get();
+
+
+        $dates = [];
+
+
+        foreach ($bookings as $booking) {
+
+
+            $start = Carbon::parse($booking->check_in);
+
+            $end = Carbon::parse($booking->check_out);
+
+
+
+            while ($start < $end) {
+
+                $dates[] = $start->format('Y-m-d');
+
+                $start->addDay();
+            }
+        }
+
+
+        return response()->json([
+            'dates' => $dates
+        ]);
+    }
+
+    public function blockNewProperty(Request $request)
+    {
+        $property = Property::find($request->property_id);
+        if (!$property) {
+            return back()->with('error', 'Property Not Found');
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $lastBooking = Booking::latest('id')->first();
+
+            if ($lastBooking) {
+                // Extract last number
+                $lastNumber = (int) substr($lastBooking->booking_id, -4);
+                $newNumber = $lastNumber + 1;
+            } else {
+                $newNumber = 1;
+            }
+
+            // Generate formatted booking number
+            $bookingNo = 'BK-' . date('Y') . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+            $bb = new Booking();
+            $bb->booking_id = $bookingNo;
+            $bb->property_id = $request->property_id;
+            $bb->category_id = $property->category_id;
+            $bb->total_nights = 0;
+            $bb->booking_amount = 0;
+            $bb->check_in = $request->from_date;
+            $bb->check_out = $request->to_date;
+            $bb->status = 'blocked';
+            $bb->save();
+
+            DB::commit();
+            return back()->with('success', 'Booking blocked successfully');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->with('error', 'Error: ' . $th->getMessage());
+        }
+    }
+
+    public function getBlockedProperty()
+    {
+        $bookings = Booking::orderByDesc('id')->where('status', 'blocked')->with('property')->get();
+        $properties = Property::all();
+        return view('admin.bookings.blocked_list', compact('bookings', 'properties'));
     }
 }

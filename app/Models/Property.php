@@ -18,4 +18,23 @@ class Property extends Model
     {
         return $this->belongsTo(PropertyCategory::class, 'category_id', 'id');
     }
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'property_id');
+        // ->where(function ($q) {
+
+        //     $q->where(function ($q) {
+
+        //         // confirmed paid bookings
+        //         $q->where('status', 'confirmed')
+        //             ->where('payment_status', 'paid');
+        //     })
+        //         ->orWhere(function ($q) {
+
+        //             // locked pending bookings
+        //             $q->where('status', 'locked')
+        //                 ->where('payment_status', 'pending');
+        //         });
+        // });
+    }
 }

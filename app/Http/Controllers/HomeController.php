@@ -404,7 +404,7 @@ class HomeController extends Controller
 
             $checkBooking = Booking::where('property_id', $propertyId)
                 ->where('category_id', $categoryId)
-                ->whereIn('status', ['locked', 'confirmed']) // ✅ correct
+                ->whereIn('status', ['locked', 'blocked', 'confirmed']) // ✅ correct
                 ->where(function ($query) use ($formDate, $toDate) {
                     $query->where('check_in', '<', $toDate)
                         ->where('check_out', '>', $formDate);
@@ -412,7 +412,7 @@ class HomeController extends Controller
                 ->first();
 
             if ($checkBooking) {
-                $bookedIds = Booking::whereIn('status', ['locked', 'confirmed'])
+                $bookedIds = Booking::whereIn('status', ['locked', 'blocked', 'confirmed'])
                     ->where('check_in', '<', $toDate)
                     ->where('check_out', '>', $formDate)
                     ->pluck('property_id')
@@ -535,7 +535,7 @@ class HomeController extends Controller
             $cat = PropertyCategory::find($categoryId);
 
             $bookedIds = Booking::where('category_id', $categoryId)
-                ->whereIn('status', ['locked', 'confirmed'])
+                ->whereIn('status', ['locked', 'blocked', 'confirmed'])
                 ->where('check_in', '<', $toDate)
                 ->where('check_out', '>', $formDate)
                 ->pluck('property_id')
@@ -584,7 +584,7 @@ class HomeController extends Controller
             return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'properties'));
         } else if ($formDate && $toDate) {
             $excludesCat = [1, 3];
-            $bookedIds = Booking::whereIn('status', ['locked', 'confirmed'])
+            $bookedIds = Booking::whereIn('status', ['locked', 'blocked', 'confirmed'])
                 ->where('check_in', '<', $toDate)
                 ->where('check_out', '>', $formDate)
                 ->pluck('property_id')
