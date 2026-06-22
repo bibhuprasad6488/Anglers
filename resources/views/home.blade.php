@@ -106,7 +106,7 @@
                 <div class="col-md-10 mx-auto text-center">
                     <div class="d-flex flex-column h-100 gap-4">
                         <div class="feature-box flex-fill">
-                            <h2 class=" center-align">VIEW ALL OUR CABINS</h2>
+                            <h2 class="center-align"> ALL PROPERTIES</h2>
                         </div>
                     </div>
                 </div>
@@ -117,12 +117,28 @@
     <section class="section ">
         <div class="container">
             <div class="row g-4 py-2">
+                @foreach ($homwPageGallery as $p)
+                    <div class="col-md-3">
+                        <div class="d-flex flex-column h-100 gap-1 card p-2 shadow">
+
+                            <div>
+                                <img src="{{ $p->images }}" class="img-fluid w-100 suggested-stay-img gallery-img"
+                                    data-bs-toggle="modal" data-bs-target="#imageModal" data-image="{{ $p->images }}"
+                                    style="cursor:pointer;">
+                            </div>
+
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            {{-- <div class="row g-4 py-2">
                 @foreach ($properties as $p)
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="d-flex flex-column h-100 gap-1 card p-2 shadow">
                             <div class="">
-                                <img src="{{ $p->thumbnail }}" class="img-fluid w-100">
+                                <img src="{{ $p->thumbnail }}" class="img-fluid w-100 suggested-stay-img">
                             </div>
+
                             <div class="c-list-info">
                                 <h3><a href="{{ route('property.details', $p->slug) }}">{{ $p->title }}</a></h3>
                                 <p class="tag-list">{{ $p->sub_title }}</p>
@@ -142,17 +158,14 @@
                         </div>
                     </div>
                 @endforeach
-
-            </div>
+            </div> --}}
         </div>
     </section>
 
 
-    <section class="section">
+    {{-- <section class="section">
         <div class="container">
             <div class="row g-4 py-2">
-
-                <!-- LEFT IMAGE BOX -->
                 <div class="col-md-10 mx-auto text-center">
                     <div class="d-flex flex-column h-100 gap-4">
                         <div class="feature-box flex-fill">
@@ -180,12 +193,10 @@
 
                         </div>
 
-                        <!-- Navigation -->
-                        {{-- <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div> --}}
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
 
-                        <!-- Pagination -->
-                        {{-- <div class="swiper-pagination"></div> --}}
+                        <div class="swiper-pagination"></div>
                     </div>
                 </div>
                 <div class="col-md-12 text-center py-4">
@@ -193,7 +204,19 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
+    <div class="modal fade" id="imageModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-transparent border-0">
+
+                <button type="button" class="btn-close btn-close-white ms-auto mb-2" data-bs-dismiss="modal">
+                </button>
+
+                <img id="modalImage" src="" class="img-fluid rounded">
+
+            </div>
+        </div>
+    </div>
     @include('cta_common')
 @endsection
 @push('scripts')
@@ -231,6 +254,20 @@
                     slidesPerView: 5
                 }
             }
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('.gallery-img').forEach(image => {
+
+            image.addEventListener('click', function() {
+
+                let src = this.getAttribute('data-image');
+
+                document.getElementById('modalImage').src = src;
+
+            });
+
         });
     </script>
 @endpush

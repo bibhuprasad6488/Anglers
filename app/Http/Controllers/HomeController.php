@@ -9,6 +9,7 @@ use App\Models\CmsGallery;
 use App\Models\CmsHomePage;
 use App\Models\CmsResource;
 use App\Models\GetInTouch;
+use App\Models\HomePageGallery;
 use App\Models\PrivacyPolicy;
 use App\Models\Property;
 use App\Models\PropertyCategory;
@@ -52,7 +53,7 @@ class HomeController extends Controller
             return $g;
         });
 
-        $properties = Property::with('images')->where('status', 1)->orderBy('title')->limit(6)->get()->map(function ($p) {
+        $properties = Property::with('images')->where('status', 1)->orderBy('title')->limit(30)->get()->map(function ($p) {
             $p->thumbnail = $p->thumbnail ? asset('storage/images/property/' . $p->thumbnail) : asset('assets/images/no-img.png');
             $p->images = $p->images->map(function ($img) {
                 $img->img_path = $img->img_path ? asset('storage/images/property/' . $img->img_path) : '';
@@ -61,7 +62,11 @@ class HomeController extends Controller
             return $p;
         });
         $siteSetting = SiteSetting::find(1);
-        return view('home', compact('siteSetting', 'home_page_data', 'galleries', 'properties'));
+        $homwPageGallery = HomePageGallery::all()->map(function ($pg) {
+            $pg->images = $pg->images ? asset('storage/images/cmspage/' . $pg->images) : '';
+            return $pg;
+        });
+        return view('home', compact('siteSetting', 'home_page_data', 'galleries', 'properties', 'homwPageGallery'));
     }
 
     public function resourcesPageDetails()
@@ -182,6 +187,9 @@ class HomeController extends Controller
 
                 return $img;
             });
+
+            // Randomly arrange images first
+            $images = $images->shuffle();
 
             if ($p->thumbnail) {
                 $thumbnailUrl = $p->thumbnail

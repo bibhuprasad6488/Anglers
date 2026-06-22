@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CmsHomePage;
+use App\Models\HomePageGallery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class HomepageController extends Controller
 {
@@ -20,7 +22,12 @@ class HomepageController extends Controller
             $homePage->setion_one_img = $homePage->setion_one_img ? asset('storage/images/cmspage/' . $homePage->setion_one_img) : '';
             $homePage->setion_two_img = $homePage->setion_two_img ? asset('storage/images/cmspage/' . $homePage->setion_two_img) : '';
         }
-        return view('admin.cmspages.homepage', compact('homePage'));
+        $pageGallery = HomePageGallery::all()->map(function ($pg) {
+            $pg->images = $pg->images ? asset('storage/images/cmspage/' . $pg->images) : '';
+            return $pg;
+        });
+        // dd($pageGallery);
+        return view('admin.cmspages.homepage', compact('homePage', 'pageGallery'));
     }
 
     /**
@@ -123,35 +130,77 @@ class HomepageController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function saveHomePageImages(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()->all()
+            ], 422);
+        }
+        DB::beginTransaction();
+
+        try {
+
+            $destinationPath = public_path('storage/images/cmspage/');
+
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+
+            if ($request->hasFile('images')) {
+
+                foreach ($request->file('images') as $image) {
+
+                    $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+                    $image->move($destinationPath, $filename);
+
+                    $gallery = new HomePageGallery();
+                    $gallery->images = $filename;
+                    $gallery->save();
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Images uploaded successfully..'
+            ]);
+        } catch (\Throwable $th) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Upload failed: ' . $th->getMessage()
+            ]);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function deleteHomePageImages(Request $request, $id)
     {
-        //
-    }
+        try {
+            $pg = HomePageGallery::find($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+            $destinationPath = public_path('storage/images/cmspage/');
+            if (!empty($pg->images)) {
+                $oldFilePath = $destinationPath . $pg->images;
+                if (file_exists($oldFilePath)) {
+                    unlink($oldFilePath);
+                }
+            }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+            $pg->delete();
+
+            return back()->with('success', 'Image deleted successfully');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Page delete failed Error: ' . $th->getMessage());
+        }
     }
 }

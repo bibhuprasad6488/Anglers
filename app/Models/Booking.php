@@ -28,6 +28,7 @@ class Booking extends Model
         'number_of_pet',
         'booking_amount',
         'status',
+        'payment_status',
         'confirmed_at',
         'created_at',
         'updated_at'

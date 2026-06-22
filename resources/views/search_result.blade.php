@@ -92,7 +92,7 @@
                                                         class="mx-3 py-2 btn-outline">View Details</a>
 
                                                     @if ($p->pricing['total_price'])
-                                                        <button type="submit" class="btn book-cabin-btn">Book
+                                                        <button type="submit" class="btn book-cabin-btn">Book Now
                                                         </button>
                                                     @endif
                                                 </form>

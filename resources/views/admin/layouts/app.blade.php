@@ -88,6 +88,7 @@
         input:checked+.slider:before {
             transform: translateX(25px);
         }
+
         .drop-area {
             border: 2px dashed #007bff;
             border-radius: 10px;
@@ -105,6 +106,10 @@
             width: 120px;
             margin: 10px;
             border-radius: 6px;
+        }
+
+        .note-editor .note-toolbar .note-btn {
+            color: #000 !important;
         }
     </style>
 </head>
@@ -135,7 +140,7 @@
     <!-- jQuery FIRST -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.js"></script>
     {{-- <script src="{{ asset('admin/assets/summernote/summernote.min.js') }}"></script> --}}
     <!-- Toastr SECOND -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>

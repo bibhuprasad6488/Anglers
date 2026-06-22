@@ -1,6 +1,6 @@
 <section class="section cnt_info pb-5 ">
     <div class="container">
-        <h2 class="left-align">CONTACT INFORMATION</h2>
+        <h2 class="center-align text-center mb-5">CONTACT INFORMATION</h2>
         <div class="row">
             <div class="col-lg-6">
                 <div class="card rounded-0 border-0">

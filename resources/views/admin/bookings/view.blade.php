@@ -70,6 +70,33 @@
                                                     class="badge @if ($booking->status == 'confirmed') bg-success @else bg-danger @endif">{{ ucfirst($booking->status) }}</span>
                                             </td>
                                         </tr>
+                                        @if ($booking->status == 'locked')
+                                            <tr>
+                                                <th>Change Status</th>
+                                                <td>
+                                                    <form action="{{ route('admin.bookings.update', $booking->id) }}"
+                                                        class="form-horizontal form-label-left" method="POST"
+                                                        enctype="multipart/form-data">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <div class="form-group row  mb-2">
+                                                            <div class="col-md-7 col-sm-9 col-xs-12">
+                                                                <select name="status" id="status" class="form-control"
+                                                                    required>
+                                                                    <option disabled selected>Select</option>
+                                                                    <option value="confirmed">Approve</option>
+                                                                    <option value="reject">Reject</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-2 col-sm-9 col-xs-12">
+                                                                <button type="submit"
+                                                                    class="btn primary-color">Update</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -234,7 +261,7 @@
 
                                         <tr>
                                             <th>Card Brand</th>
-                                            <td>{{ ucfirst(optional($charge)->payment_method_details->card->brand) ?? 'N/A' }}
+                                            <td>{{ $charge ? ucfirst(optional($charge)->payment_method_details->card->brand) : 'N/A' }}
                                             </td>
                                         </tr>
 

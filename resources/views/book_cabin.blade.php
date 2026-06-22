@@ -178,17 +178,16 @@
                             <label class="fs-5">Address</label>
                             <textarea name="user_address" id="user_address" class="form-control " placeholder="Address" rows="3">{{ $bookin->user_address ?? old('user_address') }}</textarea>
                         </div>
-                        <h3 class="trip-head mb-4">Payment Method</h3>
+                        {{-- <h3 class="trip-head mb-4">Payment Method</h3>
                         <div class="mb-4">
                             <div class="fs-5">Pay by Card (Stripe)</div>
-                            {{-- <small>Pay with your credit card Via Stripe</small> --}}
                         </div>
 
                         <div class="card p-3 shadow-sm mb-4">
                             <label>Credit or debit card</label>
                             <div id="card-element" class="form-control p-3"></div>
                             <div id="card-errors" class="text-danger mt-2"></div>
-                        </div>
+                        </div> --}}
                         @if ($booking->status == 'locked')
                             <div class="form-group mb-3">
                                 <input type="button" class="btn book-cabin-btn" value="Book Now" id="payBtn">
@@ -329,7 +328,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="booking-timer-card">
+                            {{-- <div class="booking-timer-card">
                                 <div class="timer-icon">
                                     <i class="fas fa-clock"></i>
                                 </div>
@@ -347,16 +346,16 @@
                                         Complete your booking before the timer expires.
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
             </form>
-            <form action="{{ route('booking.destroy', $booking->id) }}" method="POST" style="display: inline-block;"
+            {{-- <form action="{{ route('booking.destroy', $booking->id) }}" method="POST" style="display: inline-block;"
                 id="deletForm">
                 @csrf
                 @method('DELETE')
-            </form>
+            </form> --}}
         </div>
     </section>
     <div class="modal fade" id="sessionExpiredModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -382,10 +381,10 @@
     </div>
 @endsection
 @push('scripts')
-    <script src="https://js.stripe.com/v3/"></script>
+    {{-- <script src="https://js.stripe.com/v3/"></script> --}}
     <!-- Script -->
 
-    <script>
+    {{-- <script>
         const createdAt = Number(document.getElementById('created_at').value);
         const deleteForm = document.getElementById('deletForm');
         const timerElement = document.getElementById('bookingTimer');
@@ -443,7 +442,7 @@
                 String(secs).padStart(2, '0');
 
         }, 1000);
-    </script>
+    </script> --}}
     <script>
         localStorage.clear();
 
@@ -504,11 +503,11 @@
         // const stripe = Stripe(
         //     "pk_test_51TES9NQcR5k9cNV7ALf7HLqeRDxHIbLyjHcxpBzKfOrN8YFoEfVDytxUvhinZA5VOhuf5ruJ8jzR2IdBPEE8dGz1008rCzPS4D"
         // );
-        const stripe = Stripe("{{ $stripeKey }}");
-        const elements = stripe.elements();
+        // const stripe = Stripe("{{ $stripeKey }}");
+        // const elements = stripe.elements();
 
-        const card = elements.create("card");
-        card.mount("#card-element");
+        // const card = elements.create("card");
+        // card.mount("#card-element");
 
 
         payBtn.addEventListener("click", async function(e) {
@@ -552,7 +551,8 @@
                 return;
             } else {
 
-                // return false;
+                bookingForm.submit();
+                return;
                 // Step 1: call stripe controller
                 let res = await fetch("{{ route('payment.store') }}", {
                     method: "POST",

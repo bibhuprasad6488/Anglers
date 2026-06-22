@@ -49,7 +49,6 @@
         @if (session('success'))
             localStorage.setItem('mess', @json(session('success')));
         @endif
-
         const mess = localStorage.getItem('mess');
 
         if (mess) {

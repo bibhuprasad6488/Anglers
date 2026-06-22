@@ -73,6 +73,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Home Page
         Route::resource('home-page-setting', HomepageController::class)->names('home-page-setting');
+        Route::post('save-home-page-image', [HomepageController::class, 'saveHomePageImages'])->name('save-home-page-image');
+        Route::delete('delete-home-page-image/{id}', [HomepageController::class, 'deleteHomePageImages'])->name('delete-home-page-image');
         // Contact Page
         Route::resource('contact-page-setting', CmsContactpageController::class)->names('contact-page-setting');
         // Resources Page
@@ -92,6 +94,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('del-property-img/{id}', [PropertyController::class, 'deletePropertyImage'])->name('del-property-img');
         // Bookings
         Route::resource('bookings', AdminBookingController::class)->names('bookings');
+        Route::get('bookings-calender', [AdminBookingController::class, 'getBookingCalender'])->name('bookings-calender');
 
         // Setting
         Route::resource('profile-setting', SettingController::class)->names('profile-setting');
@@ -130,6 +133,8 @@ Route::get('/thank-you', [HomeController::class, 'thankYou'])->name('thank-you')
 Route::get('/privacy-policy', [HomeController::class, 'privacyPolicy'])->name('privacy');
 Route::get('/terms-of-business', [HomeController::class, 'termsOfBusiness'])->name('terms.business');
 Route::resource('booking', BookingController::class)->names('booking');
+Route::get('/make-payment/{id}', [BookingController::class, 'makeBookingPayment'])->name('make-payment');
+Route::post('/update-payment/{id}', [BookingController::class, 'updatePaymentDetails'])->name('update-payment');
 Route::get('/booking-confirmation/{id}', [BookingController::class, 'edit'])->name('booking.confirm');
 Route::resource('payment', StripeController::class)->names('payment');
 Route::get('/get-live-blog', [BlogPostController::class, 'getLiveBlogs']);

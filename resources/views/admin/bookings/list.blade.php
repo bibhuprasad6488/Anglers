@@ -52,6 +52,7 @@
                                     <th>Check In</th>
                                     <th>Check Out</th>
                                     <th>Status</th>
+                                    <th>Payment Status</th>
                                     <th>Created</th>
                                     <th>Action</th>
                                 </tr>
@@ -59,13 +60,21 @@
                             <tbody>
                                 @foreach ($bookings as $booking)
                                     @php
+                                        if ($booking->payment_status == 'pending') {
+                                            $pcolor = 'warning';
+                                            $dbtnclas = '';
+                                        } else {
+                                            $pcolor = 'primary';
+                                            $dbtnclas = 'd-none';
+                                        }
+
                                         if ($booking->status == 'locked') {
                                             $clr = 'danger';
                                             $ds = 'd-none';
                                         } elseif ($booking->status == 'confirmed') {
                                             $clr = 'success';
                                             $ds = '';
-                                        }elseif ($booking->status == 'pending') {
+                                        } elseif ($booking->status == 'pending') {
                                             $clr = 'warning';
                                             $ds = '';
                                         }
@@ -82,23 +91,25 @@
                                             <span
                                                 class="badge bg-{{ $clr }}">{{ ucfirst($booking->status) }}</span>
                                         </td>
+                                        <td>
+                                            <span
+                                                class="badge bg-{{ $pcolor }}">{{ ucfirst($booking->payment_status) }}</span>
+                                        </td>
                                         <td>{{ \Carbon\Carbon::parse($booking->created_at)->format('d-m-Y') }}</td>
 
                                         <td>
                                             <a href="{{ route('admin.bookings.show', $booking->id) }}" title="View Details"
-                                                class="btn btn-sm btn-primary {{ $ds }}"><i class="fa fa-eye"
+                                                class="btn btn-sm btn-primary "><i class="fa fa-eye"
                                                     aria-hidden="true"></i>
                                             </a>
-                                        </td>
-                                        {{-- <td>
-                                            <form action="{{ route('admin.posts.destroy', $booking->id) }}" method="POST"
+                                            <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST"
                                                 style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger"
+                                                <button type="submit" class="btn btn-sm btn-danger {{ $dbtnclas }}"
                                                     onclick="return confirm('Are you sure you want to delete this?');">Delete</button>
                                             </form>
-                                        </td> --}}
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
