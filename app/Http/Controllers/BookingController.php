@@ -196,7 +196,7 @@ class BookingController extends Controller
         $booking = Booking::where('booking_id', $id)->first();
         if (
             $booking &&
-            Carbon::parse($booking->check_in)->lt(Carbon::today()) &&
+            // Carbon::parse($booking->check_in)->lt(Carbon::today()) &&
             $booking->status == 'confirmed'
         ) {
 

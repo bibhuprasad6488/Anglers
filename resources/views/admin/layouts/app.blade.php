@@ -108,9 +108,10 @@
             border-radius: 6px;
         }
 
+        /*
         .note-editor .note-toolbar .note-btn {
             color: #000 !important;
-        }
+        } */
     </style>
 </head>
 
@@ -127,20 +128,19 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- jQuery FIRST -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> --}}
     <script src="{{ asset('admin/js/scripts.js') }}"></script>
     {{-- <script src="{{ asset('admin/assets/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('admin/assets/demo/chart-bar-demo.js') }}"></script> --}}
     <script src="{{ asset('admin/js/datatables-simple-demo.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
 
-    <!-- jQuery FIRST -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.js"></script>
     {{-- <script src="{{ asset('admin/assets/summernote/summernote.min.js') }}"></script> --}}
     <!-- Toastr SECOND -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>

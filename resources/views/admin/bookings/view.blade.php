@@ -67,7 +67,15 @@
                                         <tr>
                                             <th>Status</th>
                                             <td><span
-                                                    class="badge @if ($booking->status == 'confirmed') bg-success @else bg-danger @endif">{{ ucfirst($booking->status) }}</span>
+                                                    class="badge @if ($booking->status == 'confirmed') bg-success @elseif ($booking->status == 'locked') bg-warning @else bg-danger @endif">
+                                                    @if ($booking->status == 'confirmed')
+                                                        Approved
+                                                    @elseif ($booking->status == 'locked')
+                                                        Pending
+                                                    @else
+                                                        Rejected
+                                                    @endif
+                                                </span>
                                             </td>
                                         </tr>
                                         @if ($booking->status == 'locked')
@@ -90,7 +98,7 @@
                                                             </div>
                                                             <div class="col-md-2 col-sm-9 col-xs-12">
                                                                 <button type="submit"
-                                                                    class="btn primary-color">Update</button>
+                                                                    class="btn primary-color {{ \Carbon\Carbon::parse($booking->check_in)->isPast() ? 'd-none' : '' }}">Update</button>
                                                             </div>
                                                         </div>
                                                     </form>

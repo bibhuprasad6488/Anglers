@@ -170,8 +170,8 @@ class BookingController extends Controller
 
             $q->where(function ($q) {
 
-                $q->where('status', 'confirmed')
-                    ->where('payment_status', 'paid');
+                $q->where('status', 'confirmed');
+                    // ->where('payment_status', 'paid');
             })
                 ->orWhere(function ($q) {
 

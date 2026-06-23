@@ -51,7 +51,7 @@
                 </a>
                 <a class="nav-link {{ request()->routeIs(['admin.bookings-calender']) ? 'active' : '' }} "
                     href="{{ route('admin.bookings-calender') }}">
-                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    <div class="sb-nav-link-icon"><i class="fas fa-calendar-alt"></i></div>
                     Calender
                 </a>
 

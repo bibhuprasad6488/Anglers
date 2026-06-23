@@ -51,7 +51,7 @@
                                     <th>Amount</th>
                                     <th>Check In</th>
                                     <th>Check Out</th>
-                                    <th>Status</th>
+                                    <th>Admin Status</th>
                                     <th>Payment Status</th>
                                     <th>Created</th>
                                     <th>Action</th>
@@ -67,19 +67,22 @@
                                             $pcolor = 'primary';
                                             $dbtnclas = 'd-none';
                                         }
-
+                                        $bkngStatus = '';
                                         if ($booking->status == 'locked') {
-                                            $clr = 'danger';
+                                            $clr = 'warning';
                                             $ds = 'd-none';
+                                            $bkngStatus = 'pending';
                                         } elseif ($booking->status == 'confirmed') {
                                             $clr = 'success';
                                             $ds = '';
-                                        } elseif ($booking->status == 'pending') {
-                                            $clr = 'warning';
+                                            $bkngStatus = 'approved';
+                                        } elseif ($booking->status == 'reject') {
+                                            $clr = 'danger';
                                             $ds = '';
+                                            $bkngStatus = 'rejected';
                                         }
                                     @endphp
-                                    <tr>
+                                    <tr class="@if (empty($booking->user_name) || empty($booking->user_email)) d-none @endif">
                                         <td>{{ $loop->iteration }}</td>
                                         <td><b>{{ $booking->booking_id }}</b></td>
                                         <td><b>{{ $booking->user_name }}</b></td>
@@ -88,8 +91,7 @@
                                         <td>{{ \Carbon\Carbon::parse($booking->check_in)->format('d-m-Y') }}</td>
                                         <td>{{ \Carbon\Carbon::parse($booking->check_out)->format('d-m-Y') }}</td>
                                         <td>
-                                            <span
-                                                class="badge bg-{{ $clr }}">{{ ucfirst($booking->status) }}</span>
+                                            <span class="badge bg-{{ $clr }}">{{ ucfirst($bkngStatus) }}</span>
                                         </td>
                                         <td>
                                             <span
@@ -99,11 +101,10 @@
 
                                         <td>
                                             <a href="{{ route('admin.bookings.show', $booking->id) }}" title="View Details"
-                                                class="btn btn-sm btn-primary "><i class="fa fa-eye"
-                                                    aria-hidden="true"></i>
+                                                class="btn btn-sm btn-primary "><i class="fa fa-eye" aria-hidden="true"></i>
                                             </a>
-                                            <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST"
-                                                style="display: inline-block;">
+                                            <form action="{{ route('admin.bookings.destroy', $booking->id) }}"
+                                                method="POST" style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger {{ $dbtnclas }}"

@@ -15,7 +15,7 @@ class DashboardController extends Controller
     public function index()
     {
         $categories = PropertyCategory::with('properties')->orderByDesc('id')->get();
-        $bookings = Booking::orderByDesc('id')->with('property')->limit(10)->get();
+        $bookings = Booking::orderByDesc('id')->whereNotIn('status', ['blocked'])->with('property')->limit(10)->get();
         return view('admin.dashboard', compact('categories', 'bookings'));
     }
 

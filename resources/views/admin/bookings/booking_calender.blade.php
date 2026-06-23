@@ -66,11 +66,11 @@
             }
 
             .booked {
-                background: #E81224 !important;
+                background: #50ec48 !important;
             }
 
             .available {
-                background: #16C60C !important;
+                background: #c6e4c5c9 !important;
             }
 
             .past {
@@ -78,13 +78,17 @@
             }
 
             .blocked {
-                background-color: #383838 !important;
+                background-color: #6d050d !important;
                 text-align: center;
                 cursor: not-allowed;
             }
 
+            .payment-pending {
+                background-color: orange !important;
+            }
+
             .legend-item .block {
-                background-color: #383838 !important;
+                background-color: #6d050d !important;
             }
 
             .blocked::before {
@@ -174,6 +178,10 @@
                                 <span class="legend-label">Pending</span>
                             </div>
                             <div class="legend-item">
+                                <span class="color-box payment-pending"></span>
+                                <span class="legend-label">Payment Pending</span>
+                            </div>
+                            <div class="legend-item">
                                 <span class="color-box available"></span>
                                 <span class="legend-label">Available</span>
                             </div>
@@ -220,10 +228,16 @@
                                                         return $dateString >= $booking->check_in &&
                                                             $dateString < $booking->check_out;
                                                     });
-
+                                                    $bookingID = '';
                                                     if ($booking) {
                                                         if ($booking->status == 'confirmed') {
-                                                            $class = 'booked';
+                                                            if ($booking->payment_status == 'pending') {
+                                                                $class = 'payment-pending';
+                                                                $bookingID = $booking->booking_id;
+                                                            } else {
+                                                                $bookingID = $booking->booking_id;
+                                                                $class = 'booked';
+                                                            }
                                                         } elseif ($booking->status == 'locked') {
                                                             $class = 'pending';
                                                         } elseif ($booking->status == 'blocked') {
@@ -240,7 +254,7 @@
 
                                                 <td class="{{ $class }} booking-cell"
                                                     @if ($booking) data-booking='@json($booking)' @endif>
-
+                                                    {{ $bookingID }}
                                                 </td>
                                             @endforeach
                                         </tr>

@@ -159,7 +159,7 @@
                 @endif
 
                 <div class="form-group col-12 col-md-3">
-                    <input type="submit" class="btn book-cabin-btn" value="Search" id="bookBtn">
+                    <input type="submit" class="btn book-cabin-btn" value="Book Now" id="bookBtn">
                 </div>
             </form>
         </div>
