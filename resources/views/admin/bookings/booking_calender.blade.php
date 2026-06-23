@@ -27,7 +27,7 @@
                 position: sticky !important;
                 left: 0;
                 min-width: 180px;
-                background: #fff;
+                background: #fff !important;
                 z-index: 20 !important;
             }
 
