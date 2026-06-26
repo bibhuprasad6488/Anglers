@@ -26,7 +26,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="card shadow mb-4 border-0">
+                        <div class="card shadow @if (empty($booking->user_name) || empty($booking->user_email)) disabled @endif mb-4 border-0">
                             @if (session('success'))
                                 <div class="alert alert-success mx-1 mt-3 rounded-3 shadow-sm" id="success-alert">
                                     {{ session('success') }}
@@ -65,7 +65,7 @@
                                             <td>{{ $booking->total_nights }}</td>
                                         </tr>
                                         <tr>
-                                            <th>Status</th>
+                                            <th>Admin Status</th>
                                             <td><span
                                                     class="badge @if ($booking->status == 'confirmed') bg-success @elseif ($booking->status == 'locked') bg-warning @else bg-danger @endif">
                                                     @if ($booking->status == 'confirmed')

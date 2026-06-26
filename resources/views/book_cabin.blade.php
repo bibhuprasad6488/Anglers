@@ -146,9 +146,14 @@
                             <label class="fs-5">Pets <span>*</span></label>
                             <select name="number_of_pet" id="number_of_pet" class="form-control" required>
                                 <option value="">Select</option>
-                                @for ($i = 0; $i <= $property->max_pet; $i++)
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                {{-- @for ($i = 0; $i <= $property->max_pet; $i++)
                                     <option value="{{ $i }}">{{ $i }}</option>
-                                @endfor
+                                @endfor --}}
                             </select>
                         </div>
 

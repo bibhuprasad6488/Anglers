@@ -82,7 +82,7 @@
                                             $bkngStatus = 'rejected';
                                         }
                                     @endphp
-                                    <tr class="@if (empty($booking->user_name) || empty($booking->user_email)) d-none @endif">
+                                    <tr class="@if (empty($booking->user_name) || empty($booking->user_email))booking-not-completed @endif">
                                         <td>{{ $loop->iteration }}</td>
                                         <td><b>{{ $booking->booking_id }}</b></td>
                                         <td><b>{{ $booking->user_name }}</b></td>
