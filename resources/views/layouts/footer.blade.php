@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row text-center text-md-start">
             <!-- Column 1: Logo -->
-            <div class="col-md-4 mb-4">
+            <div class="col-md-3 mb-4">
                 <h5></h5>
                 <div class="">
                     <p class=" text-center">
@@ -10,10 +10,10 @@
                         <a href="{{ route('home') }}">
                             @if ($siteSetting && $siteSetting->footer_logo)
                                 <img src="{{ asset('storage/images/settings/' . $siteSetting->footer_logo) }}"
-                                    alt="{{ $siteSetting->site_title }}" width="180">
+                                    alt="{{ $siteSetting->site_title }}" width="">
                             @else
                                 <img src="{{ asset('assets/images/logo.png') }}" alt="{{ $siteSetting->site_title }}"
-                                    width="180">
+                                    width="">
                             @endif
                         </a>
                     </p>
@@ -30,47 +30,57 @@
             </div>
 
             <!-- Column 3: Navigation -->
-            <div class="col-md-4 mb-4  text-center">
-                <h4>Quick Links</h4>
-                <ul class="list-unstyled footer-links">
+            <div class="col-md-3 mb-4  text-center">
+                <h4 class="">Important Links</h4>
+                <ul class="list-unstyled footer-links  ">
                     <li>
                         <a href="{{ route('home') }}">
-                            Home
+                            <i class="fas fa-arrow-right"></i> Home
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('category.properties', $cat->slug) }}">
-                            Cabins
+                            <i class="fas fa-arrow-right"></i> Cabins
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('resources') }}">
-                            Resources
+                            <i class="fas fa-arrow-right"></i> Resources
                         </a>
                     </li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Navigation -->
+            <div class="col-md-3 mb-4 text-center">
+                <h4>Quick Links</h4>
+
+                <ul class="list-unstyled footer-links">
                     <li>
                         <a href="{{ route('gallery') }}">
-                            Gallery
+                            <i class="fas fa-arrow-right"></i> Gallery
                         </a>
                     </li>
+
                     <li>
                         <a href="{{ route('contact') }}">
-                            Contact
+                            <i class="fas fa-arrow-right"></i> Contact
                         </a>
                     </li>
+
                     <li>
                         <a href="{{ route('blogs') }}">
-                            Blog
+                            <i class="fas fa-arrow-right"></i> Blog
                         </a>
                     </li>
                 </ul>
             </div>
             <!-- Column 2: Contact -->
-            <div class="col-md-4 mb-4  text-center">
+            <div class="col-md-3 mb-4  text-center">
                 <h4>Contact </h4>
                 <ul class="list-unstyled footer-links">
                     <p>
-                        <img src="{{ asset('assets/images/footer-call.png') }}" alt="" height="100px">
+                        <img src="{{ asset('assets/images/footer-call.png') }}" alt="" height="60px">
                     </p>
 
                     <li class="mb-2 fw-bold">

@@ -68,7 +68,7 @@
 
         .duration-option span {
             display: inline-block;
-            padding: 12px 15px;
+            padding: 12px 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
             cursor: pointer;
@@ -116,21 +116,21 @@
             <form action="{{ route('search.result') }}" method="GET" class="row  rounded-3 shadow-sm search-form-one"
                 id="bookingForm">
                 @csrf
-                <div class="form-group col-12 col-md-3">
+                <div class="form-group col-lg-3 col-md-12">
                     <h4>
                         ▷ Browse Our <br><span> Cabin Selection </span> <span title="required">*</span>
                     </h4>
                 </div>
-                <div class="form-group col-12 col-md-3">
+                <div class="form-group col-lg-3 col-md-12">
                     <label class="text-white">Check In</label>
-                    <input id="check_in_date" type="date" name="check_in_date" class="form-control" required
-                        value="{{ request('check_in_date') ?? request('check_in') }}">
+                    <input id="check_in_date" type="text" placeholder="Check-in Date" name="check_in_date"
+                        class="form-control" required value="{{ request('check_in_date') ?? request('check_in') }}">
                     {{-- <input type="hidden" name="type_val" value="book_now"> --}}
                     <input type="hidden" name="property_id" value="{{ $property->id }}">
                     <input type="hidden" name="category_id" value="{{ $property->category_id }}">
                 </div>
                 @if (in_array($property->category_id, [1, 3]))
-                    <div class="form-group col-12 col-md-3">
+                    <div class="form-group col-lg-3 col-md-12">
                         <label class="form-label">Duration</label>
 
                         <div class="duration-group">
@@ -151,14 +151,14 @@
                         </div>
                     </div>
                 @else
-                    <div class="form-group col-12 col-md-3">
+                    <div class="form-group col-lg-3 col-md-12">
                         <label class="text-white">Check Out</label>
-                        <input id="check_out_date" type="date" name="check_out_date" class="form-control" required
-                            value="{{ request('check_out_date') ?? request('check_out') }}">
+                        <input id="check_out_date" type="text" placeholder="Check-out Date" name="check_out_date"
+                            class="form-control" required value="{{ request('check_out_date') ?? request('check_out') }}">
                     </div>
                 @endif
 
-                <div class="form-group col-12 col-md-3">
+                <div class="form-group col-lg-3 col-md-12">
                     <input type="submit" class="btn book-cabin-btn" value="Book Now" id="bookBtn">
                 </div>
             </form>

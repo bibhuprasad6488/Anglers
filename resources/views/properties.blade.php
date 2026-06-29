@@ -82,7 +82,7 @@
                 </div>
                 <div class="form-group col-12 col-md-3">
                     <label class="text-white">Check In</label>
-                    <input id="check_in_date" type="date" name="check_in_date" class="form-control" autocomplete="off"
+                    <input id="check_in_date" type="text" placeholder="Check-in Date" name="check_in_date" class="form-control" autocomplete="off"
                         required value="{{ request('check_in_date') }}">
 
                     <input type="hidden" name="category_id" value="{{ $cat->id }}">
@@ -111,7 +111,7 @@
                 @else
                     <div class="form-group col-12 col-md-3">
                         <label class="text-white">Check Out</label>
-                        <input id="check_out_date" type="date" name="check_out_date" class="form-control"
+                        <input id="check_out_date" type="text" placeholder="Check-out Date" name="check_out_date" class="form-control"
                             autocomplete="off" required value="{{ request('check_out_date') }}">
                     </div>
                 @endif

@@ -369,6 +369,7 @@ form.search-form-one .book-cabin-btn {
     background-color: #c4511c !important;
     color: #fff !important;
     width: 100%;
+    padding: 11px 0;
 }
 
 .form-control {
@@ -382,7 +383,7 @@ form.search-form-one input {
     border: none;
     padding: 0 12px;
     font-size: 15px;
-    /* min-width:220px; */
+    max-width: 245px;
 }
 
 form.search-form-one .book-cabin-btn:hover {
@@ -403,9 +404,10 @@ form.search-form-one h4 span {
 }
 
 .search-form-one label {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 500;
     color: #e6e6e6;
+    /* float: inline-start; */
 }
 
 form.mphb_sc_search-form p {
@@ -557,9 +559,9 @@ iframe {
     background: #f8f9fa;
 }
 
-.container {
-    /*max-width: 1920px !important;*/
-}
+/* .container {
+    max-width: 1920px !important;
+} */
 
 .fixed-top {
     background: rgb(255, 255, 255);

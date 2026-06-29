@@ -34,12 +34,12 @@
                     <div class="form-group col-12 col-md-3">
                         <label for="">Check In</label>
                         <input id="check_in_date" value="" placeholder="Check-in Date" required="required"
-                            type="date" name="check_in_date" class="form-control" autocomplete="off">
+                            type="text" name="check_in_date" class="form-control" autocomplete="off">
                     </div>
                     <div class="form-group col-12 col-md-3">
                         <label for="">Check Out</label>
                         <input id="check_out_date" value="" placeholder="Check-out Date" required="required"
-                            type="date" name="check_out_date" class="form-control" autocomplete="off">
+                            type="text" name="check_out_date" class="form-control" autocomplete="off">
                     </div>
 
                     <div class="form-group col-12 col-md-3">

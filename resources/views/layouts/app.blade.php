@@ -65,7 +65,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/testimonial.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/timeline.css') }}">
-
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -165,6 +165,8 @@
     {{-- <script src="{{ asset('assets/js/timeline.js') }}"></script> --}}
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
+    <!-- jQuery UI JS -->
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script>
         window.onload = function() {
             let alert = document.getElementById('success-alert');
@@ -204,51 +206,61 @@
             this.value = this.value.replace(/\D/g, '');
         });
     </script>
-
-
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const checkIn = document.getElementById("check_in_date");
-            const checkOut = document.getElementById("check_out_date");
-            
-            let today = new Date();
-            let tomorrow = new Date(today);
-            tomorrow.setDate(today.getDate() + 1);
+        $(document).ready(function() {
+            $("#check_in_date").datepicker({
+                dateFormat: 'yy-mm-dd',
+                minDate: 0,
+                onSelect: function(date) {
+                    let selectedDate = $(this).datepicker("getDate");
+                    selectedDate.setDate(
+                        selectedDate.getDate() + 1
+                    );
 
-            let tomorrowFormatted = tomorrow.toISOString().split("T")[0];
+                    $("#check_out_date")
+                        .datepicker(
+                            "option",
+                            "minDate",
+                            selectedDate
+                        );
 
-            if (checkIn) {
-                checkIn.setAttribute("min", tomorrowFormatted);
-            }
+                    $("#check_out_date")
+                        .datepicker(
+                            "setDate",
+                            selectedDate
+                        );
 
-            if (checkOut) {
-                checkOut.setAttribute("min", tomorrowFormatted);
-            }
+                }
 
-            if (checkIn && checkOut) {
+            });
 
-                checkIn.addEventListener("change", function() {
 
-                    let checkInDate = new Date(this.value);
+            $("#check_out_date").datepicker({
 
-                    let nextDay = new Date(checkInDate);
-                    nextDay.setDate(nextDay.getDate() + 1);
+                dateFormat: 'yy-mm-dd',
+                minDate: 1,
 
-                    let nextDayFormatted = nextDay.toISOString().split("T")[0];
+                onSelect: function(date) {
 
-                    checkOut.min = nextDayFormatted;
-                    checkOut.value = nextDayFormatted;
-                });
+                    let checkIn = $("#check_in_date")
+                        .datepicker("getDate");
 
-                checkOut.addEventListener("change", function() {
+                    let checkOut = $("#check_out_date")
+                        .datepicker("getDate");
 
-                    if (checkOut.value <= checkIn.value) {
-                        alert("Checkout date must be after check-in date");
-                        checkOut.value = "";
+                    if (checkIn && checkOut <= checkIn) {
+                        alert(
+                            "Checkout date must be after check-in date"
+                        );
+
+
+                        $("#check_out_date").val('');
+
                     }
 
-                });
-            }
+                }
+
+            });
 
         });
     </script>
