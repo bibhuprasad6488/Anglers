@@ -1,0 +1,279 @@
+.availability-calendar {
+
+    width: 100%;
+    max-width: 850px;
+    /* margin: 40px auto; */
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+    overflow-x: auto;
+}
+
+.calendar-header {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+
+    border-bottom: 1px solid #ececec;
+
+}
+
+.calendar-title h3 {
+
+    font-size: 18px;
+    font-weight: 600;
+
+}
+
+.nav-btn {
+
+    width: 42px;
+    height: 42px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #f3f3f3;
+
+    cursor: pointer;
+
+    font-size: 20px;
+
+    transition: .3s;
+
+}
+
+.nav-btn:hover {
+
+    background: #333;
+    color: #fff;
+
+}
+
+.calendar-navigation {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    border-bottom: 1px solid #ececec;
+
+}
+
+.calendar-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 20px;
+}
+
+.calendar-box {
+    flex: 0 0 calc(50% - 10px);
+    min-width: 0;
+}
+
+.calendar-box .calendar-title {
+
+    text-align: center;
+    margin-bottom: 15px;
+
+}
+
+.calendar-weekdays {
+
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: #fafafa;
+    margin-bottom: 5px;
+
+}
+
+.calendar-weekdays div {
+
+    padding: 8px 0;
+    font-size: 12px;
+    text-align: center;
+
+    font-weight: bold;
+
+    color: #666;
+
+}
+
+.calendar-grid {
+
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+
+}
+
+
+.day {
+
+    width: 100%;
+    aspect-ratio: 1/1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 12px;
+
+}
+
+.empty {
+
+    background: #d4d3d3;
+
+    border: none;
+
+}
+
+.today {
+    border: 2px solid #0d6efd !important;
+    color: #0d6efd;
+    font-weight: 700;
+}
+
+.available {
+
+    background: #fff;
+
+    cursor: auto;
+
+}
+
+.available:hover {
+
+    background: #edf5ff;
+
+}
+
+.booked {
+
+    background: #EE8767;
+    color: #fff;
+    font-weight: 600;
+    cursor: not-allowed;
+
+}
+
+.available:hover {
+
+    background: #edf5ff;
+
+}
+
+.booked.start {
+
+    border-radius: 18px 0 0 18px;
+
+}
+
+.booked.end {
+
+    border-radius: 0 18px 18px 0;
+
+}
+
+.calendar-legend {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 30px;
+
+    padding: 20px;
+
+    border-top: 1px solid #ececec;
+
+}
+
+.legend-box {
+
+    width: 18px;
+
+    height: 18px;
+
+    display: inline-block;
+
+    margin-right: 8px;
+
+    border-radius: 4px;
+
+    vertical-align: middle;
+
+}
+
+.available-box {
+
+    background: #fff;
+
+    border: 2px solid #ccc;
+
+}
+
+.booked-box {
+
+    background: #ff5a5f;
+
+}
+
+.nav-btn:disabled {
+
+    opacity: .35;
+    cursor: not-allowed;
+    pointer-events: none;
+
+}
+
+.today-btn {
+
+    padding: 5px 10px;
+
+    border: none;
+
+    /* border-radius:6px; */
+
+    background: #6D7743;
+
+    color: #fff;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+    transition: .3s;
+
+}
+
+.today-btn:hover {
+
+    background: #95b612;
+
+}
+
+@media(max-width:768px) {
+
+    .calendar-wrapper {
+
+        flex-direction: column;
+
+    }
+
+    .day {
+
+        font-size: 14px;
+
+    }
+
+    .calendar-title h3 {
+
+        font-size: 18px;
+
+    }
+
+}

@@ -24,21 +24,13 @@ use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+    private $siteSetting;
+    public function __construct()
+    {
+        // $this->middleware('auth');
+        $this->siteSetting = SiteSetting::find(1);
+    }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
         $home_page_data = CmsHomePage::find(1);
@@ -61,7 +53,7 @@ class HomeController extends Controller
             });
             return $p;
         });
-        $siteSetting = SiteSetting::find(1);
+        $siteSetting = $this->siteSetting;
         $homwPageGallery = HomePageGallery::all()->map(function ($pg) {
             $pg->images = $pg->images ? asset('storage/images/cmspage/' . $pg->images) : '';
             return $pg;
@@ -88,7 +80,7 @@ class HomeController extends Controller
 
     public function contactUs()
     {
-        $siteSetting = SiteSetting::find(1);
+        $siteSetting = $this->siteSetting;;
         $contactPage = CmsContactPage::find(1);
         return view('contact', compact('siteSetting', 'contactPage'));
     }
@@ -105,7 +97,7 @@ class HomeController extends Controller
         //     return back()->with('error', 'CAPTCHA verification failed. Please try again.');
         // }
 
-        $siteSetting = SiteSetting::find(1);
+        $siteSetting = $this->siteSetting;;
 
         DB::beginTransaction();
         try {
@@ -138,12 +130,13 @@ class HomeController extends Controller
             });
 
             DB::commit();
-            return redirect()->back()->with('success', 'Thank you for contacting us. We will get back to you as soon as possible');
+            return redirect()->back()->with(['tab' => 'contact', 'success' => 'Thank you for contacting us. We will get back to you as soon as possible']);
         } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Error during submission: ' . $th->getMessage());
+            return redirect()->back()->with(['tab' => 'contact', 'error' => 'Error during submission: ' . $th->getMessage()]);
         }
     }
+
     public function blogLists()
     {
         $blogs = Blog::where('status', 1)->orderBy('id')->paginate(5);
@@ -170,7 +163,7 @@ class HomeController extends Controller
                 ->first();
         }
 
-        $siteSetting = SiteSetting::find(1);
+        $siteSetting = $this->siteSetting;;
 
         return view('blog_details', compact('blog', 'siteSetting', 'previous', 'next'));
     }
@@ -318,7 +311,7 @@ class HomeController extends Controller
 
             $thumbnailUrl = $property->thumbnail
                 ? asset('storage/images/property/' . $property->thumbnail)
-                : asset('assets/images/no-img.png');
+                : '';
 
             $property->thumbnail = $thumbnailUrl;
 
@@ -351,7 +344,7 @@ class HomeController extends Controller
             $home_page_data->setion_one_img = $home_page_data->setion_one_img ? asset('storage/images/cmspage/' . $home_page_data->setion_one_img) : '';
             $home_page_data->setion_two_img = $home_page_data->setion_two_img ? asset('storage/images/cmspage/' . $home_page_data->setion_two_img) : '';
         }
-        $siteSetting = SiteSetting::find(1);
+        $siteSetting = $this->siteSetting;;
         return view('property_details', compact('property', 'home_page_data', 'siteSetting'));
     }
 
@@ -359,6 +352,7 @@ class HomeController extends Controller
     {
         $formDate = $request->input('check_in_date') ?? $request->input('check_in');
         $toDate = $request->input('check_out_date') ?? $request->input('check_out');
+        $duration = $request->input('duration');
         $propertyId = $request->input('property_id');
         $categoryId = $request->input('category_id');
         $typeVal = $request->input('type_val');
@@ -465,7 +459,7 @@ class HomeController extends Controller
                 // return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'messageD', 'properties'));
             } else {
                 if ($typeVal == 'book_now') {
-                    return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId'));
+                    return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'duration'));
                 } else {
                     DB::beginTransaction();
                     try {
@@ -504,7 +498,7 @@ class HomeController extends Controller
                             'type' => 'error',
                             'message' => 'Error: ' . $th->getMessage()
                         ];
-                        return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'messageD'));
+                        return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'messageD', 'duration'));
                     }
                 }
             }
@@ -581,7 +575,7 @@ class HomeController extends Controller
 
                     return $p;
                 });
-            return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'properties'));
+            return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'properties', 'duration'));
         } else if ($formDate && $toDate) {
             $excludesCat = [1, 3];
             $bookedIds = Booking::whereIn('status', ['locked', 'blocked', 'confirmed'])
@@ -628,7 +622,7 @@ class HomeController extends Controller
                     return $p;
                 });
             // dd($properties);
-            return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'properties'));
+            return view('search_result', compact('formDate', 'toDate', 'categoryId', 'propertyId', 'properties', 'duration'));
         }
     }
 
@@ -732,5 +726,36 @@ class HomeController extends Controller
     {
         $term = TermsOfBusiness::find(1);
         return view('terms_of_business', compact('term'));
+    }
+
+    public function getBookedDates(Request $request)
+    {
+        $bookings = Booking::where('property_id', $request->property_id)
+            ->whereIn('status', [
+                'confirmed',
+                'locked',
+                'blocked'
+            ])
+            ->get();
+
+        $dates = [];
+
+        foreach ($bookings as $booking) {
+
+            $start = Carbon::parse($booking->check_in);
+
+            $end = Carbon::parse($booking->check_out);
+
+            while ($start < $end) {
+
+                $dates[] = $start->format('Y-m-d');
+
+                $start->addDay();
+            }
+        }
+
+        return response()->json([
+            'dates' => $dates
+        ]);
     }
 }

@@ -87,7 +87,7 @@
                                                         value="{{ request('check_out_date') ?? (request('check_out') ?? $toDate) }}">
                                                     <input type="hidden" name="property_id" value="{{ $p->id }}">
                                                     <input type="hidden" name="category_id" value="{{ $p->category_id }}">
-
+                                                    <input type="hidden" name="duration" id="duration" value="{{ $duration }}">
                                                     <a href="{{ route('property.details', $p->slug) }}" target="_blank"
                                                         class="mx-3 py-2 btn-outline">View Details</a>
 
@@ -124,6 +124,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             localStorage.setItem('check_in_date', checkInDate);
             localStorage.setItem('check_out_date', checkOutDate);
+            localStorage.setItem('duration', document.getElementById('duration').value);
             // localStorage.clear();
             // console.log(checkInDate + ', ' + checkOutDate);
 

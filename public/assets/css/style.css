@@ -91,9 +91,11 @@ body {
     margin: 0 15px 0 0;
 }
 
+
 .cont-info-wrap a {
     text-decoration: none;
     color: #000;
+    display: flex;
 }
 
 ul.cont-info-wrap li {
@@ -120,6 +122,66 @@ ul.cont-info-wrap li img {
 ul.cont-info-wrap li a {
     text-decoration: none;
     color: #000;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: #fff !important;
+    font-weight: 600;
+}
+
+.search-input {
+    height: 55px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+}
+
+.duration-group {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+}
+
+.duration-option {
+    margin: 0;
+}
+
+.duration-option input {
+    display: none;
+}
+
+.duration-option span {
+    display: inline-block;
+    padding: 10px 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #000;
+    transition: all .3s ease;
+    font-weight: 500;
+    background: #fff;
+}
+
+.duration-option input:checked+span {
+    background: #c4511c;
+    color: #fff;
+    border-color: #c59d5f;
+}
+
+.search-btn {
+    height: 55px;
+    border-radius: 12px;
+    background: #c59d5f;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    transition: all .3s ease;
+}
+
+.search-btn:hover {
+    background: #b48b4e;
+    transform: translateY(-2px);
 }
 
 .cnt_info h6 {
@@ -386,6 +448,26 @@ form.search-form-one input {
     max-width: 245px;
 }
 
+form.search-form-one select {
+    height: 48px;
+    border-radius: 1px;
+    border: none;
+    padding: 0 12px;
+    font-size: 15px;
+    max-width: 245px;
+}
+
+select {
+    appearance: auto;
+    -webkit-appearance: auto;
+    -moz-appearance: auto;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5l6.5 6 6.5-6' stroke='%23333' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 14px;
+    padding-right: 40px;
+}
+
 form.search-form-one .book-cabin-btn:hover {
     background-color: #999999 !important;
     box-shadow: 4.092px 4.388px 0px rgb(0 0 0 / 35%);
@@ -643,7 +725,7 @@ iframe {
 
 .my_menu .nav-item a span {
     font-size: 20px;
-    color: #999;
+    color: #6D7743;
     font-weight: 500;
     line-height: 28px;
 }
@@ -1028,7 +1110,7 @@ marquee .partner-card img {
     /*list-style: square;*/
     padding: 0;
     margin: 0;
-    margin-left: 16px;
+    margin-left: 0;
 }
 
 .footer-links li {

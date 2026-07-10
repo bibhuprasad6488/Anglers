@@ -82,7 +82,7 @@
         <div class="container">
             <div class="row g-2 py-4">
                 @foreach ($galleries as $gallery)
-                    <div class="col-lg-2 col-md-4 col-sm-6 mx-auto">
+                    <div class="col-lg-3 col-md-4 col-sm-6 mx-auto">
                         <a href="{{ asset('storage/images/cmspage/' . $gallery->img_path) }}" class="slide2"
                             data-fancybox="gallery">
                             <img src="{{ asset('storage/images/cmspage/' . $gallery->img_path) }}"

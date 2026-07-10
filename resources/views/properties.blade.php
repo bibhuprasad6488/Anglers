@@ -4,70 +4,6 @@
 @section('meta_description', '')
 
 @section('content')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" />
-
-    <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
-    <style>
-        .swiper-button-next,
-        .swiper-button-prev {
-            color: #fff !important;
-            font-weight: 600;
-        }
-
-        .search-input {
-            height: 55px;
-            border-radius: 12px;
-            border: 1px solid #ddd;
-            padding: 10px 15px;
-        }
-
-        .duration-group {
-            display: flex;
-            gap: 3px;
-            flex-wrap: wrap;
-        }
-
-        .duration-option {
-            margin: 0;
-        }
-
-        .duration-option input {
-            display: none;
-        }
-
-        .duration-option span {
-            display: inline-block;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            color: #000;
-            transition: all .3s ease;
-            font-weight: 500;
-            background: #fff;
-        }
-
-        .duration-option input:checked+span {
-            background: #c4511c;
-            color: #fff;
-            border-color: #c59d5f;
-        }
-
-        .search-btn {
-            height: 55px;
-            border-radius: 12px;
-            background: #c59d5f;
-            border: none;
-            color: #fff;
-            font-weight: 600;
-            transition: all .3s ease;
-        }
-
-        .search-btn:hover {
-            background: #b48b4e;
-            transform: translateY(-2px);
-        }
-    </style>
     <div class="contact_page" class="text-center">
         <!-- Overlay (optional dark mask) -->
         <div class="container">
@@ -82,16 +18,22 @@
                 </div>
                 <div class="form-group col-12 col-md-3">
                     <label class="text-white">Check In</label>
-                    <input id="check_in_date" type="text" placeholder="Check-in Date" name="check_in_date" class="form-control" autocomplete="off"
-                        required value="{{ request('check_in_date') }}">
+                    <input id="check_in_date" type="text" placeholder="Check-in Date" name="check_in_date"
+                        class="form-control" autocomplete="off" required value="{{ request('check_in_date') }}">
 
                     <input type="hidden" name="category_id" value="{{ $cat->id }}">
                 </div>
                 @if (in_array($cat->id, [1, 3]))
                     <div class="form-group col-12 col-md-3">
-                        <label class="form-label">Duration</label>
+                        <label class="text-white">Duration</label>
 
-                        <div class="duration-group">
+                        <select name="duration" id="duration" class="form-control" required>
+                            <option value="" selected disabled>Select</option>
+                            <option value="1">1 Month</option>
+                            <option value="2">2 Month</option>
+                            <option value="3">3 Month</option>
+                        </select>
+                        {{-- <div class="duration-group">
                             <label class="duration-option">
                                 <input type="radio" name="duration" value="1">
                                 <span>1 Month</span>
@@ -106,13 +48,13 @@
                                 <input type="radio" name="duration" value="3">
                                 <span>3 Months</span>
                             </label>
-                        </div>
+                        </div> --}}
                     </div>
                 @else
                     <div class="form-group col-12 col-md-3">
                         <label class="text-white">Check Out</label>
-                        <input id="check_out_date" type="text" placeholder="Check-out Date" name="check_out_date" class="form-control"
-                            autocomplete="off" required value="{{ request('check_out_date') }}">
+                        <input id="check_out_date" type="text" placeholder="Check-out Date" name="check_out_date"
+                            class="form-control" autocomplete="off" required value="{{ request('check_out_date') }}">
                     </div>
                 @endif
                 <div class="form-group col-12 col-md-3">
@@ -247,6 +189,7 @@
 @endsection
 @push('scripts')
     <script>
+        localStorage.clear();
         let checkInDate = localStorage.getItem('check_in_date');
         let checkOutDate = localStorage.getItem('check_out_date');
 
@@ -305,19 +248,19 @@
 
             form.addEventListener('submit', function(e) {
 
-                const durationRadios = document.querySelectorAll('input[name="duration"]');
+                // const durationRadios = document.querySelectorAll('input[name="duration"]');
 
                 // Only validate if duration options exist on the page
-                if (durationRadios.length > 0) {
+                // if (durationRadios.length > 0) {
 
-                    const selectedDuration = document.querySelector('input[name="duration"]:checked');
-
-                    if (!selectedDuration) {
-                        e.preventDefault();
-                        alert('Please select a duration.');
-                        return false;
-                    }
+                // const selectedDuration = document.querySelector('input[name="duration"]:checked');
+                const selectedDuration = document.getElementById('duration');
+                if (selectedDuration && selectedDuration.value == null) {
+                    e.preventDefault();
+                    alert('Please select a duration.');
+                    return false;
                 }
+                // }
             });
 
         });

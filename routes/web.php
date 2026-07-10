@@ -95,7 +95,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Bookings
         Route::resource('bookings', AdminBookingController::class)->names('bookings');
         Route::get('bookings-calender', [AdminBookingController::class, 'getBookingCalender'])->name('bookings-calender');
-        Route::get('calendar-past-dates', [AdminBookingController::class,'pastDates'])->name('calendar-past-dates');
+        Route::get('calendar-past-dates', [AdminBookingController::class, 'pastDates'])->name('calendar-past-dates');
         Route::get('blocked-properties', [AdminBookingController::class, 'getBlockedProperty'])->name('blocked-properties');
         Route::get('get-reserved-date', [AdminBookingController::class, 'getReservedDates'])->name('get-reserved-date');
         Route::post('block-new-property', [AdminBookingController::class, 'blockNewProperty'])->name('block-new-property');
@@ -137,6 +137,7 @@ Route::get('/thank-you', [HomeController::class, 'thankYou'])->name('thank-you')
 Route::get('/privacy-policy', [HomeController::class, 'privacyPolicy'])->name('privacy');
 Route::get('/terms-of-business', [HomeController::class, 'termsOfBusiness'])->name('terms.business');
 Route::resource('booking', BookingController::class)->names('booking');
+Route::post('get-booked-date', [HomeController::class, 'getBookedDates'])->name('get-booked-date');
 Route::get('/make-payment/{id}', [BookingController::class, 'makeBookingPayment'])->name('make-payment');
 Route::post('/update-payment/{id}', [BookingController::class, 'updatePaymentDetails'])->name('update-payment');
 Route::get('/booking-confirmation/{id}', [BookingController::class, 'edit'])->name('booking.confirm');

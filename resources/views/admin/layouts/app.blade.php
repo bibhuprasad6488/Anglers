@@ -240,6 +240,59 @@
             //         }
             //     });
             // });
+
+            const datatablesSimple = document.getElementById('datatablesSimple');
+
+            if (datatablesSimple) {
+
+                let tableKey = 'datatable_page_' + window.location.pathname;
+
+                // // Clear saved page on manual browser refresh
+                // if (performance.navigation.type === 1) {
+                //     sessionStorage.removeItem(tableKey);
+                // }
+
+
+                const table = new simpleDatatables.DataTable(datatablesSimple, {
+                    perPage: 10,
+                    perPageSelect: [5, 10, 25, 50, 100]
+                });
+
+
+                // Restore page after update
+                let savedPage = sessionStorage.getItem(tableKey);
+
+                if (savedPage) {
+                    setTimeout(() => {
+                        table.page(parseInt(savedPage));
+
+                        // keep it for next edit
+                    }, 200);
+                }
+
+
+                // Track current page
+                table.on('datatable.page', function(page) {
+                    sessionStorage.setItem(tableKey, page);
+                });
+
+
+                // Clear when leaving this listing normally
+                document.querySelectorAll('a').forEach(link => {
+
+                    link.addEventListener('click', function() {
+
+                        let target = this.href;
+
+                        if (!target.includes(window.location.pathname)) {
+                            sessionStorage.removeItem(tableKey);
+                        }
+
+                    });
+
+                });
+
+            }
         });
     </script>
     <script>

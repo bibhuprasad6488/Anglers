@@ -1,103 +1,11 @@
 @extends('layouts.app')
-@section('title', 'Properties')
-@section('meta_title', '')
-@section('meta_description', '')
-
+@section('title', optional($property)->meta_title ?? 'Properties')
+@section('meta_title', optional($property)->meta_title)
+@section('meta_description', optional($property)->meta_desc)
 @section('content')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" />
-    <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
+    <link href="{{ asset('assets/css/calender.css') }}" rel="stylesheet" />
+    <script src="{{ asset('assets/js/calender.js') }}"></script>
     <style>
-        .swiper-button-next,
-        .swiper-button-prev {
-            color: #fff !important;
-            font-weight: 600;
-        }
-
-        .litepicker {
-            font-family: inherit;
-        }
-
-        .is-today {
-            background: #dbdada !important;
-            color: #fff !important;
-        }
-
-        .litepicker .day-item.is-start-date,
-        .litepicker .day-item.is-end-date {
-            background: #ff6b6b !important;
-            color: #fff;
-        }
-
-        .litepicker .day-item.is-in-range {
-            background: #ffe2e2;
-        }
-
-        #booking-calendar {
-            width: 100%;
-            max-width: max-content;
-            height: max-content;
-            border: 1px solid #dddd;
-            margin: 10px auto;
-            overflow-x: scroll;
-        }
-
-        .litepicker {
-            box-shadow: none;
-        }
-
-        .search-input {
-            height: 55px;
-            border-radius: 12px;
-            border: 1px solid #ddd;
-            padding: 10px 15px;
-        }
-
-        .duration-group {
-            display: flex;
-            gap: 3px;
-            flex-wrap: wrap;
-        }
-
-        .duration-option {
-            margin: 0;
-        }
-
-        .duration-option input {
-            display: none;
-        }
-
-        .duration-option span {
-            display: inline-block;
-            padding: 12px 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            color: #000;
-            transition: all .3s ease;
-            font-weight: 500;
-            background: #fff;
-        }
-
-        .duration-option input:checked+span {
-            background: #c4511c;
-            color: #fff;
-            border-color: #c59d5f;
-        }
-
-        .search-btn {
-            height: 55px;
-            border-radius: 12px;
-            background: #c59d5f;
-            border: none;
-            color: #fff;
-            font-weight: 600;
-            transition: all .3s ease;
-        }
-
-        .search-btn:hover {
-            background: #b48b4e;
-            transform: translateY(-2px);
-        }
     </style>
     <div class="contact_page" class="text-center">
         <!-- Overlay (optional dark mask) -->
@@ -131,24 +39,34 @@
                 </div>
                 @if (in_array($property->category_id, [1, 3]))
                     <div class="form-group col-lg-3 col-md-12">
-                        <label class="form-label">Duration</label>
+                        <label class="text-white">Duration</label>
 
-                        <div class="duration-group">
+                        <select name="duration" id="duration" class="form-control" required>
+                            <option value="" selected disabled>Select</option>
+                            <option value="1">1 Month </option>
+                            <option value="2">2 Month </option>
+                            <option value="3">3 Month </option>
+                        </select>
+
+                        {{-- <div class="duration-group">
                             <label class="duration-option">
-                                <input type="radio" name="duration" value="1">
+                                <input type="radio" name="duration" value="1"
+                                    @if (request('duration') == 1) checked @endif>
                                 <span>1 Month</span>
                             </label>
 
                             <label class="duration-option">
-                                <input type="radio" name="duration" value="2">
+                                <input type="radio" name="duration" value="2"
+                                    @if (request('duration') == 2) checked @endif>
                                 <span>2 Months</span>
                             </label>
 
                             <label class="duration-option">
-                                <input type="radio" name="duration" value="3">
+                                <input type="radio" name="duration" value="3"
+                                    @if (request('duration') == 3) checked @endif>
                                 <span>3 Months</span>
                             </label>
-                        </div>
+                        </div> --}}
                     </div>
                 @else
                     <div class="form-group col-lg-3 col-md-12">
@@ -202,51 +120,144 @@
                     <p class="tag-list">{{ $property->sub_title }}</p>
                     <h2 class="mphb-details-title">Details</h2>
                     <p>{!! $property->long_desc !!}</p>
-                    <p><strong>Categorie:</strong> <span class="text-dark">{{ $property->category->title }}</span></p>
+                    <p><strong>Category:</strong> <span class="text-dark">{{ $property->category->title }}</span></p>
                     <small class="fw-semibold"> Price per pet ${{ $property->price_per_pet }}, Maximum
                         2 dogs less than 50
                         lb. No Cats </small>
-                    {{-- <h2 class="mphb-calendar-title">Availability</h2> --}}
-                    {{-- <form action="{{ route('search.result') }}" method="GET"
-                        class="row  rounded-3 shadow-sm search-form-one">
-                        @csrf
-                        <div class="form-group col-12 ">
-                            <label class="text-white">Check In</label>
-                            <input id="check_in" type="date" name="check_in_date" class="form-control" required
-                                value="{{ request('check_in_date') ?? request('check_in') }}">
+                    <h2 class="mphb-calendar-title mt-3">Availability</h2>
+                    <div class="availability-calendar mb-4">
+                        <div class="calendar-navigation">
+                            <button id="prevMonth" class="nav-btn">
+                                &#10094;
+                            </button>
+                            <button id="todayBtn" class="today-btn">
+                                Today
+                            </button>
+                            <button id="nextMonth" class="nav-btn">
+                                &#10095;
+                            </button>
+                        </div>
+                        <div class="calendar-wrapper">
+                            <!-- LEFT MONTH -->
+                            <div class="calendar-box">
+
+                                <div class="calendar-title">
+                                    <h3 id="calendarTitle1"></h3>
+                                </div>
+
+                                <div class="calendar-weekdays">
+                                    <div>Mon</div>
+                                    <div>Tue</div>
+                                    <div>Wed</div>
+                                    <div>Thu</div>
+                                    <div>Fri</div>
+                                    <div>Sat</div>
+                                    <div>Sun</div>
+                                </div>
+
+                                <div id="calendarGrid1" class="calendar-grid"></div>
+
+                            </div>
+
+                            <!-- RIGHT MONTH -->
+                            <div class="calendar-box">
+
+                                <div class="calendar-title">
+                                    <h3 id="calendarTitle2"></h3>
+                                </div>
+
+                                <div class="calendar-weekdays">
+                                    <div>Mon</div>
+                                    <div>Tue</div>
+                                    <div>Wed</div>
+                                    <div>Thu</div>
+                                    <div>Fri</div>
+                                    <div>Sat</div>
+                                    <div>Sun</div>
+                                </div>
+
+                                <div id="calendarGrid2" class="calendar-grid"></div>
+
+                            </div>
+
+                        </div>
+
+                        {{-- <div class="calendar-legend">
+
+                            <span>
+                                <span class="legend-box available-box"></span>
+                                Available
+                            </span>
+
+                            <span>
+                                <span class="legend-box booked-box"></span>
+                                Booked
+                            </span>
+
+                        </div> --}}
+
+                    </div>
+                    <div class="card ">
+                        <div class="card-header">
+                            <h4 class="text-muted text-uppercase">Required fields are followed by *</h4>
+                        </div>
+                        <form action="{{ route('search.result') }}" method="GET" id="booking-form-{{ $property->id }}"
+                            class="rounded-3  card-body">
+                            @csrf
+                            {{-- <input type="hidden" name="type_val" value="book_now"> --}}
+                            <div class="form-group col-12 mb-3">
+                                <label>Check-in Date *</label>
+                                <input id="check_in" type="text" name="check_in_date" class="form-control" required
+                                    value="{{ request('check_in_date') ?? request('check_in') }}" placeholder="Check-in Date">
+                            </div>
+
+                            @if (in_array($property->category_id, [1, 3]))
+                                <div class="form-group col-12 mb-3">
+                                    <label class="form-label">Duration *</label>
+
+                                    <select name="duration" id="duration" class="form-control" required>
+                                        <option value="" selected disabled>Select</option>
+                                        <option value="1">1 Month </option>
+                                        <option value="2">2 Month </option>
+                                        <option value="3">3 Month </option>
+                                    </select>
+                                    {{-- <div class="duration-group">
+                                        <label class="duration-option">
+                                            <input type="radio" name="duration" value="1"
+                                                @if (request('duration') == 1) checked @endif>
+                                            <span>1 Month</span>
+                                        </label>
+
+                                        <label class="duration-option">
+                                            <input type="radio" name="duration" value="2"
+                                                @if (request('duration') == 2) checked @endif>
+                                            <span>2 Months</span>
+                                        </label>
+
+                                        <label class="duration-option">
+                                            <input type="radio" name="duration" value="3"
+                                                @if (request('duration') == 3) checked @endif>
+                                            <span>3 Months</span>
+                                        </label>
+                                    </div> --}}
+                                </div>
+                            @else
+                                <div class="form-group col-12 mb-3">
+                                    <label>Check-out Date *</label>
+                                    <input id="check_out" type="text" name="check_out_date" class="form-control"
+                                        required value="{{ request('check_out_date') ?? request('check_out') }}"
+                                        placeholder="Check-out Date">
+                                </div>
+                            @endif
                             <input type="hidden" name="property_id" value="{{ $property->id }}">
                             <input type="hidden" name="category_id" value="{{ $property->category_id }}">
-                        </div>
-                        <div class="form-group col-12 ">
-                            <label class="text-white">Check Out</label>
-                            <input id="check_out" type="date" name="check_out_date" class="form-control" required
-                                value="{{ request('check_out_date') ?? request('check_out') }}">
-                        </div>
-
-                        <div class="form-group col-12 ">
-                            <input type="submit" class="btn book-cabin-btn" value="Check Availability">
-                        </div>
-                    </form> --}}
-
-
-                    <div id="booking-calendar" class="d-none"></div>
-                    <form action="{{ route('search.result') }}" method="GET" id="booking-form-{{ $property->id }}"
-                        class="rounded-3 ">
-                        @csrf
-                        {{-- <input type="hidden" name="type_val" value="book_now"> --}}
-                        <div class="form-group col-12 ">
-                            <label class="text-white">Check In</label>
-                            <input id="check_in" type="date" name="check_in_date" class="form-control" required
-                                value="{{ request('check_in_date') ?? request('check_in') }}" hidden>
-                            <input id="check_out" type="date" name="check_out_date" class="form-control" required
-                                value="{{ request('check_out_date') ?? request('check_out') }}" hidden>
-                            {{-- <input type="hidden" name="property_id" value="{{ $property->id }}">
-                            <input type="hidden" name="category_id" value="{{ $property->category_id }}"> --}}
-                        </div>
-                        <div class="form-group">
-                            <input type="button" class="btn book-cabin-btn" id="bookingBtn" value="Book Now">
-                        </div>
-                    </form>
+                            <div class="form-group">
+                                <input type="submit" class="btn book-cabin-btn" id="bookingBtn"
+                                    value="Check Availability">
+                            </div>
+                        </form>
+                    </div>
+                    
                     @if (isset($pricing) && !empty($pricing))
                         <div class="card mt-4 ">
                             <div class="card-header">
@@ -336,7 +347,7 @@
             /* AUTO SLIDE */
             setInterval(function() {
                 nextSlide();
-            }, 3000); // change slide every 4 seconds
+            }, 10000); // change slide every 4 seconds
 
         });
     </script>
@@ -344,36 +355,57 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
 
-            const form = document.getElementById("bookingForm");
+            initBookingForm(
+                "bookingForm",
+                "check_in_date",
+                "check_out_date"
+            );
 
-            const checkIn = document.getElementById("check_in_date");
-            const checkOut = document.getElementById("check_out_date");
+            initBookingForm(
+                "booking-form-{{ $property->id }}",
+                "check_in",
+                "check_out"
+            );
 
-            // /* -----------------------------
-            //    Set default minimum dates
-            // ----------------------------- */
+            $.ajax({
 
-            const today = new Date();
+                url: "{{ route('get-booked-date') }}",
 
-            const tomorrow = new Date();
-            tomorrow.setDate(today.getDate() + 1);
+                type: "POST",
 
-            const tomorrowFormatted = tomorrow.toISOString().split('T')[0];
+                dataType: "json",
 
-            if (checkIn) {
-                checkIn.setAttribute("min", tomorrowFormatted);
-            }
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    property_id: "{{ $property->id }}",
 
-            if (checkOut) {
-                checkOut.setAttribute("min", tomorrowFormatted);
-            }
+                },
 
-            // /* -----------------------------
-            //    Load Local Storage Values
-            // ----------------------------- */
+                success: function(response) {
 
-            const storedCheckIn = localStorage.getItem('check_in_date');
-            const storedCheckOut = localStorage.getItem('check_out_date');
+                    new AvailabilityCalendar({
+
+                        bookedDates: response.dates
+
+                    });
+
+                }
+
+            });
+        });
+
+        function initBookingForm(formId, checkInId, checkOutId) {
+
+            const form = document.getElementById(formId);
+
+            if (!form) return;
+
+            const checkIn = document.getElementById(checkInId);
+            const checkOut = document.getElementById(checkOutId);
+
+            // Restore Local Storage
+            const storedCheckIn = localStorage.getItem("check_in_date");
+            const storedCheckOut = localStorage.getItem("check_out_date");
 
             if (checkIn && storedCheckIn) {
                 checkIn.value = storedCheckIn;
@@ -383,143 +415,190 @@
                 checkOut.value = storedCheckOut;
             }
 
-            // /* -----------------------------
-            //    Check-In Change
-            // ----------------------------- */
+            // Duration Select
+            const durationSelect = form.querySelector('select[name="duration"]');
 
-            if (checkIn && checkOut) {
+            // Restore
+            const storedDuration = localStorage.getItem("duration");
 
-                checkIn.addEventListener("change", function() {
+            if (durationSelect && storedDuration) {
+                durationSelect.value = storedDuration;
+            }
 
-                    const selectedDate = new Date(this.value);
+            // Save
+            if (durationSelect) {
 
-                    const nextDay = new Date(selectedDate);
-                    nextDay.setDate(nextDay.getDate() + 1);
+                durationSelect.addEventListener("change", function() {
 
-                    const nextDayFormatted = nextDay.toISOString().split('T')[0];
+                    localStorage.setItem("duration", this.value);
+                    // Sync all duration selects
+                    document.querySelectorAll('select[name="duration"]').forEach(function(select) {
 
-                    checkOut.min = nextDayFormatted;
+                        select.value = durationSelect.value;
 
-                    if (
-                        !checkOut.value ||
-                        checkOut.value <= this.value
-                    ) {
-                        checkOut.value = nextDayFormatted;
-                    }
-
-                });
-
-                checkOut.addEventListener("change", function() {
-
-                    if (checkOut.value <= checkIn.value) {
-
-                        alert("Checkout date must be after Check-in date");
-
-                        checkOut.value = '';
-
-                        checkOut.focus();
-                    }
-
+                    });
                 });
 
             }
 
-            // /* -----------------------------
-            //    Save Dates To Local Storage
-            // ----------------------------- */
+            // // Restore Duration for radio
+            // const storedDuration = localStorage.getItem("duration");
 
+            // if (storedDuration) {
+
+            //     const durationRadio = form.querySelector(
+            //         `input[name="duration"][value="${storedDuration}"]`
+            //     );
+
+            //     if (durationRadio) {
+            //         durationRadio.checked = true;
+            //     }
+
+            // }
+
+
+            // Save Duration
+            // const durationRadios = form.querySelectorAll('input[name="duration"]');
+
+            // durationRadios.forEach(function(radio) {
+
+            //     radio.addEventListener("change", function() {
+            //         localStorage.setItem("duration", this.value);
+            //     });
+
+            // });
+
+            // Datepicker
             if (checkIn) {
 
-                checkIn.addEventListener("change", function() {
-                    localStorage.setItem(
-                        "check_in_date",
-                        this.value
-                    );
+                $(checkIn).datepicker({
+                    dateFormat: "yy-mm-dd",
+                    minDate: 1,
+
+                    onSelect: function(dateText) {
+
+                        localStorage.setItem("check_in_date", dateText);
+
+                        // Sync both forms
+                        $('input[name="check_in_date"]').val(dateText);
+
+                        if (!checkOut) return;
+
+                        let next = $.datepicker.parseDate("yy-mm-dd", dateText);
+                        next.setDate(next.getDate() + 1);
+
+                        $(checkOut).datepicker("option", "minDate", next);
+
+                        if (
+                            !checkOut.value ||
+                            checkOut.value <= dateText
+                        ) {
+
+                            $(checkOut).datepicker("setDate", next);
+
+                            const checkoutDate = $.datepicker.formatDate("yy-mm-dd", next);
+
+                            localStorage.setItem(
+                                "check_out_date",
+                                checkoutDate
+                            );
+
+                            $('input[name="check_out_date"]').val(checkoutDate);
+
+                        }
+
+                    }
+
                 });
 
             }
 
             if (checkOut) {
 
-                checkOut.addEventListener("change", function() {
-                    localStorage.setItem(
-                        "check_out_date",
-                        this.value
-                    );
-                });
+                $(checkOut).datepicker({
 
-            }
+                    dateFormat: "yy-mm-dd",
+                    minDate: 2,
 
-            // /* -----------------------------
-            //    Form Validation
-            // ----------------------------- */
+                    onSelect: function(dateText) {
 
-            if (form) {
-
-                form.addEventListener("submit", function(e) {
-
-                    if (checkIn && !checkIn.value) {
-                        e.preventDefault();
-                        alert("Please select Check-In Date.");
-                        checkIn.focus();
-                        return false;
-                    }
-
-                    if (checkOut && !checkOut.value) {
-                        e.preventDefault();
-                        alert("Please select Check-Out Date.");
-                        checkOut.focus();
-                        return false;
-                    }
-
-                    if (checkIn && checkOut) {
-
-                        const checkInDate = new Date(checkIn.value);
-                        const checkOutDate = new Date(checkOut.value);
-
-                        if (checkOutDate <= checkInDate) {
-
-                            e.preventDefault();
-
-                            alert("Checkout date must be after Check-in date.");
-
-                            checkOut.focus();
-
-                            return false;
-                        }
-                    }
-
-                    // /* Duration Validation */
-
-                    const durationRadios = document.querySelectorAll(
-                        'input[name="duration"]'
-                    );
-
-                    if (durationRadios.length > 0) {
-
-                        const selectedDuration = document.querySelector(
-                            'input[name="duration"]:checked'
+                        localStorage.setItem(
+                            "check_out_date",
+                            dateText
                         );
 
-                        if (!selectedDuration) {
+                        $('input[name="check_out_date"]').val(dateText);
 
-                            e.preventDefault();
-
-                            alert("Please select a duration.");
-
-                            return false;
-                        }
                     }
 
                 });
 
             }
 
-        });
+            // Validation
+            form.addEventListener("submit", function(e) {
+
+                if (checkIn && !checkIn.value) {
+
+                    e.preventDefault();
+
+                    alert("Please select Check-In Date.");
+
+                    checkIn.focus();
+
+                    return false;
+                }
+
+                if (checkOut && !checkOut.value) {
+
+                    e.preventDefault();
+
+                    alert("Please select Check-Out Date.");
+
+                    checkOut.focus();
+
+                    return false;
+                }
+
+                if (checkIn && checkOut && checkOut.value <= checkIn.value) {
+
+                    e.preventDefault();
+
+                    alert("Checkout date must be after Check-In date.");
+
+                    checkOut.focus();
+
+                    return false;
+                }
+
+                const durationRadios = form.querySelectorAll(
+                    'input[name="duration"]'
+                );
+
+                if (durationRadios.length) {
+
+                    const selected = form.querySelector(
+                        'input[name="duration"]:checked'
+                    );
+
+                    if (!selected) {
+
+                        e.preventDefault();
+
+                        alert("Please select a duration.");
+
+                        return false;
+                    }
+
+                }
+
+            });
+
+        }
     </script>
-    <script>
+    {{-- <script>
         $("#bookingBtn").on('click', function() {
             $("#bookBtn").trigger('click');
         });
-    </script>
+    </script> --}}
 @endpush

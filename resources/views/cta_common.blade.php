@@ -6,23 +6,28 @@
                 <div class="card rounded-0 border-0">
                     <h6>{{ $siteSetting->site_title }}</h6>
                     <p>{!! $siteSetting->site_desc !!}</p>
-                    <div class="d-flex flex-column cont-info-wrap gap-4">
-                        <div class="me-4">
+                    <div class="d-flex flex-column cont-info-wrap gap-3 row">
+                        <div class="me-4 col-xs-12">
                             @php
                                 $address = $siteSetting->address;
                                 $mapLink = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($address);
                             @endphp
                             <a href="{{ $mapLink }}" target="_blank">
-                                <img src="{{ asset('assets/images/location-icon.svg') }}"
-                                    alt="Image">{{ $siteSetting->address }}
+                                <p class="mb-0">
+                                    <img src="{{ asset('assets/images/location-icon.svg') }}" alt="Image">
+                                </p>
+                                <p class="mb-0">
+
+                                    {!! $siteSetting->address !!}
+                                </p>
                             </a>
                         </div>
-                        <div class="me-4">
+                        <div class="me-4 col-xs-12">
                             <a href="tel:{{ $siteSetting->contact_phone }}">
                                 <img src="{{ asset('assets/images/call-icon.svg') }}"
                                     alt="Image">{{ $siteSetting->contact_phone }} </a>
                         </div>
-                        <div class="me-4">
+                        <div class="me-4 col-xs-12">
                             <a href="mailto:{{ $siteSetting->contact_email }}">
                                 <img src="{{ asset('assets/images/mail-icon.svg') }}"
                                     alt="Image">{{ $siteSetting->contact_email }} </a>
@@ -31,19 +36,19 @@
                 </div>
             </div>
             <div class="col-lg-6">
+                @if (session('tab') == 'contact')
+                    @if (session('success'))
+                        <div class="alert alert-success mt-3 rounded-3 shadow-sm">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
-                @if (session('success'))
-                    <div class="alert alert-success mt-3 rounded-3 shadow-sm">
-                        {{ session('success') }}
-                    </div>
+                    @if (session('error'))
+                        <div class="alert alert-danger mt-3 rounded-3 shadow-sm">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                 @endif
-
-                @if (session('error'))
-                    <div class="alert alert-danger mt-3 rounded-3 shadow-sm">
-                        {{ session('error') }}
-                    </div>
-                @endif
-
                 <form action="{{ route('contact.submit') }}" method="post">
                     <div class="row">
                         <div class="col-md-6 mb-4">

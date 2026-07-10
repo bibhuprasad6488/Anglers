@@ -5,7 +5,7 @@
             <div class="col-md-3 mb-4">
                 <h5></h5>
                 <div class="">
-                    <p class=" text-center">
+                    <p class="text-center">
 
                         <a href="{{ route('home') }}">
                             @if ($siteSetting && $siteSetting->footer_logo)
@@ -17,7 +17,7 @@
                             @endif
                         </a>
                     </p>
-                    <p class=" text-center">
+                    <p class="text-center">
                         @php
                             $address = $siteSetting->address;
                             $mapLink = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($address);
@@ -30,7 +30,7 @@
             </div>
 
             <!-- Column 3: Navigation -->
-            <div class="col-md-3 mb-4  text-center">
+            <div class="col-md-3 mb-4  ">
                 <h4 class="">Important Links</h4>
                 <ul class="list-unstyled footer-links  ">
                     <li>
@@ -52,7 +52,7 @@
             </div>
 
             <!-- Column 3: Navigation -->
-            <div class="col-md-3 mb-4 text-center">
+            <div class="col-md-3 mb-4 ">
                 <h4>Quick Links</h4>
 
                 <ul class="list-unstyled footer-links">
@@ -76,7 +76,7 @@
                 </ul>
             </div>
             <!-- Column 2: Contact -->
-            <div class="col-md-3 mb-4  text-center">
+            <div class="col-md-3 mb-4  ">
                 <h4>Contact </h4>
                 <ul class="list-unstyled footer-links">
                     <p>
