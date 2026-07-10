@@ -199,7 +199,7 @@
                     </div>
                     <div class="card ">
                         <div class="card-header">
-                            <h4 class="text-muted text-uppercase">Required fields are followed by *</h4>
+                            <h5 class="text-muted text-uppercase">Required fields are followed by *</h4>
                         </div>
                         <form action="{{ route('search.result') }}" method="GET" id="booking-form-{{ $property->id }}"
                             class="rounded-3  card-body">
