@@ -28,7 +28,7 @@
                     @csrf
                     <div class="form-group col-12 col-md-3">
                         <h4>
-                            ▷ Browse Our <br><span> Cabin Selection </span> <span title="required">*</span>
+                            ▷ Browse Our <br><span> Selection </span> <span title="required">*</span>
                         </h4>
                     </div>
                     <div class="form-group col-12 col-md-3">

@@ -259,6 +259,9 @@ class HomeController extends Controller
                     return $img;
                 });
 
+                // Randomly arrange images first
+                $images = $images->shuffle();
+
                 if ($p->thumbnail) {
                     $thumbnailUrl = $p->thumbnail
                         ? asset('storage/images/property/' . $p->thumbnail)
@@ -323,6 +326,9 @@ class HomeController extends Controller
 
                 return $img;
             });
+
+            // Randomly arrange images first
+            $images = $images->shuffle();
 
             // Add thumbnail as first image
             if ($thumbnailUrl) {
@@ -425,6 +431,9 @@ class HomeController extends Controller
                                 : '';
                             return $img;
                         });
+
+                        // Randomly arrange images first
+                        $images = $images->shuffle();
 
                         if ($p->thumbnail) {
                             $thumbnailUrl = $p->thumbnail
@@ -551,6 +560,9 @@ class HomeController extends Controller
                         return $img;
                     });
 
+                    // Randomly arrange images first
+                    $images = $images->shuffle();
+
                     if ($p->thumbnail) {
                         $thumbnailUrl = $p->thumbnail
                             ? asset('storage/images/property/' . $p->thumbnail)
@@ -597,6 +609,9 @@ class HomeController extends Controller
 
                         return $img;
                     });
+
+                    // Randomly arrange images first
+                    $images = $images->shuffle();
 
                     if ($p->thumbnail) {
                         $thumbnailUrl = $p->thumbnail

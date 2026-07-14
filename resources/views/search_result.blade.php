@@ -35,7 +35,8 @@
                                     <div class="slides">
                                         @foreach ($p->images as $image)
                                             <img src="{{ $image->img_path }}"
-                                                class="slide {{ $loop->first ? 'active' : '' }} suggested-stay-img" alt="Property Image">
+                                                class="slide {{ $loop->first ? 'active' : '' }} suggested-stay-img"
+                                                alt="Property Image">
                                         @endforeach
                                     </div>
 
@@ -61,7 +62,8 @@
                                                         <b>Price start at:</b>
                                                         <span class="mphb-price">
                                                             <span
-                                                                class="mphb-currency">$</span>{{ $p->price_per_month ?? 0 }} per month</span>
+                                                                class="mphb-currency">$</span>{{ $p->price_per_month ?? 0 }}
+                                                            per month</span>
                                                         {{-- <span class="mphb-price-period">per month</span> --}}
                                                     </h5>
                                                 @else
@@ -69,12 +71,14 @@
                                                         <b>Price start at:</b>
                                                         <span class="mphb-price">
                                                             <span
-                                                                class="mphb-currency">$</span>{{ $p->price_per_night ?? 0 }} per night</span>
+                                                                class="mphb-currency">$</span>{{ $p->price_per_night ?? 0 }}
+                                                            per night</span>
                                                         {{-- <span class="mphb-price-period">per night</span> --}}
                                                     </h5>
                                                 @endif
-                                                <small class="fw-semibold"> Price per pet ${{ $p->price_per_pet }}, Maximum
-                                                    2 dogs less than 50 lb. No Cats</small>
+                                                <small class="fw-semibold"> Price per pet ${{ $p->price_per_pet }}, 1 dog
+                                                    under 50 lbs and non aggressive is allowed. They have to be in
+                                                    Canal</small>
                                             </div>
                                             <div>
                                                 <form action="{{ route('search.result') }}" method="GET">
@@ -87,7 +91,8 @@
                                                         value="{{ request('check_out_date') ?? (request('check_out') ?? $toDate) }}">
                                                     <input type="hidden" name="property_id" value="{{ $p->id }}">
                                                     <input type="hidden" name="category_id" value="{{ $p->category_id }}">
-                                                    <input type="hidden" name="duration" id="duration" value="{{ $duration }}">
+                                                    <input type="hidden" name="duration" id="duration"
+                                                        value="{{ $duration }}">
                                                     <a href="{{ route('property.details', $p->slug) }}" target="_blank"
                                                         class="mx-3 py-2 btn-outline">View Details</a>
 

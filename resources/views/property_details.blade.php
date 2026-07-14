@@ -26,7 +26,7 @@
                 @csrf
                 <div class="form-group col-lg-3 col-md-12">
                     <h4>
-                        ▷ Browse Our <br><span> Cabin Selection </span> <span title="required">*</span>
+                        ▷ Browse Our <br><span> Selection </span> <span title="required">*</span>
                     </h4>
                 </div>
                 <div class="form-group col-lg-3 col-md-12">
@@ -121,9 +121,8 @@
                     <h2 class="mphb-details-title">Details</h2>
                     <p>{!! $property->long_desc !!}</p>
                     <p><strong>Category:</strong> <span class="text-dark">{{ $property->category->title }}</span></p>
-                    <small class="fw-semibold"> Price per pet ${{ $property->price_per_pet }}, Maximum
-                        2 dogs less than 50
-                        lb. No Cats </small>
+                    <small class="fw-semibold"> Price per pet ${{ $property->price_per_pet }}, 1 dog under 50 lbs and non
+                        aggressive is allowed. They have to be in Canal </small>
                     <h2 class="mphb-calendar-title mt-3">Availability</h2>
                     <div class="availability-calendar mb-4">
                         <div class="calendar-navigation">
@@ -201,14 +200,15 @@
                         <div class="card-header">
                             <h5 class="text-muted text-uppercase">Required fields are followed by *</h4>
                         </div>
-                        <form action="{{ route('search.result') }}" method="GET" id="booking-form-{{ $property->id }}"
-                            class="rounded-3  card-body">
+                        <form action="{{ route('search.result') }}" method="GET"
+                            id="booking-form-{{ $property->id }}" class="rounded-3  card-body">
                             @csrf
                             {{-- <input type="hidden" name="type_val" value="book_now"> --}}
                             <div class="form-group col-12 mb-3">
                                 <label>Check-in Date *</label>
                                 <input id="check_in" type="text" name="check_in_date" class="form-control" required
-                                    value="{{ request('check_in_date') ?? request('check_in') }}" placeholder="Check-in Date">
+                                    value="{{ request('check_in_date') ?? request('check_in') }}"
+                                    placeholder="Check-in Date">
                             </div>
 
                             @if (in_array($property->category_id, [1, 3]))
@@ -257,7 +257,7 @@
                             </div>
                         </form>
                     </div>
-                    
+
                     @if (isset($pricing) && !empty($pricing))
                         <div class="card mt-4 ">
                             <div class="card-header">

@@ -13,7 +13,7 @@
                 @csrf
                 <div class="form-group col-12 col-md-3">
                     <h4>
-                        ▷ Browse Our <br><span> Cabin Selection </span> <span title="required">*</span>
+                        ▷ Browse Our <br><span> Selection </span> <span title="required">*</span>
                     </h4>
                 </div>
                 <div class="form-group col-12 col-md-3">
@@ -104,14 +104,14 @@
                                         <div class="text-muted">
                                             @if (in_array($p->category_id, [1, 3]))
                                                 <h5 class="fw-bold">Price $ {{ $p->price_per_month }} per month</h5>
-                                                <small class="fw-semibold"> Price per pet ${{ $p->price_per_pet }}, Maximum
-                                                    2 dogs less than 50
-                                                    lb. No Cats </small>
+                                                <small class="fw-semibold"> Price per pet ${{ $p->price_per_pet }}, 1 dog
+                                                    under 50 lbs and non aggressive is allowed. They have to be in
+                                                    Canal</small>
                                             @else
                                                 <h5 class="fw-bold">Price $ {{ $p->price_per_night }} per night</h5>
-                                                <small class="fw-semibold"> Price per pet ${{ $p->price_per_pet }}, Maximum
-                                                    2 dogs less than 50
-                                                    lb. No Cats </small>
+                                                <small class="fw-semibold"> Price per pet ${{ $p->price_per_pet }}, 1 dog
+                                                    under 50 lbs and non aggressive is allowed. They have to be in
+                                                    Canal</small>
                                             @endif
                                         </div>
                                         <div>
